@@ -5,7 +5,7 @@ data "aws_vpc" "default" {
 }
 
 locals {
-  cluster_name = "test-cluster5"
+  cluster_name = "test-cluster-${uuid()}"
   role_name    = "eks-test-role"
   cidr_block1  = cidrsubnet(data.aws_vpc.default.cidr_block, 8, 65)
   cidr_block2  = cidrsubnet(data.aws_vpc.default.cidr_block, 8, 70)
