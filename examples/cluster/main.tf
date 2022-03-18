@@ -1,12 +1,7 @@
 ##tag with kubernetes.io/cluster/CLUSTER_NAME
-###########
 
 data "aws_vpc" "default" {
   default = true
-}
-
-data "aws_availability_zones" "available" {
-  state = "available"
 }
 
 locals {
