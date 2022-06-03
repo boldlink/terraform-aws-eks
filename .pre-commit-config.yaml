@@ -1,59 +1,52 @@
+
 repos:
-- repo: https://github.com/pre-commit/pre-commit-hooks
-  rev: v4.0.1
-  hooks:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.0.1
+    hooks:
     # Git style
-    - id: check-added-large-files				## Prevent giant files from being committed. Specify what is '"too large" with args => ['--maxkb=123'] (default=500kB). Skips Github Large Files
-    - id: check-merge-conflict					## Check for files that contain merge conflict strings.
-    - id: forbid-new-submodules					## Prevent addition of new git submodules.
-    - id: no-commit-to-branch					## Protect specific branches from direct checkins.
+      - id: check-added-large-files                                     ## Prevent giant files from being committed. Specify what is '"too large" with args => ['--maxkb=123'] (default=500kB). Skips Github Large Files
+      - id: check-merge-conflict                                        ## Check for files that contain merge conflict strings.
+      - id: forbid-new-submodules                                       ## Prevent addition of new git submodules.
+      - id: no-commit-to-branch                                         ## Protect specific branches from direct checkins.
     # Common errors
-    - id: end-of-file-fixer					## Makes sure files end in a newline and only a newline.
-    - id: trailing-whitespace					## Trims trailing whitespace.
-      args: [--markdown-linebreak-ext=md]			## preserves Markdown hard linebreaks from being trimmed
-    - id: check-yaml						## Attempts to load all yaml files to verify syntax. e.g cloudformation files
-    - id: check-executables-have-shebangs			## Checks that non-binary executables have a proper shebang.
+      - id: check-symlinks                                              ## checks for symlinks which do not point to anything.
+      - id: check-json                                                  ## checks json files for parseable syntax.
+      - id: end-of-file-fixer                                           ## Makes sure files end in a newline and only a newline.
+      - id: trailing-whitespace                                         ## Trims trailing whitespace.
+        args: [--markdown-linebreak-ext=md]                             ## preserves Markdown hard linebreaks from being trimmed
+      - id: check-yaml                                                  ## Attempts to load all yaml files to verify syntax. e.g cloudformation files
+      - id: check-executables-have-shebangs                             ## Checks that non-binary executables have a proper shebang.
     # Cross platform
-    - id: check-case-conflict					## Check for files with names that would conflict on a case-insensitive filesystem like MacOS HFS+ or Windows FAT.
+      - id: check-case-conflict                                         ## Check for files with names that would conflict on a case-insensitive filesystem like MacOS HFS+ or Windows FAT.
     # Security
-    - id: detect-aws-credentials				## Checks for the existence of AWS secrets that you have set up with the AWS CLI
-      args: ['--allow-missing-credentials']			## Allow hook to pass when no credentials are detected.
-    - id: detect-private-key					## Checks for the existence of private keys.
+      - id: detect-aws-credentials                                      ## Checks for the existence of AWS secrets that you have set up with the AWS CLI
+        args: [--allow-missing-credentials]                             ## Allow hook to pass when no credentials are detected.
+      - id: detect-private-key                                          ## Checks for the existence of private keys.
 
    # Detect past or present hardcoded secrets like passwords, api keys, and tokens. NOTE: The current version of gitleaks has passwords detection disabled/not working
-- repo: https://github.com/zricethezav/gitleaks
-  rev: v8.1.3
-  hooks:
-    - id: gitleaks
+  - repo: https://github.com/zricethezav/gitleaks
+    rev: v8.8.4
+    hooks:
+      - id: gitleaks
 
-- repo: https://github.com/antonbabenko/pre-commit-terraform
-  rev: v1.58.0
-  hooks:
-  - id: terraform_fmt						##
-  - id: terraform_validate 					## validates with tflint and initializes modules/files if they are not initialized
-  - id: checkov							## scans files for best practices compliance
-  - id: infracost_breakdown					## Infracost shows cloud cost estimates for infrastructure-as-code projects such as Terraform . Quickly see a cost breakdown and compare different options upfront.
-    args:
-      - --args=--path=example/					## Use the --path flag to specify the path to one of Terraform plan JSON file, Terraform plan file, Terraform state JSON file, Terraform/Terragrunt directory
-      - --args=--terraform-use-state
-    verbose: true 						## Always show costs
-  - id: terraform_docs
-    args:
-      - --hook-config=--path-to-file=README.md        		## default path is . This specifies the path to the file, including the file name
-      - --hook-config=--add-to-existing-file=true     		## Appends markdown to an existing file
-      - --hook-config=--create-file-if-not-exist=true		## Create README.md if it does not exist
-  - id: terraform_tflint
-    args:							## The arguments below are rules that are usually provided by ruleset plugins, but the rules for the Terraform Language are built into the TFLint binary. Below is a list of available rules. See https://github.com/terraform-linters/tflint/blob/v0.33.1/docs/rules
-      - '--args=--only=terraform_deprecated_interpolation'	## Disallow deprecated (0.11-style) interpolation # HOW TO FIX: Switch to the new interpolation syntax. See the release notes for Terraform 0.12.14 for details: https://github.com/hashicorp/terraform/releases/tag/v0.12.14
-      - '--args=--only=terraform_deprecated_index'		## Disallow legacy dot index syntax # HOW TO FIX: Switch to the square bracket syntax when accessing items in list, including resources that use count.
-      - '--args=--only=terraform_unused_declarations'		## Disallow variables, data sources, and locals that are declared but never used. # HOW TO FIX: Remove the declaration. For variable and data, remove the entire block. For a local value, remove the attribute from the locals block.
-      - '--args=--only=terraform_comment_syntax'   		## Disallow // comments in favor of # HOW TO FIX: Replace the leading double-slash (//) in your comment with the number sign (#)
-      - '--args=--only=terraform_documented_outputs'		## Disallow output declarations without description. # HOW TO FIX: Write a description other than an empty string.
-      - '--args=--only=terraform_documented_variables' 		## Disallow variable declarations without description.# HOW TO FIX: Write a description other than an empty string.
-      - '--args=--only=terraform_typed_variables'		## Disallow variable declarations without type. 	# HOW TO FIX: Add a type to the variable.
-      - '--args=--only=terraform_module_pinned_source'		## Disallow specifying a git or mercurial repository as a module source without pinning to a version. # HOW TO FIX: Specify a version pin.
-      - '--args=--only=terraform_naming_convention'  		## Enforces naming conventions for Resources, Input variables, Output values, Local values, Modules, Data sources. #HOW TO FIX: Update the block label according to the format or custom regular expression.
-      - '--args=--only=terraform_required_version'  		## Disallow terraform declarations without required_version. #HOW TO FIX: Add the required_version attribute to the terraform configuration block.
-      - '--args=--only=terraform_required_providers'		## Require that all providers have version constraints through required_providers.#HOW TO FIX: Add the required_providers block to the terraform configuration block and include current versions for all providers.
-      - '--args=--only=terraform_standard_module_structure'	## Ensure that a module complies with the Terraform Standard Module Structure. A minimal module should have a main.tf, variables.tf, and outputs.tf file.
-      - '--args=--only=terraform_workspace_remote'		## terraform.workspace should not be used with a "remote" backend with remote execution.#HOW TO FIX: Consider adding a variable to your configuration and setting it in each cloud workspace
+  - repo: https://github.com/antonbabenko/pre-commit-terraform
+    rev: v1.71.0
+    hooks:
+      - id: terraform_fmt                                               ## Checks terraform format
+      - id: terraform_validate                                          ## validates with tflint and initializes modules/files if they are not initialized
+      - id: terraform_docs                                              ## Validate and build README's files
+      - id: terraform_tflint
+        args: ## The arguments below are rules that are usually provided by ruleset plugins, but the rules for the Terraform Language are built into the TFLint binary. Below is a list of available rules. See https://github.com/terraform-linters/tflint/blob/v0.33.1/docs/rules
+          - --args=--only=terraform_deprecated_interpolation            ## Disallow deprecated (0.11-style) interpolation  # HOW TO FIX: Switch to the new interpolation syntax. See the release notes for Terraform 0.12.14 for details: https://github.com/hashicorp/terraform/releases/tag/v0.12.14
+          - --args=--only=terraform_deprecated_index                    ## Disallow legacy dot index syntax  # HOW TO FIX: Switch to the square bracket syntax when accessing items in list, including resources that use count.
+          - --args=--only=terraform_unused_declarations                 ## Disallow variables, data sources, and locals that are declared but never used.  # HOW TO FIX: Remove the declaration. For variable and data, remove the entire block. For a local value, remove the attribute from the locals block.
+          - --args=--only=terraform_comment_syntax                      ## Disallow // comments in favor of  # HOW TO FIX: Replace the leading double-slash (//) in your comment with the number sign (#)
+          - --args=--only=terraform_documented_outputs                  ## Disallow output declarations without description.  # HOW TO FIX: Write a description other than an empty string.
+          - --args=--only=terraform_documented_variables                ## Disallow variable declarations without description.# HOW TO FIX: Write a description other than an empty string.
+          - --args=--only=terraform_typed_variables                     ## Disallow variable declarations without type. HOW TO FIX: Add a type to the variable.
+          - --args=--only=terraform_module_pinned_source                ## Disallow specifying a git or mercurial repository as a module source without pinning to a version.  # HOW TO FIX: Specify a version pin.
+          - --args=--only=terraform_naming_convention                   ##  Enforces naming conventions for Resources, Input variables, Output values, Local values, Modules, Data sources.  # HOW TO FIX: Update the block label according to the format or custom regular expression.
+          - --args=--only=terraform_required_version                    ##  Disallow terraform declarations without required_version.  # HOW TO FIX: Add the required_version attribute to the terraform configuration block.
+          - --args=--only=terraform_required_providers                  ## Require that all providers have version constraints through required_providers.#HOW TO FIX: Add the required_providers block to the terraform configuration block and include current versions for all providers.
+          - --args=--only=terraform_standard_module_structure           ## Ensure that a module complies with the Terraform Standard Module Structure. A minimal module should have a main.tf, variables.tf, and outputs.tf file.
+          - --args=--only=terraform_workspace_remote                    ## terraform.workspace should not be used with a "remote" backend with remote execution.#HOW TO FIX: Consider adding a variable to your configuration and setting it in each cloud workspace

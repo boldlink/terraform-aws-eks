@@ -1,0 +1,55 @@
+name: pre-commit
+
+on:
+  push:
+    branches:
+      - '!main'
+      - '!master'
+      - 'fixes/**'
+      - 'feature/**'
+      - 'hotfix/**'
+      - 'releases/**'
+
+env:
+  TF_VER: "0.14.11"
+  TF_DOCS_VER: "v0.16.0"
+  TFLINT_VER: "v0.35.0"
+  BIN_PATH: "/home/runner/.local/bin"
+
+jobs:
+  pre-commit:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Git checkout
+      uses: actions/checkout@v3
+
+    - name: Install terraform binary
+      run: |
+        mkdir -p /home/runner/.local/bin
+        curl -sSLo ./terraform-docs.tar.gz https://terraform-docs.io/dl/${TF_DOCS_VER}/terraform-docs-${TF_DOCS_VER}-$(uname)-amd64.tar.gz
+        tar -xzf terraform-docs.tar.gz
+        chmod +x terraform-docs
+        mv terraform-docs ${BIN_PATH}/terraform-docs
+
+    - name: Install TFLint binary
+      run: |
+        curl -sSLo tflint_linux_amd64.zip https://github.com/terraform-linters/tflint/releases/download/${TFLINT_VER}/tflint_linux_amd64.zip
+        unzip tflint_linux_amd64.zip
+        chmod +x tflint
+        mv tflint ${BIN_PATH}/tflint
+
+    - name: Install Terraform binary
+      run: |
+        curl -sSLo terraform_${TF_VER}_linux_amd64.zip https://releases.hashicorp.com/terraform/${TF_VER}/terraform_${TF_VER}_linux_amd64.zip
+        unzip terraform_${TF_VER}_linux_amd64.zip
+        chmod +x terraform
+        mv terraform ${BIN_PATH}/terraform
+
+    - name: Enable python
+      uses: actions/setup-python@v3
+
+    - name: Install latest pre-commit
+      run: pip install --upgrade pre-commit
+
+    - name: Run pre-commit checks
+      run: pre-commit run -a

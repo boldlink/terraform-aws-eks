@@ -1,10 +1,7 @@
-/*
-eks cluster
-*/
-
+# eks cluster
 resource "aws_eks_cluster" "main" {
-  name                      = var.name
-  role_arn                  = var.role_arn
+  name                      = var.cluster_name
+  role_arn                  = aws_iam_role.ekscluster.arn
   enabled_cluster_log_types = var.enabled_cluster_log_types
   tags                      = var.tags
   version                   = var.kubernetes_master_version
@@ -12,7 +9,7 @@ resource "aws_eks_cluster" "main" {
     endpoint_private_access = var.endpoint_private_access
     endpoint_public_access  = var.endpoint_public_access
     public_access_cidrs     = var.public_access_cidrs
-    security_group_ids      = var.security_group_ids
+    security_group_ids      = [(join(aws_security_group.eks_cluster.id, var.security_group_ids))]
     subnet_ids              = var.cluster_subnet_ids
   }
 
@@ -24,153 +21,199 @@ resource "aws_eks_cluster" "main" {
     }
   }
 
-
   dynamic "encryption_config" {
     for_each = var.encryption_config
     content {
       dynamic "provider" {
         for_each = lookup(encryption_config.value, "provider")
         content {
-          key_arn = provider.value.key_arn
+          key_arn = lookup(provider.value.key_arn, aws_kms_key.secrets_kms_key[0].arn)
         }
       }
-      resources = encryption_config.value.resources
+      resources = ["secrets"]
     }
   }
+
+  # Ensure that IAM Role permissions are created before and deleted after EKS Cluster handling.
+  # Otherwise, EKS will not be able to properly delete EKS managed EC2 infrastructure such as Security Groups.
+  depends_on = [
+    aws_iam_role_policy_attachment.amazoneksclusterpolicy,
+    aws_iam_role_policy_attachment.amazoneksvpccontroller,
+    aws_cloudwatch_log_group.main
+  ]
 }
 
-/*
-eks addon
-*/
+resource "aws_kms_key" "secrets_kms_key" {
+  count                   = var.encryption_config == null ? 1 : 0
+  description             = "A kms key for eks cluster secrets"
+  deletion_window_in_days = var.deletion_window_in_days
+  policy                  = local.kms_policy
+  enable_key_rotation     = var.enable_key_rotation
+  tags                    = var.tags
+}
 
+resource "aws_kms_alias" "secrets_kms_key" {
+  count         = var.encryption_config == null ? 1 : 0
+  name          = "alias/${var.cluster_name}-secrets"
+  target_key_id = aws_kms_key.secrets_kms_key[0].key_id
+}
+
+resource "aws_iam_role" "ekscluster" {
+  name               = "${var.cluster_name}-main"
+  assume_role_policy = data.aws_iam_policy_document.eks_cluster_assume_role.json
+}
+
+resource "aws_iam_role_policy_attachment" "amazoneksclusterpolicy" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
+  role       = aws_iam_role.ekscluster.name
+}
+
+# Optionally, enable Security Groups for Pods
+# Reference: https://docs.aws.amazon.com/eks/latest/userguide/security-groups-for-pods.html
+resource "aws_iam_role_policy_attachment" "amazoneksvpccontroller" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSVPCResourceController"
+  role       = aws_iam_role.ekscluster.name
+}
+
+# Control Plane Logging
+
+resource "aws_kms_key" "logging_kms_key" {
+  count                   = var.enable_cp_logging && var.cloudwatch_key_id == null ? 1 : 0
+  description             = "A kms key for eks cluster cloudwatch log group"
+  deletion_window_in_days = var.deletion_window_in_days
+  policy                  = local.kms_policy
+  enable_key_rotation     = var.enable_key_rotation
+  tags                    = var.tags
+}
+
+resource "aws_kms_alias" "logging_kms_key" {
+  count         = var.enable_cp_logging && var.cloudwatch_key_id == null ? 1 : 0
+  name          = "alias/${var.cluster_name}-cloudwatch-key"
+  target_key_id = aws_kms_key.logging_kms_key[0].key_id
+}
+
+
+resource "aws_cloudwatch_log_group" "main" {
+  # The log group name format is /aws/eks/<cluster-name>/cluster
+  # Reference: https://docs.aws.amazon.com/eks/latest/userguide/control-plane-logs.html
+  count             = var.enable_cp_logging ? 1 : 0
+  name              = "/aws/eks/${var.cluster_name}/cluster"
+  retention_in_days = var.log_group_retention_days
+  kms_key_id        = var.cloudwatch_key_id != null ? var.cloudwatch_key_id : aws_kms_key.logging_kms_key[0].arn
+}
+
+# eks addon
 resource "aws_eks_addon" "main" {
-  count                    = var.create_eks_addon ? 1 : 0
+  for_each                 = var.eks_addons
   cluster_name             = aws_eks_cluster.main.name
-  addon_name               = var.addon_name
-  addon_version            = var.addon_version
-  resolve_conflicts        = var.resolve_conflicts
-  tags                     = var.tags
-  service_account_role_arn = var.service_account_role_arn
-}
+  addon_name               = lookup(each.value, "addon_name", null)
+  addon_version            = lookup(each.value, "addon_version", null)
+  resolve_conflicts        = lookup(each.value, "resolve_conflicts", null)
+  tags                     = lookup(each.value, "tags", null)
+  service_account_role_arn = lookup(each.value, "service_account_role_arn", null)
 
-/*
-eks node group
-*/
-
-resource "aws_eks_node_group" "main" {
-  count                  = var.create_eks_node_group ? 1 : 0
-  cluster_name           = aws_eks_cluster.main.name
-  node_role_arn          = var.node_role_arn
-  subnet_ids             = var.node_group_subnet_ids
-  ami_type               = var.ami_type
-  capacity_type          = var.capacity_type
-  disk_size              = var.disk_size
-  force_update_version   = var.force_update_version
-  instance_types         = var.instance_types
-  labels                 = var.labels
-  node_group_name        = var.node_group_name_prefix != null ? null : var.node_group_name
-  node_group_name_prefix = var.node_group_name != null ? null : var.node_group_name_prefix
-  release_version        = var.release_version
-  tags                   = var.tags
-  version                = var.kubernetes_version
-
-  dynamic "scaling_config" {
-    for_each = var.scaling_config
-    content {
-      desired_size = scaling_config.value.desired_size
-      max_size     = scaling_config.value.max_size
-      min_size     = scaling_config.value.min_size
-    }
-  }
-
-  dynamic "update_config" {
-    for_each = var.update_config
-    content {
-      max_unavailable            = lookup(update_config.value, "max_unavailable", null)
-      max_unavailable_percentage = lookup(update_config.value, "max_unavailable_percentage", null)
-    }
-  }
-
-  dynamic "launch_template" {
-    for_each = var.launch_template
-    content {
-      #use ONLY EITHER `id` or `name`
-      id      = lookup(launch_template.value, "id", null)
-      name    = lookup(launch_template.value, "name", null)
-      version = launch_template.value.version
-    }
-  }
-
-  dynamic "remote_access" {
-    for_each = var.remote_access
-    content {
-      ec2_ssh_key               = lookup(remote_access.value, "ec2_ssh_key", null)
-      source_security_group_ids = lookup(remote_access.value, "source_security_group_ids", [])
-    }
-  }
-
-  dynamic "taint" {
-    for_each = var.taint
-    content {
-      key    = taint.value.key
-      value  = lookup(taint.value, "value", null)
-      effect = taint.value.effect
-    }
-  }
-
-  timeouts {
-    create = lookup(var.timeouts, "create", "60m")
-    update = lookup(var.timeouts, "update", "60m")
-    delete = lookup(var.timeouts, "delete", "60m")
+  lifecycle {
+    ignore_changes = [
+      modified_at
+    ]
   }
 }
 
-/*
-eks fargate profile
-*/
-
-resource "aws_eks_fargate_profile" "main" {
-  count                  = var.create_eks_fargate_profile ? 1 : 0
-  cluster_name           = aws_eks_cluster.main.name
-  fargate_profile_name   = var.fargate_profile_name
-  pod_execution_role_arn = var.pod_execution_role_arn
-  subnet_ids             = var.fargate_profile_subnet_ids
-  tags                   = var.tags
-
-  dynamic "selector" {
-    for_each = var.selector
-    content {
-      namespace = selector.value.namespace
-      labels    = lookup(selector.value, "labels", {})
-    }
-  }
-}
-
-/*
-aws_eks_identity_provider_config: Manages an EKS Identity Provider Configuration.
-*/
-
+# aws_eks_identity_provider_config: Manages an EKS Identity Provider Configuration.
 resource "aws_eks_identity_provider_config" "main" {
-  count        = var.create_eks_identity_provider_config ? 1 : 0
+  for_each     = var.identity_providers
   cluster_name = aws_eks_cluster.main.name
-  tags         = var.tags
 
-  dynamic "oidc" {
-    for_each = var.oidc
-    content {
-      client_id                     = oidc.value.client_id
-      groups_claim                  = lookup(oidc.value, "groups_claim", null)
-      groups_prefix                 = lookup(oidc.value, "groups_prefix", null)
-      identity_provider_config_name = oidc.value.identity_provider_config_name
-      issuer_url                    = oidc.value.issuer_url
-      required_claims               = lookup(oidc.value, "required_claims", null)
-      username_claim                = lookup(oidc.value, "username_claim", null)
-      username_prefix               = lookup(oidc.value, "username_prefix", null)
-    }
+  oidc {
+    client_id                     = each.value.client_id
+    groups_claim                  = lookup(each.value, "groups_claim", null)
+    groups_prefix                 = lookup(each.value, "groups_prefix", null)
+    identity_provider_config_name = try(each.value.identity_provider_config_name, each.key)
+    issuer_url                    = each.value.issuer_url
+    required_claims               = lookup(each.value, "required_claims", null)
+    username_claim                = lookup(each.value, "username_claim", null)
+    username_prefix               = lookup(each.value, "username_prefix", null)
   }
+
+  tags = var.tags
 
   timeouts {
     create = lookup(var.timeouts, "create", "40m")
     delete = lookup(var.timeouts, "delete", "40m")
   }
+}
+
+# aws-auth configmap
+resource "kubernetes_config_map" "aws_auth" {
+  count = var.include_aws_auth_configmap ? 1 : 0
+  metadata {
+    name      = "aws-auth"
+    namespace = "kube-system"
+  }
+
+  data = local.aws_auth_configmap_data
+
+  lifecycle {
+    ignore_changes = [data]
+  }
+}
+
+resource "kubernetes_config_map_v1_data" "aws_auth" {
+  count = var.include_aws_auth_configmap ? 1 : 0
+  force = true
+
+  metadata {
+    name      = "aws-auth"
+    namespace = "kube-system"
+  }
+
+  data = local.aws_auth_configmap_data
+
+  depends_on = [
+    kubernetes_config_map.aws_auth,
+  ]
+}
+
+# Security group
+resource "aws_security_group" "eks_cluster" {
+  name        = "${var.cluster_name}-security-group"
+  vpc_id      = var.vpc_id
+  description = "EKS cluster Security Group"
+  tags        = var.tags
+}
+
+resource "aws_security_group_rule" "ingress" {
+  for_each          = var.ingress_rules
+  type              = "ingress"
+  description       = "Allow custom inbound traffic from specific ports."
+  from_port         = lookup(each.value, "from_port")
+  to_port           = lookup(each.value, "to_port")
+  protocol          = lookup(each.value, "to_port")
+  cidr_blocks       = lookup(each.value, "cidr_blocks", null)
+  security_group_id = aws_security_group.eks_cluster.id
+}
+
+module "node_group" {
+  for_each                      = var.node_groups
+  source                        = "./modules/managed-node-group"
+  create_eks_managed_node_group = try(each.value.create, false)
+  cluster_name                  = aws_eks_cluster.main.name
+  desired_size                  = each.value.desired_size
+  max_size                      = each.value.max_size
+  min_size                      = each.value.min_size
+  node_group_subnet_ids         = each.value.subnet_ids
+  ami_type                      = lookup(each.value, "ami_type", null)
+  capacity_type                 = lookup(each.value, "capacity_type", null)
+  disk_size                     = lookup(each.value, "disk_size", null)
+  force_update_version          = lookup(each.value, "force_update_version", false)
+  instance_types                = lookup(each.value, "instance_types", ["t3.medium"])
+  labels                        = lookup(each.value, "labels", {})
+  launch_template               = lookup(each.value, "launch_template", {})
+  node_group_name               = lookup(each.value, "node_group_name", null)
+  node_group_name_prefix        = lookup(each.value, "node_group_name_prefix", null)
+  release_version               = lookup(each.value, "release_version", null)
+  remote_access                 = lookup(each.value, "remote_access", {})
+  tags                          = lookup(each.value, "tags", {})
+  taint                         = lookup(each.value, "taint", {})
+  kubernetes_version            = lookup(each.value, "kubernetes_version", null)
 }
