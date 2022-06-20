@@ -2,7 +2,7 @@
 
 [<img src="https://avatars.githubusercontent.com/u/25388280?s=200&v=4" width="96"/>](https://boldlink.io)
 
-# Terraform  module example of complete and most common configuration
+# Terraform  module example of Fargate profile
 
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
@@ -24,8 +24,8 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_complete_eks_cluster"></a> [complete\_eks\_cluster](#module\_complete\_eks\_cluster) | ./../../ | n/a |
 | <a name="module_eks_vpc"></a> [eks\_vpc](#module\_eks\_vpc) | git::https://github.com/boldlink/terraform-aws-vpc.git | 2.0.3 |
+| <a name="module_fargate_profile"></a> [fargate\_profile](#module\_fargate\_profile) | ./../../ | n/a |
 
 ## Resources
 

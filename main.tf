@@ -217,3 +217,15 @@ module "node_group" {
   taint                         = lookup(each.value, "taint", {})
   kubernetes_version            = lookup(each.value, "kubernetes_version", null)
 }
+
+module "fargate_profile" {
+  for_each                   = var.fargate_profiles
+  source                     = "./modules/fargate-profile"
+  create_fargate_profile     = try(each.value.create, false)
+  cluster_name               = aws_eks_cluster.main.name
+  fargate_profile_name       = try(each.value.fargate_profile_name, each.key)
+  fargate_profile_subnet_ids = each.value.subnet_ids
+  tags                       = lookup(each.value, "tags", {})
+  selector                   = try(each.value.selector, [])
+  timeouts                   = lookup(each.value, "timeouts", {})
+}
