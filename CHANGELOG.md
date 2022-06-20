@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - EKS add-ons tests
 - ...
 
-## [2.1.0] - 2022-06-27
+## [2.1.0] - 2022-06-20
 ### Description
 - Feature: Fargate-profile node-group
 - Added: tags to all examples
