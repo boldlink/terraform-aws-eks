@@ -8,7 +8,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - config map testing
 - self-managed node-group
 - EKS add-ons tests
-- ...
 
 ## [2.1.0] - 2022-06-20
 ### Description
