@@ -4,6 +4,10 @@ module "minimum_eks_cluster" {
   enabled_cluster_log_types = ["api", "authenticator", "audit", "scheduler", "controllerManager"]
   cluster_name              = local.cluster_name
   cluster_subnet_ids        = flatten(module.eks_vpc.public_eks_subnet_id)
+  tags = {
+    environment        = "examples"
+    "user::CostCenter" = "terraform-registry"
+  }
 }
 
 module "eks_vpc" {

@@ -150,6 +150,12 @@ variable "node_groups" {
   default     = {}
 }
 
+variable "fargate_profiles" {
+  type        = any
+  description = "Map of EKS Fargate Profile definitions to create"
+  default     = {}
+}
+
 # KMS
 variable "deletion_window_in_days" {
   description = "(Optional) The waiting period, specified in number of days. After the waiting period ends, AWS KMS deletes the KMS key. If you specify a value, it must be between 7 and 30, inclusive. If you do not specify a value, it defaults to 30."

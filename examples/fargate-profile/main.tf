@@ -10,30 +10,34 @@ module "eks_vpc" {
   enable_dns_support   = true
   enable_dns_hostnames = true
 
-  ## EKS Subnets
-  eks_public_subnets      = local.eks_public_subnets
-  availability_zones      = local.azs
-  map_public_ip_on_launch = true
+  ## Fargate Subnets
+  private_subnets    = local.fargate_private_subnets
+  availability_zones = local.azs
 }
 
-module "complete_eks_cluster" {
+module "fargate_profile" {
   source                    = "./../../"
   enabled_cluster_log_types = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
   cluster_name              = local.cluster_name
-  cluster_subnet_ids        = flatten(module.eks_vpc.public_eks_subnet_id)
+  cluster_subnet_ids        = flatten(module.eks_vpc.private_subnet_id)
   vpc_id                    = module.eks_vpc.id
   tags = {
     environment        = "examples"
     "user::CostCenter" = "terraform-registry"
   }
-  node_groups = {
-    managed = {
-      create       = true
-      subnet_ids   = flatten(module.eks_vpc.public_eks_subnet_id)
-      disk_size    = 30
-      desired_size = 2
-      max_size     = 3
-      min_size     = 1
+  fargate_profiles = {
+    default = {
+      create               = true
+      fargate_profile_name = "${local.cluster_name}-default"
+      subnet_ids           = flatten(module.eks_vpc.private_subnet_id)
+      selector = [
+        {
+          namespace = "default"
+          labels = {
+            "app.kubernetes.io/name" = "app"
+          }
+        }
+      ]
       tags = {
         environment        = "examples"
         "user::CostCenter" = "terraform-registry"
