@@ -12,6 +12,7 @@ module "eks_vpc" {
 
   ## EKS Subnets
   eks_public_subnets      = local.eks_public_subnets
+  eks_private_subnets     = local.eks_private_subnets
   availability_zones      = local.azs
   map_public_ip_on_launch = true
 }
@@ -25,9 +26,17 @@ module "complete_eks_cluster" {
   node_groups = {
     managed = {
       create       = true
-      subnet_ids   = flatten(module.eks_vpc.public_eks_subnet_id)
+      subnet_ids   = flatten(module.eks_vpc.private_eks_subnet_id)
       disk_size    = 30
-      desired_size = 2
+      desired_size = 1
+      max_size     = 3
+      min_size     = 1
+    }
+    managed_eks = {
+      create       = true
+      subnet_ids   = flatten(module.eks_vpc.private_eks_subnet_id)
+      disk_size    = 30
+      desired_size = 1
       max_size     = 3
       min_size     = 1
     }

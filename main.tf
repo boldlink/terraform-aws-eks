@@ -24,11 +24,8 @@ resource "aws_eks_cluster" "main" {
   dynamic "encryption_config" {
     for_each = var.encryption_config
     content {
-      dynamic "provider" {
-        for_each = lookup(encryption_config.value, "provider")
-        content {
-          key_arn = lookup(provider.value.key_arn, aws_kms_key.secrets_kms_key[0].arn)
-        }
+      provider {
+        key_arn = try(encryption_config.value, aws_kms_key.secrets_kms_key[0].arn)
       }
       resources = ["secrets"]
     }
