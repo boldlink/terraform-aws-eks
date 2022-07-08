@@ -22,9 +22,9 @@ module "complete_eks_cluster" {
   cluster_name              = local.cluster_name
   cluster_subnet_ids        = flatten(module.eks_vpc.public_eks_subnet_id)
   vpc_id                    = module.eks_vpc.id
-  /*encryption_config = {
-    key_arn = aws_kms_key.cluster_secrets.arn
-  }*/
+  encryption_config = {
+    key_arn = module.kms_key.arn
+  }
   tags = {
     environment        = "examples"
     "user::CostCenter" = "terraform-registry"
