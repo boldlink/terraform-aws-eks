@@ -9,7 +9,7 @@ resource "aws_eks_cluster" "main" {
     endpoint_private_access = var.endpoint_private_access
     endpoint_public_access  = var.endpoint_public_access
     public_access_cidrs     = var.public_access_cidrs
-    security_group_ids      = [(join(aws_security_group.eks_cluster.id, var.security_group_ids))]
+    security_group_ids      = concat(compact([(join(aws_security_group.eks_cluster.id, var.security_group_ids))]))
     subnet_ids              = var.cluster_subnet_ids
   }
 
@@ -22,13 +22,10 @@ resource "aws_eks_cluster" "main" {
   }
 
   dynamic "encryption_config" {
-    for_each = var.encryption_config
+    for_each = [var.encryption_config]
     content {
-      dynamic "provider" {
-        for_each = lookup(encryption_config.value, "provider")
-        content {
-          key_arn = lookup(provider.value.key_arn, aws_kms_key.secrets_kms_key[0].arn)
-        }
+      provider {
+        key_arn = try(encryption_config.value.key_arn, aws_kms_key.secrets_kms_key[0].arn)
       }
       resources = ["secrets"]
     }
@@ -44,7 +41,7 @@ resource "aws_eks_cluster" "main" {
 }
 
 resource "aws_kms_key" "secrets_kms_key" {
-  count                   = var.encryption_config == null ? 1 : 0
+  count                   = length(keys(var.encryption_config)) == 0 ? 1 : 0
   description             = "A kms key for eks cluster secrets"
   deletion_window_in_days = var.deletion_window_in_days
   policy                  = local.kms_policy
@@ -53,7 +50,7 @@ resource "aws_kms_key" "secrets_kms_key" {
 }
 
 resource "aws_kms_alias" "secrets_kms_key" {
-  count         = var.encryption_config == null ? 1 : 0
+  count         = length(keys(var.encryption_config)) == 0 ? 1 : 0
   name          = "alias/${var.cluster_name}-secrets"
   target_key_id = aws_kms_key.secrets_kms_key[0].key_id
 }

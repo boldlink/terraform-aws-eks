@@ -5,9 +5,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
-- config map testing
-- self-managed node-group
-- EKS add-ons tests
+- feat: Add more configuration to the complete example
+- feat: Add self-managed node-group
+- feat: Add EKS add-ons tests
+
+## [2.1.1] - 2022-07-06
+### Description
+ - fix: Encryption configuration
+ - fix:security groups argument
 
 ## [2.1.0] - 2022-06-20
 ### Description
@@ -30,7 +35,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Cluster only example
 - Cluster logging
 
-[Unreleased]: https://github.com/boldlink/terraform-aws-eks/compare/2.0.1...HEAD
+[Unreleased]: https://github.com/boldlink/terraform-aws-eks/compare/2.1.1...HEAD
+
+[2.1.1]: https://github.com/boldlink/terraform-aws-eks/releases/tag/2.1.1
 
 [2.1.0]: https://github.com/boldlink/terraform-aws-eks/releases/tag/2.1.0
 
