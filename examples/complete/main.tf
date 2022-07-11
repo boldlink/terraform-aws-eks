@@ -22,6 +22,9 @@ module "complete_eks_cluster" {
   cluster_name              = local.cluster_name
   cluster_subnet_ids        = flatten(module.eks_vpc.public_eks_subnet_id)
   vpc_id                    = module.eks_vpc.id
+  encryption_config = {
+    key_arn = module.kms_key.arn
+  }
   tags = {
     environment        = "examples"
     "user::CostCenter" = "terraform-registry"
@@ -39,5 +42,17 @@ module "complete_eks_cluster" {
         "user::CostCenter" = "terraform-registry"
       }
     }
+  }
+}
+
+module "kms_key" {
+  source           = "boldlink/kms/aws"
+  description      = "kms key for ${local.cluster_name} secrets"
+  create_kms_alias = true
+  alias_name       = "alias/${local.cluster_name}-key-alias"
+
+  tags = {
+    environment = "dev"
+    name        = local.cluster_name
   }
 }

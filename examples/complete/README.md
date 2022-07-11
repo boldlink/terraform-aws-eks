@@ -18,7 +18,7 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.19.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.22.0 |
 
 ## Modules
 
@@ -26,6 +26,7 @@
 |------|--------|---------|
 | <a name="module_complete_eks_cluster"></a> [complete\_eks\_cluster](#module\_complete\_eks\_cluster) | ./../../ | n/a |
 | <a name="module_eks_vpc"></a> [eks\_vpc](#module\_eks\_vpc) | git::https://github.com/boldlink/terraform-aws-vpc.git | 2.0.3 |
+| <a name="module_kms_key"></a> [kms\_key](#module\_kms\_key) | boldlink/kms/aws | n/a |
 
 ## Resources
 
