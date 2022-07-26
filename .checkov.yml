@@ -1,0 +1,2 @@
+skip-check:
+- CKV_AWS_37 # "Ensure Amazon EKS control plane logging enabled for all log types"

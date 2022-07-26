@@ -13,25 +13,13 @@ Example available [here](https://github.com/boldlink/terraform-aws-eks/tree/main
 *NOTE*: These examples use the latest version of this module
 
 ```console
-
 module "minimum_eks_cluster" {
-  source                    = "./../../"
+  source                    = "boldlink/eks/aws"
   enabled_cluster_log_types = ["api", "authenticator", "audit", "scheduler", "controllerManager"]
   cluster_name              = local.cluster_name
-  cluster_subnet_ids        = flatten(module.eks_vpc.public_eks_subnet_id)
+  cluster_subnet_ids        = local.public_subnets
+  tags                      = local.tags
 }
-
-module "eks_vpc" {
-  source             = "boldlink/vpc/aws"
-  name               = "${local.cluster_name}-vpc"
-  account            = data.aws_caller_identity.current.account_id
-  region             = data.aws_region.current.name
-  tag_env            = local.tag_env
-  cidr_block         = local.cidr_block
-  eks_public_subnets = local.eks_public_subnets
-  availability_zones = local.azs
-}
-
 ```
 
 ## Documentation
@@ -48,13 +36,15 @@ module "eks_vpc" {
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.14.11 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | >=4.15.1 |
 | <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | >= 2.10 |
+| <a name="requirement_tls"></a> [tls](#requirement\_tls) | >= 3.4.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.22.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.23.0 |
 | <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | 2.12.1 |
+| <a name="provider_tls"></a> [tls](#provider\_tls) | 4.0.1 |
 
 ## Modules
 
@@ -71,6 +61,7 @@ module "eks_vpc" {
 | [aws_eks_addon.main](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eks_addon) | resource |
 | [aws_eks_cluster.main](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eks_cluster) | resource |
 | [aws_eks_identity_provider_config.main](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eks_identity_provider_config) | resource |
+| [aws_iam_openid_connect_provider.irsa](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_openid_connect_provider) | resource |
 | [aws_iam_role.ekscluster](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
 | [aws_iam_role_policy_attachment.amazoneksclusterpolicy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.amazoneksvpccontroller](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
@@ -84,7 +75,9 @@ module "eks_vpc" {
 | [kubernetes_config_map_v1_data.aws_auth](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/config_map_v1_data) | resource |
 | [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
 | [aws_iam_policy_document.eks_cluster_assume_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
+| [aws_partition.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/partition) | data source |
 | [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |
+| [tls_certificate.irsa](https://registry.terraform.io/providers/hashicorp/tls/latest/docs/data-sources/certificate) | data source |
 
 ## Inputs
 
@@ -100,19 +93,22 @@ module "eks_vpc" {
 | <a name="input_deletion_window_in_days"></a> [deletion\_window\_in\_days](#input\_deletion\_window\_in\_days) | (Optional) The waiting period, specified in number of days. After the waiting period ends, AWS KMS deletes the KMS key. If you specify a value, it must be between 7 and 30, inclusive. If you do not specify a value, it defaults to 30. | `number` | `30` | no |
 | <a name="input_eks_addons"></a> [eks\_addons](#input\_eks\_addons) | EKS Addons resource block | `any` | `{}` | no |
 | <a name="input_enable_cp_logging"></a> [enable\_cp\_logging](#input\_enable\_cp\_logging) | Determine whether to enable control plane logging | `bool` | `true` | no |
+| <a name="input_enable_fargate_node_groups"></a> [enable\_fargate\_node\_groups](#input\_enable\_fargate\_node\_groups) | Set this variable to true to create your fargate node groups | `bool` | `false` | no |
+| <a name="input_enable_irsa"></a> [enable\_irsa](#input\_enable\_irsa) | Enable Open Identity connect support for AWS IAM Roles | `bool` | `false` | no |
 | <a name="input_enable_key_rotation"></a> [enable\_key\_rotation](#input\_enable\_key\_rotation) | (Optional) Specifies whether key rotation is enabled. Defaults to false. | `bool` | `true` | no |
+| <a name="input_enable_managed_node_groups"></a> [enable\_managed\_node\_groups](#input\_enable\_managed\_node\_groups) | Set this variable to true to create your managed node groups | `bool` | `false` | no |
 | <a name="input_enabled_cluster_log_types"></a> [enabled\_cluster\_log\_types](#input\_enabled\_cluster\_log\_types) | (Optional) List of the desired control plane logging to enable. | `list(string)` | `[]` | no |
 | <a name="input_encryption_config"></a> [encryption\_config](#input\_encryption\_config) | (Optional) Configuration block with encryption configuration for the cluster. Only available on Kubernetes 1.13 and above clusters created after March 6, 2020. | `map(string)` | `{}` | no |
 | <a name="input_endpoint_private_access"></a> [endpoint\_private\_access](#input\_endpoint\_private\_access) | (Optional) Whether the Amazon EKS private API server endpoint is enabled. Default is `false`. | `bool` | `true` | no |
 | <a name="input_endpoint_public_access"></a> [endpoint\_public\_access](#input\_endpoint\_public\_access) | (Optional) Whether the Amazon EKS public API server endpoint is enabled. Default is `true`. | `bool` | `false` | no |
-| <a name="input_fargate_profiles"></a> [fargate\_profiles](#input\_fargate\_profiles) | Map of EKS Fargate Profile definitions to create | `any` | `{}` | no |
+| <a name="input_fargate_node_groups"></a> [fargate\_node\_groups](#input\_fargate\_node\_groups) | Map of EKS fargate node group definitions to create | `any` | `{}` | no |
 | <a name="input_identity_providers"></a> [identity\_providers](#input\_identity\_providers) | Identity providers resources block | `any` | `{}` | no |
 | <a name="input_include_aws_auth_configmap"></a> [include\_aws\_auth\_configmap](#input\_include\_aws\_auth\_configmap) | Choose whether to include the aws-auth configmap | `bool` | `false` | no |
 | <a name="input_ingress_rules"></a> [ingress\_rules](#input\_ingress\_rules) | (Optional) Ingress rules to add to the security group | `any` | `{}` | no |
 | <a name="input_kubernetes_master_version"></a> [kubernetes\_master\_version](#input\_kubernetes\_master\_version) | (Optional) Desired Kubernetes master version. If you do not specify a value, the latest available version at resource creation is used and no upgrades will occur except those automatically triggered by EKS. The value must be configured and increased to upgrade the version when desired. Downgrades are not supported by EKS. | `string` | `null` | no |
 | <a name="input_kubernetes_network_config"></a> [kubernetes\_network\_config](#input\_kubernetes\_network\_config) | (Optional) Configuration block with kubernetes network configuration for the cluster. | `map(string)` | `{}` | no |
 | <a name="input_log_group_retention_days"></a> [log\_group\_retention\_days](#input\_log\_group\_retention\_days) | Number of days the log group is retained before it is deleted | `number` | `7` | no |
-| <a name="input_node_groups"></a> [node\_groups](#input\_node\_groups) | Map of EKS managed node group definitions to create | `any` | `{}` | no |
+| <a name="input_managed_node_groups"></a> [managed\_node\_groups](#input\_managed\_node\_groups) | Map of EKS managed node group definitions to create | `any` | `{}` | no |
 | <a name="input_public_access_cidrs"></a> [public\_access\_cidrs](#input\_public\_access\_cidrs) | (Optional) List of CIDR blocks. Indicates which CIDR blocks can access the Amazon EKS public API server endpoint when enabled. EKS defaults this to a list with 0.0.0.0/0. Terraform will only perform drift detection of its value when present in a configuration. | `list(string)` | <pre>[<br>  "0.0.0.0/0"<br>]</pre> | no |
 | <a name="input_security_group_ids"></a> [security\_group\_ids](#input\_security\_group\_ids) | (Optional) List of security group IDs for the cross-account elastic network interfaces that Amazon EKS creates to use to allow communication between your worker nodes and the Kubernetes control plane. | `list(string)` | `[]` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | (Optional) Key-value map of resource tags. If configured with a provider [`default_tags` configuration block](https://www.terraform.io../docs?_ga=2.83681619.418379771.1647510647-1464713173.1641542419#default_tags-configuration-block) present, tags with matching keys will overwrite those defined at the provider-level. | `map(string)` | `{}` | no |
@@ -158,11 +154,34 @@ This repository uses third party software:
   * Install with `brew install tflint`
   * Manually use via pre-commit
 
+### Supporting resources:
+
+The example stacks are used by BOLDLink developers to validate the modules by building an actual stack on AWS.
+
+Some of the modules have dependencies on other modules (ex. Ec2 instance depends on the VPC module) so we create them
+first and use data sources on the examples to use the stacks.
+
+Any supporting resources will be available on the `tests/supportingResources` and the lifecycle is managed by the `Makefile` targets.
+
+Resources on the `test/supportingResources` folder are not intended for demo or actual implementation purposes, and can be used for reference.
+
 ### Makefile
 The makefile contain in this repo is optimised for linux paths and the main purpose is to execute testing for now.
-* Create all tests:
-`$ make tests`
-* Clean all tests:
-`$ make clean`
+* Create all tests stacks including any supporting resources:
+```console
+make tests
+```
+* Clean all tests *except* existing supporting resources:
+```console
+make clean
+```
+* Clean supporting resources - this is done seperatly so you can test your module build/modify/destroy independatly.
+```console
+make cleansupporting
+```
+* !!!DANGER!!! Clean the state files from examples and test/supportingResources - use with CAUTION!!!
+```console
+make cleanstatefiles
+```
 
 #### BOLDLink-SIG 2022

@@ -6,9 +6,35 @@
 
 <Description>
 
-This terraform sub-module automate the provisioning and lifecycle management of nodes (Amazon EC2 instances) for Amazon EKS Kubernetes clusters.
+This terraform sub-module adds a managed eks node group.
 
-Examples available [`here`](github.com/boldlink/terraform-aws-eks/tree/main/examples)
+```console
+module "node_group" {
+  source                 = "boldlink/eks/aws//modules/managed-node-group"
+  cluster_name           = var.cluster_name
+  create_key_pair        = var.create_key_pair
+  desired_size           = var.desired_size
+  max_size               = var.max_size
+  min_size               = var.min_size
+  update_config          = var.update_config
+  node_group_subnet_ids  = var.node_group_subnet_ids
+  ami_type               = var.ami_type
+  capacity_type          = capacity_type
+  disk_size              = var.disk_size
+  force_update_version   = var.force_update_version
+  instance_types         = var.instance_types
+  labels                 = var.labels
+  launch_template        = var.launch_template
+  node_group_name        = var.node_group_name
+  node_group_name_prefix = var.node_group_name_prefix
+  release_version        = var.release_version
+  remote_access          = var.remote_access
+  tags                   = var.tags
+  taint                  = var.taint
+  kubernetes_version     = var.kubernetes_version
+  timeouts               = var.timeouts
+}
+```
 
 ## Documentation
 
@@ -30,9 +56,9 @@ Examples available [`here`](github.com/boldlink/terraform-aws-eks/tree/main/exam
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.22.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.23.0 |
 | <a name="provider_null"></a> [null](#provider\_null) | 3.1.1 |
-| <a name="provider_tls"></a> [tls](#provider\_tls) | 3.4.0 |
+| <a name="provider_tls"></a> [tls](#provider\_tls) | 4.0.1 |
 
 ## Modules
 
@@ -55,23 +81,22 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_ami_type"></a> [ami\_type](#input\_ami\_type) | (Optional) Type of Amazon Machine Image (AMI) associated with the EKS Node Group. | `string` | `null` | no |
-| <a name="input_capacity_type"></a> [capacity\_type](#input\_capacity\_type) | (Optional) Type of capacity associated with the EKS Node Group. Valid values: `ON_DEMAND`, `SPOT`. | `string` | `null` | no |
-| <a name="input_cluster_name"></a> [cluster\_name](#input\_cluster\_name) | Name of the cluster. Must be between 1-100 characters in length. Must begin with an alphanumeric character, and must only contain alphanumeric characters, dashes and underscores (`\^[0-9A-Za-z][A-Za-z0-9-_]+$`). | `string` | `null` | no |
-| <a name="input_create_eks_managed_node_group"></a> [create\_eks\_managed\_node\_group](#input\_create\_eks\_managed\_node\_group) | Specify whether to create node group or not | `bool` | `false` | no |
-| <a name="input_create_key_pair"></a> [create\_key\_pair](#input\_create\_key\_pair) | Whether or not to create a key pair | `bool` | `true` | no |
+| <a name="input_ami_type"></a> [ami\_type](#input\_ami\_type) | (Optional) Type of Amazon Machine Image (AMI) associated with the EKS Node Group. | `string` | `"BOTTLEROCKET_x86_64"` | no |
+| <a name="input_capacity_type"></a> [capacity\_type](#input\_capacity\_type) | (Optional) Type of capacity associated with the EKS Node Group. Valid values: `ON_DEMAND`, `SPOT`. | `string` | `"ON_DEMAND"` | no |
+| <a name="input_cluster_name"></a> [cluster\_name](#input\_cluster\_name) | Name of the cluster. Must be between 1-100 characters in length. Must begin with an alphanumeric character, and must only contain alphanumeric characters, dashes and underscores (`\^[0-9A-Za-z][A-Za-z0-9-_]+$`). | `string` | n/a | yes |
+| <a name="input_create_key_pair"></a> [create\_key\_pair](#input\_create\_key\_pair) | Whether or not to create a key pair | `bool` | `false` | no |
 | <a name="input_desired_size"></a> [desired\_size](#input\_desired\_size) | (Required) Desired number of worker nodes. | `number` | `1` | no |
-| <a name="input_disk_size"></a> [disk\_size](#input\_disk\_size) | (Optional) Disk size in GiB for worker nodes. Defaults to 20. Terraform will only perform drift detection if a configuration value is provided. | `number` | `null` | no |
+| <a name="input_disk_size"></a> [disk\_size](#input\_disk\_size) | (Optional) Disk size in GiB for worker nodes. Defaults to 20. | `number` | `null` | no |
 | <a name="input_force_update_version"></a> [force\_update\_version](#input\_force\_update\_version) | (Optional) Force version update if existing pods are unable to be drained due to a pod disruption budget issue. | `bool` | `false` | no |
 | <a name="input_instance_types"></a> [instance\_types](#input\_instance\_types) | (Optional) List of instance types associated with the EKS Node Group. Defaults to `[t3.medium]`. | `list(string)` | <pre>[<br>  "t3.medium"<br>]</pre> | no |
 | <a name="input_kubernetes_version"></a> [kubernetes\_version](#input\_kubernetes\_version) | (Optional) Kubernetes version. Defaults to EKS Cluster Kubernetes version. Terraform will only perform drift detection if a configuration value is provided. | `string` | `null` | no |
 | <a name="input_labels"></a> [labels](#input\_labels) | (Optional) Key-value map of Kubernetes labels. Only labels that are applied with the EKS API are managed by this argument. Other Kubernetes labels applied to the EKS Node Group will not be managed. | `map(string)` | `{}` | no |
 | <a name="input_launch_template"></a> [launch\_template](#input\_launch\_template) | (Optional) Configuration block with Launch Template settings. | `map(string)` | `{}` | no |
-| <a name="input_max_size"></a> [max\_size](#input\_max\_size) | (Required) Maximum number of worker nodes. | `number` | `4` | no |
+| <a name="input_max_size"></a> [max\_size](#input\_max\_size) | (Required) Maximum number of worker nodes, recommend multiples of 3. | `number` | `3` | no |
 | <a name="input_min_size"></a> [min\_size](#input\_min\_size) | (Required) Minimum number of worker nodes. | `number` | `1` | no |
 | <a name="input_node_group_name"></a> [node\_group\_name](#input\_node\_group\_name) | (Optional) Name of the EKS Node Group. If omitted, Terraform will assign a random, unique name. Conflicts with `node_group_name_prefix`. | `string` | `null` | no |
 | <a name="input_node_group_name_prefix"></a> [node\_group\_name\_prefix](#input\_node\_group\_name\_prefix) | (Optional) Creates a unique name beginning with the specified prefix. Conflicts with `node_group_name`. | `string` | `null` | no |
-| <a name="input_node_group_subnet_ids"></a> [node\_group\_subnet\_ids](#input\_node\_group\_subnet\_ids) | (Required) Identifiers of EC2 Subnets to associate with the EKS Node Group. These subnets must have the following resource tag: `kubernetes.io/cluster/CLUSTER_NAME` (where `CLUSTER_NAME` is replaced with the name of the EKS Cluster). | `list(string)` | `[]` | no |
+| <a name="input_node_group_subnet_ids"></a> [node\_group\_subnet\_ids](#input\_node\_group\_subnet\_ids) | (Required) Identifiers of EC2 Subnets to associate with the EKS Node Group. These subnets must have the following resource tag: `kubernetes.io/cluster/CLUSTER_NAME` (where `CLUSTER_NAME` is replaced with the name of the EKS Cluster). | `list(string)` | n/a | yes |
 | <a name="input_release_version"></a> [release\_version](#input\_release\_version) | (Optional) AMI version of the EKS Node Group. Defaults to latest version for Kubernetes version. | `string` | `null` | no |
 | <a name="input_remote_access"></a> [remote\_access](#input\_remote\_access) | (Optional) Configuration block with remote access settings. | `map(string)` | `{}` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | (Optional) Key-value map of resource tags. If configured with a provider [`default_tags` configuration block](https://www.terraform.io../docs?_ga=2.83681619.418379771.1647510647-1464713173.1641542419#default_tags-configuration-block) present, tags with matching keys will overwrite those defined at the provider-level. | `map(string)` | `{}` | no |
