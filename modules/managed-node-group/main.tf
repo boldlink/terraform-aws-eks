@@ -1,6 +1,7 @@
-# eks node group
+/*
+Eks node group
+*/
 resource "aws_eks_node_group" "main" {
-  count                  = var.create_eks_managed_node_group ? 1 : 0
   cluster_name           = var.cluster_name
   node_role_arn          = aws_iam_role.node_group.arn
   subnet_ids             = var.node_group_subnet_ids
@@ -68,8 +69,36 @@ resource "aws_eks_node_group" "main" {
   }
 }
 
+/*
+Key pair
+*/
+resource "tls_private_key" "this" {
+  count     = var.create_key_pair ? 1 : 0
+  algorithm = "RSA"
+  rsa_bits  = 4096
+}
+
+resource "aws_key_pair" "this" {
+  count      = var.create_key_pair ? 1 : 0
+  key_name   = "${var.cluster_name}-keypair"
+  public_key = tls_private_key.this[0].public_key_openssh
+}
+
+/*
+For downloading the keypair to local computer
+*/
+resource "null_resource" "local_save_ec2_keypair" {
+  count = var.create_key_pair ? 1 : 0
+  provisioner "local-exec" {
+    command = "echo '${tls_private_key.this[0].private_key_pem}' > ${path.module}/${aws_key_pair.this[0].id}.pem"
+  }
+}
+
+/*
+AWS IAM Roles for the Node Groups
+*/
 resource "aws_iam_role" "node_group" {
-  name = "${var.cluster_name}-node-group-role"
+  name = substr("${var.cluster_name}-${var.node_group_name}-node-group-role", 0, 64)
   assume_role_policy = jsonencode({
     Statement = [{
       Action = "sts:AssumeRole"
@@ -95,25 +124,4 @@ resource "aws_iam_role_policy_attachment" "amazon_eks_cni_policy" {
 resource "aws_iam_role_policy_attachment" "amazon_ec2_container_registry_readonly" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
   role       = aws_iam_role.node_group.name
-}
-
-# Key pair
-resource "tls_private_key" "this" {
-  count     = var.create_key_pair ? 1 : 0
-  algorithm = "RSA"
-  rsa_bits  = 4096
-}
-
-resource "aws_key_pair" "this" {
-  count      = var.create_key_pair ? 1 : 0
-  key_name   = "${var.cluster_name}-keypair"
-  public_key = tls_private_key.this[0].public_key_openssh
-}
-
-# For downloading the keypair to local computer
-resource "null_resource" "local_save_ec2_keypair" {
-  count = var.create_key_pair ? 1 : 0
-  provisioner "local-exec" {
-    command = "echo '${tls_private_key.this[0].private_key_pem}' > ${path.module}/${aws_key_pair.this[0].id}.pem"
-  }
 }

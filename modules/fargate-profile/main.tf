@@ -1,12 +1,10 @@
 
 resource "aws_eks_fargate_profile" "main" {
-  count                  = var.create_fargate_profile ? 1 : 0
   cluster_name           = var.cluster_name
   fargate_profile_name   = var.fargate_profile_name
   pod_execution_role_arn = aws_iam_role.fargate_profile.arn
   subnet_ids             = var.fargate_profile_subnet_ids
   tags                   = var.tags
-
   dynamic "selector" {
     for_each = var.selector
     content {
@@ -14,7 +12,6 @@ resource "aws_eks_fargate_profile" "main" {
       labels    = lookup(selector.value, "labels", {})
     }
   }
-
   dynamic "timeouts" {
     for_each = [var.timeouts]
     content {
@@ -25,14 +22,13 @@ resource "aws_eks_fargate_profile" "main" {
 }
 
 resource "aws_iam_role" "fargate_profile" {
-  name = "${var.cluster_name}-fargate-profile-role"
-
+  name = substr("${var.cluster_name}-${var.fargate_profile_name}-fargate-profile-role", 0, 64)
   assume_role_policy = jsonencode({
     Statement = [{
       Action = "sts:AssumeRole"
       Effect = "Allow"
       Principal = {
-        Service = "eks-fargate-pods.amazonaws.com"
+        Service = "eks-fargate-pods.${local.dns_suffix}"
       }
     }]
     Version = "2012-10-17"

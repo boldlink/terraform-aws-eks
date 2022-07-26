@@ -1,13 +1,6 @@
 variable "cluster_name" {
   type        = string
   description = "Name of the cluster. Must be between 1-100 characters in length. Must begin with an alphanumeric character, and must only contain alphanumeric characters, dashes and underscores (`\\^[0-9A-Za-z][A-Za-z0-9-_]+$`)."
-  default     = null
-}
-
-variable "create_eks_managed_node_group" {
-  type        = bool
-  description = "Specify whether to create node group or not"
-  default     = false
 }
 
 variable "desired_size" {
@@ -16,9 +9,9 @@ variable "desired_size" {
   default     = 1
 }
 variable "max_size" {
-  description = "(Required) Maximum number of worker nodes."
+  description = "(Required) Maximum number of worker nodes, recommend multiples of 3."
   type        = number
-  default     = 4
+  default     = 3
 }
 variable "min_size" {
   description = "(Required) Minimum number of worker nodes."
@@ -35,24 +28,23 @@ variable "update_config" {
 variable "node_group_subnet_ids" {
   type        = list(string)
   description = "(Required) Identifiers of EC2 Subnets to associate with the EKS Node Group. These subnets must have the following resource tag: `kubernetes.io/cluster/CLUSTER_NAME` (where `CLUSTER_NAME` is replaced with the name of the EKS Cluster)."
-  default     = []
 }
 
 variable "ami_type" {
   type        = string
   description = "(Optional) Type of Amazon Machine Image (AMI) associated with the EKS Node Group."
-  default     = null
+  default     = "BOTTLEROCKET_x86_64"
 }
 
 variable "capacity_type" {
   type        = string
   description = "(Optional) Type of capacity associated with the EKS Node Group. Valid values: `ON_DEMAND`, `SPOT`."
-  default     = null
+  default     = "ON_DEMAND"
 }
 
 variable "disk_size" {
   type        = number
-  description = "(Optional) Disk size in GiB for worker nodes. Defaults to 20. Terraform will only perform drift detection if a configuration value is provided."
+  description = "(Optional) Disk size in GiB for worker nodes. Defaults to 20."
   default     = null
 }
 
@@ -128,9 +120,11 @@ variable "tags" {
   default     = {}
 }
 
-# Key Pair
+/*
+Key Pair
+*/
 variable "create_key_pair" {
   description = "Whether or not to create a key pair"
   type        = bool
-  default     = true
+  default     = false
 }

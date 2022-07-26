@@ -1,5 +1,8 @@
-
 locals {
+  account_id         = data.aws_caller_identity.current.account_id
+  dns_suffix         = data.aws_partition.current.dns_suffix
+  region             = data.aws_region.current.id
+  partition          = data.aws_partition.current.partition
   node_iam_role_arns = var.aws_auth_node_iam_role_arns
   aws_auth_configmap_data = {
     mapRoles = yamlencode(concat(
@@ -17,32 +20,30 @@ locals {
     mapUsers    = yamlencode(var.aws_auth_users)
     mapAccounts = yamlencode(var.aws_auth_accounts)
   }
-  kms_policy = <<EOF
-{
-  "Version" : "2012-10-17",
-  "Id" : "key-default-1",
-  "Statement" : [ {
+  kms_policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Id" : "key-default-1",
+    "Statement" : [{
       "Sid" : "Enable IAM User Permissions",
       "Effect" : "Allow",
       "Principal" : {
-        "AWS" : "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
+        "AWS" : "arn:${local.partition}:iam::${local.account_id}:root"
       },
       "Action" : "kms:*",
       "Resource" : "*"
-    },
-    {
-      "Effect": "Allow",
-      "Principal": { "Service": "logs.${data.aws_region.current.name}.amazonaws.com" },
-      "Action": [
-        "kms:Encrypt*",
-        "kms:Decrypt*",
-        "kms:ReEncrypt*",
-        "kms:GenerateDataKey*",
-        "kms:Describe*"
-      ],
-      "Resource": "*"
-    }
-  ]
-}
-EOF
+      },
+      {
+        "Effect" : "Allow",
+        "Principal" : { "Service" : "logs.${local.region}.${local.dns_suffix}" },
+        "Action" : [
+          "kms:Encrypt*",
+          "kms:Decrypt*",
+          "kms:ReEncrypt*",
+          "kms:GenerateDataKey*",
+          "kms:Describe*"
+        ],
+        "Resource" : "*"
+      }
+    ]
+  })
 }

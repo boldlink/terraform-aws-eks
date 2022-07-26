@@ -9,6 +9,7 @@ on:
       - 'feature/**'
       - 'hotfix/**'
       - 'releases/**'
+      - 'release/**'
 
 env:
   TF_VER: "0.14.11"
