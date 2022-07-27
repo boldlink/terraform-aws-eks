@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 - fix: Ensure all dynamic options both on module and submodules are present in the complete example.
-- fix: Configmap aws-auth doesn't allow adding additional users/groups/roles access beisides the nodes.
+- fix: Configmap aws-auth doesn't allow adding additional users/groups/roles access besides the nodes.
 - fix: CKV_AWS_37: "Ensure Amazon EKS control plane logging enabled for all log types
 - fix: Use only one KMS key per module for secrets cloudwatch, and ebs.
 - feat: Add gp3 kms encryption for ebs volumes attached on the managed and self managed node groups (launch template).
@@ -23,14 +23,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [3.0.0] - 2022-07-26
 ### Description
  - fix: When you specify an external kms key for the cloudwatch log group you get an error.
- - fix: Change the name of EKS iam roles to prevent name lenght limitation erros for managed and fargate sub-modules.
+ - fix: Change the name of EKS iam roles to prevent name length limitation errors for managed and fargate sub-modules.
  - fix: Add missing variables options from node groups provisioning.
  - feat: Make var.cluster_name mandatory for node_groups.
- - feat: Change how the node groups are provisined, allow to add N managed and fargate node groups within the module.
+ - feat: Change how the node groups are provisioned, allow to add N managed and fargate node groups within the module.
  - feat: Change the variable names that enable managed and fargate node groups creation.
  - feat: Set the node_group key_pair creation to false by default.
- - feat: Change the node_group max_size to 3 and add a recomendation in the variable.
- - feat: Make the var.node_group_subnet_ids manadatory for all node goups.
+ - feat: Change the node_group max_size to 3 and add a recommendation in the variable.
+ - feat: Make the var.node_group_subnet_ids mandatory for all node groups.
  - feat: Simplify how values are assigned to the node_group.
  - feat: Update the examples minimum and complete.
  - feat: Add irsa support with true/false option.
@@ -39,7 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - feat: Envelop kms key policy with jsonencode() function.
  - feat: Add .checkov.yml to skip CKV_AWS_37 alert.
  - feat: Add supporting resources (vpc; kms) to be built once and used by all examples to minimize resource duplication during testing.
- - feat: Add supprting resources to makefile.
+ - feat: Add supporting resources to makefile.
  - feat: Allow the makefile to also clean local terraform state files.
  - feat: Move tags to locals.tf on all examples.
  - feat: Add the SECURITY.md file.

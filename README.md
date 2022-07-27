@@ -166,7 +166,7 @@ Any supporting resources will be available on the `tests/supportingResources` an
 Resources on the `test/supportingResources` folder are not intended for demo or actual implementation purposes, and can be used for reference.
 
 ### Makefile
-The makefile contain in this repo is optimised for linux paths and the main purpose is to execute testing for now.
+The makefile contain in this repo is optimized for linux paths and the main purpose is to execute testing for now.
 * Create all tests stacks including any supporting resources:
 ```console
 make tests
@@ -175,7 +175,7 @@ make tests
 ```console
 make clean
 ```
-* Clean supporting resources - this is done seperatly so you can test your module build/modify/destroy independatly.
+* Clean supporting resources - this is done separately so you can test your module build/modify/destroy independently.
 ```console
 make cleansupporting
 ```
