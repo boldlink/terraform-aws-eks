@@ -20,8 +20,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - feat: Make all values of the tls_key variables not hardcoded values.
 - feat: Add the capacity for additional policies or override default attached policies to both the cluster and node group iam roles.
 
-## [3.0.0] - 2022-07-26
+## [3.0.0] - 2022-07-27
 ### Description
+ - fix: Error when creating a cluster in a region without default vpc by specifying var.vpc_id - this applies to the example/minimum and recommend usage on README.md.
  - fix: When you specify an external kms key for the cloudwatch log group you get an error.
  - fix: Change the name of EKS iam roles to prevent name length limitation errors for managed and fargate sub-modules.
  - fix: Add missing variables options from node groups provisioning.

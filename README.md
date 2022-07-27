@@ -16,9 +16,10 @@ Example available [here](https://github.com/boldlink/terraform-aws-eks/tree/main
 module "minimum_eks_cluster" {
   source                    = "boldlink/eks/aws"
   enabled_cluster_log_types = ["api", "authenticator", "audit", "scheduler", "controllerManager"]
-  cluster_name              = local.cluster_name
-  cluster_subnet_ids        = local.public_subnets
-  tags                      = local.tags
+  cluster_name              = var.cluster_name
+  vpc_id                    = var.vpc_id
+  cluster_subnet_ids        = var.public_subnets
+  tags                      = var.tags
 }
 ```
 
