@@ -144,18 +144,6 @@ variable "ingress_rules" {
   default     = {}
 }
 
-variable "node_groups" {
-  description = "Map of EKS managed node group definitions to create"
-  type        = any
-  default     = {}
-}
-
-variable "fargate_profiles" {
-  type        = any
-  description = "Map of EKS Fargate Profile definitions to create"
-  default     = {}
-}
-
 # KMS
 variable "deletion_window_in_days" {
   description = "(Optional) The waiting period, specified in number of days. After the waiting period ends, AWS KMS deletes the KMS key. If you specify a value, it must be between 7 and 30, inclusive. If you do not specify a value, it defaults to 30."
@@ -167,4 +155,34 @@ variable "enable_key_rotation" {
   description = "(Optional) Specifies whether key rotation is enabled. Defaults to false."
   type        = bool
   default     = true
+}
+
+variable "enable_managed_node_groups" {
+  description = "Set this variable to true to create your managed node groups"
+  type        = bool
+  default     = false
+}
+
+variable "managed_node_groups" {
+  description = "Map of EKS managed node group definitions to create"
+  type        = any
+  default     = {}
+}
+
+variable "enable_fargate_node_groups" {
+  description = "Set this variable to true to create your fargate node groups"
+  type        = bool
+  default     = false
+}
+
+variable "fargate_node_groups" {
+  description = "Map of EKS fargate node group definitions to create"
+  type        = any
+  default     = {}
+}
+
+variable "enable_irsa" {
+  description = "Enable Open Identity connect support for AWS IAM Roles"
+  type        = bool
+  default     = false
 }

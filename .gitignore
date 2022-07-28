@@ -40,3 +40,4 @@ override.tf.json
 .gitleaks.toml
 *vscode/*
 .external_modules/
+.infracost/*
