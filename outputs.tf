@@ -121,3 +121,29 @@ output "eks_identity_provider_config_tags_all" {
   ]
   description = "A map of tags assigned to the resource, including those inherited from the provider [`default_tags` configuration block](https://www.terraform.io/docs/providers/aws/index.html?_ga=2.7472759.418379771.1647510647-1464713173.1641542419#default_tags-configuration-block)."
 }
+
+# IAM Roles
+output "managed_role_arn" {
+  description = "The name of the node group IAM role"
+  #value       = module.node_group.role_arn
+  value       =  [ for node in module.node_group: node.role_arn  ]
+}
+
+output "managed_role_name" {
+  description = "ARN of the node group IAM role"
+  value       = [ for node in module.node_group: node.role_name ]
+}
+
+output "fargate_role_arn" {
+  description = "The name of the node group IAM role"
+  value       = [
+    for node in module.fargate_profile: node.role_arn
+  ]
+}
+
+output "fargate_role_name" {
+  description = "ARN of the node group IAM role"
+  value       = [
+    for node in module.fargate_profile: node.role_name
+  ]
+}

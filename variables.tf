@@ -13,12 +13,18 @@ variable "aws_auth_node_iam_role_arns" {
 
 variable "aws_auth_roles" {
   description = "List of IAM role ARNs to add to the aws-auth configmap"
-  type        = list(string)
+  type        = list(any)
   default     = []
 }
 
-variable "include_aws_auth_configmap" {
-  description = "Choose whether to include the aws-auth configmap"
+variable "create_aws_auth" {
+  description = "Choose whether to create the aws-auth configmap- used when aws-auth configmap doesn't exist"
+  type        = bool
+  default     = false
+}
+
+variable "modify_aws_auth" {
+  description = "Choose whether to manage the aws-auth configmap"
   type        = bool
   default     = false
 }
@@ -28,6 +34,7 @@ variable "eks_addons" {
   description = "EKS Addons resource block"
   default     = {}
 }
+
 # Cloudwatch
 variable "enable_cp_logging" {
   type        = bool

@@ -145,9 +145,8 @@ resource "aws_iam_openid_connect_provider" "irsa" {
   ]
 }
 
-/*
-aws_eks_identity_provider_config: Manages an EKS Identity Provider Configuration.
-*/
+
+### aws_eks_identity_provider_config: Manages an EKS Identity Provider Configuration.
 resource "aws_eks_identity_provider_config" "main" {
   for_each     = var.identity_providers
   cluster_name = aws_eks_cluster.main.name
@@ -168,37 +167,35 @@ resource "aws_eks_identity_provider_config" "main" {
   }
 }
 
-/*
-aws-auth configmap
-*/
-resource "kubernetes_config_map" "aws_auth" {
-  count = var.include_aws_auth_configmap ? 1 : 0
+
+### aws-auth configmap
+resource "kubernetes_config_map" "aws_auth" {    # Used to create a new aws-auth configmap like in the case of self-managed eks nodegroups.
+  count = var.create_aws_auth ? 1 : 0
   metadata {
     name      = "aws-auth"
     namespace = "kube-system"
   }
-  data = local.aws_auth_configmap_data
+  data = local.aws_auth_data
   lifecycle {
     ignore_changes = [data]
   }
 }
 
-resource "kubernetes_config_map_v1_data" "aws_auth" {
-  count = var.include_aws_auth_configmap ? 1 : 0
+resource "kubernetes_config_map_v1_data" "aws_auth" {   # Used to modify an existing aws-auth configmap like in the case of fargate profiles & eks-managed eks nodegroups.
+  count = var.modify_aws_auth ? 1 : 0
   force = true
   metadata {
     name      = "aws-auth"
     namespace = "kube-system"
   }
-  data = local.aws_auth_configmap_data
+  data = local.aws_auth_data
   depends_on = [
     kubernetes_config_map.aws_auth,
   ]
 }
 
-/*
-Security group
-*/
+
+### Security group
 resource "aws_security_group" "eks_cluster" {
   name        = "${var.cluster_name}-security-group"
   vpc_id      = var.vpc_id
