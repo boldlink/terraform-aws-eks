@@ -125,25 +125,24 @@ output "eks_identity_provider_config_tags_all" {
 # IAM Roles
 output "managed_role_arn" {
   description = "The name of the node group IAM role"
-  #value       = module.node_group.role_arn
-  value       =  [ for node in module.node_group: node.role_arn  ]
+  value       = [for node in module.node_group : node.role_arn]
 }
 
 output "managed_role_name" {
   description = "ARN of the node group IAM role"
-  value       = [ for node in module.node_group: node.role_name ]
+  value       = [for node in module.node_group : node.role_name]
 }
 
 output "fargate_role_arn" {
   description = "The name of the node group IAM role"
-  value       = [
-    for node in module.fargate_profile: node.role_arn
+  value = [
+    for node in module.fargate_profile : node.role_arn
   ]
 }
 
 output "fargate_role_name" {
   description = "ARN of the node group IAM role"
-  value       = [
-    for node in module.fargate_profile: node.role_name
+  value = [
+    for node in module.fargate_profile : node.role_name
   ]
 }

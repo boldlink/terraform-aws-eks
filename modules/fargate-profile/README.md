@@ -38,7 +38,7 @@ module "fargate_profile" {
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.23.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.22.0 |
 
 ## Modules
 
@@ -72,6 +72,8 @@ No modules.
 | <a name="output_fargate_profile_id"></a> [fargate\_profile\_id](#output\_fargate\_profile\_id) | EKS Cluster name and EKS Fargate Profile name separated by a colon (:). |
 | <a name="output_fargate_profile_status"></a> [fargate\_profile\_status](#output\_fargate\_profile\_status) | Status of the EKS Fargate Profile. |
 | <a name="output_fargate_profile_tags_all"></a> [fargate\_profile\_tags\_all](#output\_fargate\_profile\_tags\_all) | A map of tags assigned to the resource, including those inherited from the provider [`default_tags` configuration block](https://www.terraform.io/docs/providers/aws/index.html?_ga=2.247767490.418379771.1647510647-1464713173.1641542419#default_tags-configuration-block). |
+| <a name="output_role_arn"></a> [role\_arn](#output\_role\_arn) | ARN of the node group IAM role |
+| <a name="output_role_name"></a> [role\_name](#output\_role\_name) | The name of the node group IAM role |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 ## Third party software

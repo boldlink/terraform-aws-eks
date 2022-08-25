@@ -169,7 +169,7 @@ resource "aws_eks_identity_provider_config" "main" {
 
 
 ### aws-auth configmap
-resource "kubernetes_config_map" "aws_auth" {    # Used to create a new aws-auth configmap like in the case of self-managed eks nodegroups.
+resource "kubernetes_config_map" "aws_auth" { # Used to create a new aws-auth configmap like in the case of self-managed eks nodegroups.
   count = var.create_aws_auth ? 1 : 0
   metadata {
     name      = "aws-auth"
@@ -181,7 +181,7 @@ resource "kubernetes_config_map" "aws_auth" {    # Used to create a new aws-auth
   }
 }
 
-resource "kubernetes_config_map_v1_data" "aws_auth" {   # Used to modify an existing aws-auth configmap like in the case of fargate profiles & eks-managed eks nodegroups.
+resource "kubernetes_config_map_v1_data" "aws_auth" { # Used to modify an existing aws-auth configmap like in the case of fargate profiles & eks-managed eks nodegroups.
   count = var.modify_aws_auth ? 1 : 0
   force = true
   metadata {
