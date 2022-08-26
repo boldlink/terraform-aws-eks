@@ -19,7 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - feat: Make all values of the tls_key variables not hardcoded values.
 - feat: Add the capacity for additional policies or override default attached policies to both the cluster and node group iam roles.
 
-##[3.0.1] - 2022-08-26
+## [3.0.1] - 2022-08-26
 ### Description
 - fix: aws-auth configmap usage; ability to either create a new one or modify an existing one.
 
