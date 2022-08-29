@@ -43,8 +43,8 @@ module "minimum_eks_cluster" {
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.23.0 |
-| <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | 2.12.1 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.27.0 |
+| <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | 2.13.0 |
 | <a name="provider_tls"></a> [tls](#provider\_tls) | 4.0.1 |
 
 ## Modules
@@ -86,11 +86,12 @@ module "minimum_eks_cluster" {
 |------|-------------|------|---------|:--------:|
 | <a name="input_aws_auth_accounts"></a> [aws\_auth\_accounts](#input\_aws\_auth\_accounts) | List of account maps to add to the aws-auth configmap | `list(any)` | `[]` | no |
 | <a name="input_aws_auth_node_iam_role_arns"></a> [aws\_auth\_node\_iam\_role\_arns](#input\_aws\_auth\_node\_iam\_role\_arns) | List of node IAM role ARNs to add to the aws-auth configmap | `list(string)` | `[]` | no |
-| <a name="input_aws_auth_roles"></a> [aws\_auth\_roles](#input\_aws\_auth\_roles) | List of IAM role ARNs to add to the aws-auth configmap | `list(string)` | `[]` | no |
+| <a name="input_aws_auth_roles"></a> [aws\_auth\_roles](#input\_aws\_auth\_roles) | List of IAM role ARNs to add to the aws-auth configmap | `list(any)` | `[]` | no |
 | <a name="input_aws_auth_users"></a> [aws\_auth\_users](#input\_aws\_auth\_users) | List of user maps to add to the aws-auth configmap | `list(any)` | `[]` | no |
 | <a name="input_cloudwatch_key_id"></a> [cloudwatch\_key\_id](#input\_cloudwatch\_key\_id) | (Optional) The ARN of the KMS Key to use when encrypting log data. Please note, after the AWS KMS CMK is disassociated from the log group, AWS CloudWatch Logs stops encrypting newly ingested data for the log group. All previously ingested data remains encrypted, and AWS CloudWatch Logs requires permissions for the CMK whenever the encrypted data is requested. | `string` | `null` | no |
 | <a name="input_cluster_name"></a> [cluster\_name](#input\_cluster\_name) | Name of the cluster. Must be between 1-100 characters in length. Must begin with an alphanumeric character, and must only contain alphanumeric characters, dashes and underscores (`\^[0-9A-Za-z][A-Za-z0-9-_]+$`). | `string` | `null` | no |
 | <a name="input_cluster_subnet_ids"></a> [cluster\_subnet\_ids](#input\_cluster\_subnet\_ids) | (Required) List of subnet IDs. Must be in at least two different availability zones. Amazon EKS creates cross-account elastic network interfaces in these subnets to allow communication between your worker nodes and the Kubernetes control plane. | `list(string)` | n/a | yes |
+| <a name="input_create_aws_auth"></a> [create\_aws\_auth](#input\_create\_aws\_auth) | Choose whether to create the aws-auth configmap- used when aws-auth configmap doesn't exist | `bool` | `false` | no |
 | <a name="input_deletion_window_in_days"></a> [deletion\_window\_in\_days](#input\_deletion\_window\_in\_days) | (Optional) The waiting period, specified in number of days. After the waiting period ends, AWS KMS deletes the KMS key. If you specify a value, it must be between 7 and 30, inclusive. If you do not specify a value, it defaults to 30. | `number` | `30` | no |
 | <a name="input_eks_addons"></a> [eks\_addons](#input\_eks\_addons) | EKS Addons resource block | `any` | `{}` | no |
 | <a name="input_enable_cp_logging"></a> [enable\_cp\_logging](#input\_enable\_cp\_logging) | Determine whether to enable control plane logging | `bool` | `true` | no |
@@ -104,12 +105,12 @@ module "minimum_eks_cluster" {
 | <a name="input_endpoint_public_access"></a> [endpoint\_public\_access](#input\_endpoint\_public\_access) | (Optional) Whether the Amazon EKS public API server endpoint is enabled. Default is `true`. | `bool` | `false` | no |
 | <a name="input_fargate_node_groups"></a> [fargate\_node\_groups](#input\_fargate\_node\_groups) | Map of EKS fargate node group definitions to create | `any` | `{}` | no |
 | <a name="input_identity_providers"></a> [identity\_providers](#input\_identity\_providers) | Identity providers resources block | `any` | `{}` | no |
-| <a name="input_include_aws_auth_configmap"></a> [include\_aws\_auth\_configmap](#input\_include\_aws\_auth\_configmap) | Choose whether to include the aws-auth configmap | `bool` | `false` | no |
 | <a name="input_ingress_rules"></a> [ingress\_rules](#input\_ingress\_rules) | (Optional) Ingress rules to add to the security group | `any` | `{}` | no |
 | <a name="input_kubernetes_master_version"></a> [kubernetes\_master\_version](#input\_kubernetes\_master\_version) | (Optional) Desired Kubernetes master version. If you do not specify a value, the latest available version at resource creation is used and no upgrades will occur except those automatically triggered by EKS. The value must be configured and increased to upgrade the version when desired. Downgrades are not supported by EKS. | `string` | `null` | no |
 | <a name="input_kubernetes_network_config"></a> [kubernetes\_network\_config](#input\_kubernetes\_network\_config) | (Optional) Configuration block with kubernetes network configuration for the cluster. | `map(string)` | `{}` | no |
 | <a name="input_log_group_retention_days"></a> [log\_group\_retention\_days](#input\_log\_group\_retention\_days) | Number of days the log group is retained before it is deleted | `number` | `7` | no |
 | <a name="input_managed_node_groups"></a> [managed\_node\_groups](#input\_managed\_node\_groups) | Map of EKS managed node group definitions to create | `any` | `{}` | no |
+| <a name="input_modify_aws_auth"></a> [modify\_aws\_auth](#input\_modify\_aws\_auth) | Choose whether to manage the aws-auth configmap | `bool` | `false` | no |
 | <a name="input_public_access_cidrs"></a> [public\_access\_cidrs](#input\_public\_access\_cidrs) | (Optional) List of CIDR blocks. Indicates which CIDR blocks can access the Amazon EKS public API server endpoint when enabled. EKS defaults this to a list with 0.0.0.0/0. Terraform will only perform drift detection of its value when present in a configuration. | `list(string)` | <pre>[<br>  "0.0.0.0/0"<br>]</pre> | no |
 | <a name="input_security_group_ids"></a> [security\_group\_ids](#input\_security\_group\_ids) | (Optional) List of security group IDs for the cross-account elastic network interfaces that Amazon EKS creates to use to allow communication between your worker nodes and the Kubernetes control plane. | `list(string)` | `[]` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | (Optional) Key-value map of resource tags. If configured with a provider [`default_tags` configuration block](https://www.terraform.io../docs?_ga=2.83681619.418379771.1647510647-1464713173.1641542419#default_tags-configuration-block) present, tags with matching keys will overwrite those defined at the provider-level. | `map(string)` | `{}` | no |
@@ -134,8 +135,12 @@ module "minimum_eks_cluster" {
 | <a name="output_eks_identity_provider_config_status"></a> [eks\_identity\_provider\_config\_status](#output\_eks\_identity\_provider\_config\_status) | Status of the EKS Identity Provider Configuration. |
 | <a name="output_eks_identity_provider_config_tags_all"></a> [eks\_identity\_provider\_config\_tags\_all](#output\_eks\_identity\_provider\_config\_tags\_all) | A map of tags assigned to the resource, including those inherited from the provider [`default_tags` configuration block](https://www.terraform.io/docs/providers/aws/index.html?_ga=2.7472759.418379771.1647510647-1464713173.1641542419#default_tags-configuration-block). |
 | <a name="output_endpoint"></a> [endpoint](#output\_endpoint) | Endpoint for your Kubernetes API server. |
+| <a name="output_fargate_role_arn"></a> [fargate\_role\_arn](#output\_fargate\_role\_arn) | The name of the node group IAM role |
+| <a name="output_fargate_role_name"></a> [fargate\_role\_name](#output\_fargate\_role\_name) | ARN of the node group IAM role |
 | <a name="output_id"></a> [id](#output\_id) | Name of the cluster. |
 | <a name="output_identity"></a> [identity](#output\_identity) | Attribute block containing identity provider information for your cluster. Only available on Kubernetes version 1.13 and 1.14 clusters created or upgraded on or after September 3, 2019. |
+| <a name="output_managed_role_arn"></a> [managed\_role\_arn](#output\_managed\_role\_arn) | The name of the node group IAM role |
+| <a name="output_managed_role_name"></a> [managed\_role\_name](#output\_managed\_role\_name) | ARN of the node group IAM role |
 | <a name="output_platform_version"></a> [platform\_version](#output\_platform\_version) | Platform version for the cluster. |
 | <a name="output_status"></a> [status](#output\_status) | Status of the EKS cluster. One of `CREATING`, `ACTIVE`, `DELETING`, `FAILED`. |
 | <a name="output_tags_all"></a> [tags\_all](#output\_tags\_all) | Map of tags assigned to the resource, including those inherited from the provider [`default_tags` configuration block](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/docs#default_tags-configuration-block). |

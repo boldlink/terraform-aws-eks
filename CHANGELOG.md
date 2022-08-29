@@ -6,7 +6,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 - fix: Ensure all dynamic options both on module and submodules are present in the complete example.
-- fix: Configmap aws-auth doesn't allow adding additional users/groups/roles access besides the nodes.
 - fix: CKV_AWS_37: "Ensure Amazon EKS control plane logging enabled for all log types
 - fix: Use only one KMS key per module for secrets cloudwatch, and ebs.
 - feat: Add gp3 kms encryption for ebs volumes attached on the managed and self managed node groups (launch template).
@@ -16,9 +15,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - feat: Add EKS CoreDNS add-on Kube-proxy (optional with true/false choice).
 - feat: Add EKS ADOT Operator add-on and service account IAM permissions (optional with true/false choice).
 - feat: Add a default managed node group with documented default values that gets created if var.enable_managed_node_group = true and var.managed_node_groups = {} (use less code to create a operational eks cluster).
-- feat: Add container insights support for metrics and loggroups.
+- feat: Add container insights support for metrics and log groups.
 - feat: Make all values of the tls_key variables not hardcoded values.
 - feat: Add the capacity for additional policies or override default attached policies to both the cluster and node group iam roles.
+
+## [3.0.1] - 2022-08-26
+### Description
+- fix: aws-auth configmap usage; ability to either create a new one or modify an existing one.
 
 ## [3.0.0] - 2022-07-27
 ### Description
@@ -74,6 +77,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Cluster logging
 
 [Unreleased]: https://github.com/boldlink/terraform-aws-eks/compare/3.0.0...HEAD
+
+[3.0.1]: https://github.com/boldlink/terraform-aws-eks/releases/tag/3.0.1
 
 [3.0.0]: https://github.com/boldlink/terraform-aws-eks/releases/tag/3.0.0
 

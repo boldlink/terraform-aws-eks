@@ -19,7 +19,7 @@ This example is for demo and testing purposes and doesn't represent a production
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.23.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.27.0 |
 
 ## Modules
 
@@ -31,6 +31,8 @@ This example is for demo and testing purposes and doesn't represent a production
 
 | Name | Type |
 |------|------|
+| [aws_eks_cluster.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/eks_cluster) | data source |
+| [aws_eks_cluster_auth.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/eks_cluster_auth) | data source |
 | [aws_kms_alias.supporting](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/kms_alias) | data source |
 | [aws_subnets.private](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/subnets) | data source |
 | [aws_subnets.public](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/subnets) | data source |

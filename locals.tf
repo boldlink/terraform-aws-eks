@@ -4,7 +4,7 @@ locals {
   region             = data.aws_region.current.id
   partition          = data.aws_partition.current.partition
   node_iam_role_arns = var.aws_auth_node_iam_role_arns
-  aws_auth_configmap_data = {
+  aws_auth_data = {
     mapRoles = yamlencode(concat(
       [for role_arn in local.node_iam_role_arns : {
         rolearn  = role_arn

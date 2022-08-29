@@ -24,3 +24,14 @@ output "eks_node_group_status" {
   value       = aws_eks_node_group.main.*.status
   description = "Status of the EKS Node Group."
 }
+
+# Managed IAM Roles
+output "role_name" {
+  description = "The name of the node group IAM role"
+  value       = aws_iam_role.node_group.*.name
+}
+
+output "role_arn" {
+  description = "ARN of the node group IAM role"
+  value       = aws_iam_role.node_group.*.arn
+}
