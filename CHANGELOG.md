@@ -19,9 +19,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - feat: Make all values of the tls_key variables not hardcoded values.
 - feat: Add the capacity for additional policies or override default attached policies to both the cluster and node group iam roles.
 
+## [3.0.2] - 2022-08-30
+fix: reference node iam arns inside the module for aws-auth configmap.
+
 ## [3.0.1] - 2022-08-26
 ### Description
-- fix: aws-auth configmap usage; ability to either create a new one or modify an existing one.
+- fix: aws-auth configmap usage; ability to either create a new one for self-managed node groups or modify an existing one.
 
 ## [3.0.0] - 2022-07-27
 ### Description
@@ -76,7 +79,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Cluster only example
 - Cluster logging
 
-[Unreleased]: https://github.com/boldlink/terraform-aws-eks/compare/3.0.0...HEAD
+[Unreleased]: https://github.com/boldlink/terraform-aws-eks/compare/3.0.1...HEAD
+
+[3.0.2]: https://github.com/boldlink/terraform-aws-eks/releases/tag/3.0.2
 
 [3.0.1]: https://github.com/boldlink/terraform-aws-eks/releases/tag/3.0.1
 
