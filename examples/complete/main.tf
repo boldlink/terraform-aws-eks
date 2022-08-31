@@ -29,7 +29,7 @@ module "complete_eks_cluster" {
   encryption_config = {
     key_arn = local.kms_key_arn
   }
- 
+
   aws_auth_roles = [
     {
       rolearn  = "arn:aws:iam::12345678901:role/examplerole"
