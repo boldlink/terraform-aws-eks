@@ -3,7 +3,7 @@ locals {
   dns_suffix         = data.aws_partition.current.dns_suffix
   region             = data.aws_region.current.id
   partition          = data.aws_partition.current.partition
-  node_iam_role_arns = var.aws_auth_node_iam_role_arns
+  node_iam_role_arns = flatten(concat([for node in module.fargate_profile : node.role_arn], [for node in module.node_group : node.role_arn], var.aws_auth_node_iam_role_arns))
   aws_auth_data = {
     mapRoles = yamlencode(concat(
       [for role_arn in local.node_iam_role_arns : {

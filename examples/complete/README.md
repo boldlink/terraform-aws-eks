@@ -19,7 +19,7 @@ This example is for demo and testing purposes and doesn't represent a production
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.27.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.28.0 |
 
 ## Modules
 

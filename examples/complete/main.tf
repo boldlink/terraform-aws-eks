@@ -29,7 +29,6 @@ module "complete_eks_cluster" {
   encryption_config = {
     key_arn = local.kms_key_arn
   }
-  aws_auth_node_iam_role_arns = flatten(concat(module.complete_eks_cluster.managed_role_arn, module.complete_eks_cluster.fargate_role_arn))
 
   aws_auth_roles = [
     {

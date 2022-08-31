@@ -43,9 +43,9 @@ module "minimum_eks_cluster" {
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.27.0 |
-| <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | 2.13.0 |
-| <a name="provider_tls"></a> [tls](#provider\_tls) | 4.0.1 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.28.0 |
+| <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | 2.13.1 |
+| <a name="provider_tls"></a> [tls](#provider\_tls) | 4.0.2 |
 
 ## Modules
 
