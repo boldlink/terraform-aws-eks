@@ -1,0 +1,14 @@
+name: PR Labeler
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+
+jobs:
+  pr-labeler:
+    uses: boldlink/terraform-module-support/.github/workflows/pr-labeler.yaml@1.0.0
+    with:
+      configuration-path: .github/workflows/config/prl-config.yaml
+    secrets:
+      SLACK_WEBHOOK : ${{secrets.SLACK_WEBHOOK}}

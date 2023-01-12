@@ -1,0 +1,3 @@
+major: ['release/*', 'releases/*']
+minor: ['feature/*', 'features/*' ]
+patch: ['fix/*', 'fixes/*', 'hotfix/*', 'hotfixes/*', chore/*, 'chores/*']

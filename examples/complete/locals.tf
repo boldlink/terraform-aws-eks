@@ -7,7 +7,14 @@ locals {
   public_subnets            = flatten(data.aws_subnets.public.ids)
   private_subnets           = flatten(data.aws_subnets.private.ids)
   tags = {
-    environment        = "examples"
+    Environment        = "example"
+    Name               = local.cluster_name
     "user::CostCenter" = "terraform-registry"
+    InstanceScheduler  = true
+    Department         = "DevOps"
+    Project            = "Examples"
+    Owner              = "Boldlink"
+    LayerName          = "c700-eks-module-examples"
+    LayerId            = "c700"
   }
 }

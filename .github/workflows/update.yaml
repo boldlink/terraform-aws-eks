@@ -1,0 +1,12 @@
+name: update-files
+
+on:
+  schedule:
+    - cron: "00 17 * * * "
+
+jobs:
+  update-files:
+    uses: boldlink/terraform-module-support/.github/workflows/update.yaml@main
+    secrets:
+      AUTOMATION_TOKEN: ${{ secrets.AUTOMATION_TOKEN }}
+      SLACK_WEBHOOK : ${{secrets.SLACK_WEBHOOK}}

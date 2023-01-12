@@ -6,10 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 - fix: Ensure all dynamic options both on module and submodules are present in the complete example.
-- fix: CKV_AWS_37: "Ensure Amazon EKS control plane logging enabled for all log types
 - fix: CKV_AWS_39: "Ensure Amazon EKS public endpoint disabled"
 - fix: CKV_AWS_109: "Ensure IAM policies does not allow permissions management / resource exposure without constraints"
-- fix: Use only one KMS key per module for secrets cloudwatch, and ebs.
 - feat: Add gp3 kms encryption for ebs volumes attached on the managed and self managed node groups (launch template).
 - feat: Add self-managed node-group for fully customizable cluster deployments, [for example windows node groups.](https://github.com/aws/containers-roadmap/issues/584).
 - feat: Add EKS vpc-cni add-on to the module with the iam role and service account IAM permissions (optional with true/false choice).
@@ -20,6 +18,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - feat: Add container insights support for metrics and log groups.
 - feat: Make all values of the tls_key variables not hardcoded values.
 - feat: Add the capacity for additional policies or override default attached policies to both the cluster and node group iam roles.
+- fix: CKV_AWS_38 # "Ensure Amazon EKS public endpoint not accessible to 0.0.0.0/0"
+- fix: CKV_AWS_111 # "Ensure IAM policies does not allow write access without constraints"
+
+## [3.1.0] - 2023-01-12
+- fix: Use only one KMS key for secrets, cloudwatch encryption.
+- fix: CKV_AWS_37 "Ensure Amazon EKS control plane logging enabled for all log types"
+- Added new github workflow files & config files
+- feat: create a single kms key for eks module
 
 ## [3.0.2] - 2022-08-30
 fix: reference node iam arns inside the module for aws-auth configmap.
@@ -82,6 +88,8 @@ fix: reference node iam arns inside the module for aws-auth configmap.
 - Cluster logging
 
 [Unreleased]: https://github.com/boldlink/terraform-aws-eks/compare/3.0.2...HEAD
+
+[3.1.0]: https://github.com/boldlink/terraform-aws-eks/releases/tag/3.1.0
 
 [3.0.2]: https://github.com/boldlink/terraform-aws-eks/releases/tag/3.0.2
 
