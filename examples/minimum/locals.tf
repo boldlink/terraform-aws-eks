@@ -11,7 +11,7 @@ locals {
     Department         = "DevOps"
     Project            = "Examples"
     Owner              = "Boldlink"
-    LayerName          = "c700-eks-module-examples"
+    LayerName          = "cExample"
     LayerId            = "c700"
   }
 }
