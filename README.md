@@ -14,6 +14,13 @@
 ## Description
 This is a detailed terraform module that can be used to create AWS EKS Cluster, Node Group and Associated resources
 
+### Why choose this module over the standard resources
+- You get to create an eks cluster, fargate profile and node groups with minimum configuration changes.
+- Follows aws security best practices and uses checkov to ensure compliance.
+- Has elaborate examples that you can use to setup your cluster within a very short time.
+- Contains config map resources that you can easily use to add a new config map or modify an existing one.
+
+
 Example available [here](https://github.com/boldlink/terraform-aws-eks/tree/main/examples)
 
 ## Usage
@@ -21,12 +28,49 @@ Example available [here](https://github.com/boldlink/terraform-aws-eks/tree/main
 
 ```console
 module "minimum_eks_cluster" {
-  source                    = "boldlink/eks/aws"
+  source                    = "./../../"
   enabled_cluster_log_types = ["api", "authenticator", "audit", "scheduler", "controllerManager"]
-  cluster_name              = var.cluster_name
-  vpc_id                    = var.vpc_id
-  cluster_subnet_ids        = var.public_subnets
-  tags                      = var.tags
+  cluster_name              = local.cluster_name
+  vpc_id                    = local.vpc_id
+  cluster_subnet_ids        = local.public_subnets
+  tags                      = local.tags
+  create_eks_kms_key         = true
+}
+```
+
+```console
+locals {
+  cluster_name              = "example-minimum-eks"
+  supporting_resources_name = "terraform-aws-eks"
+  vpc_id                    = data.aws_vpc.supporting.id
+  public_subnets            = flatten(data.aws_subnets.public.ids)
+  tags = {
+    Environment        = "example"
+    Name               = local.cluster_name
+    "user::CostCenter" = "terraform-registry"
+    InstanceScheduler  = true
+    Department         = "DevOps"
+    Project            = "Examples"
+    Owner              = "Boldlink"
+    LayerName          = "c700-eks-module-examples"
+    LayerId            = "c700"
+  }
+}
+```
+
+```console
+data "aws_vpc" "supporting" {
+  filter {
+    name   = "tag:Name"
+    values = [local.supporting_resources_name]
+  }
+}
+
+data "aws_subnets" "public" {
+  filter {
+    name   = "tag:Name"
+    values = ["${local.supporting_resources_name}*.eks.pub.*"]
+  }
 }
 ```
 
