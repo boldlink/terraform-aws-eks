@@ -4,7 +4,14 @@ locals {
   vpc_id                    = data.aws_vpc.supporting.id
   public_subnets            = flatten(data.aws_subnets.public.ids)
   tags = {
-    environment        = "examples"
+    Environment        = "example"
+    Name               = local.cluster_name
     "user::CostCenter" = "terraform-registry"
+    InstanceScheduler  = true
+    Department         = "DevOps"
+    Project            = "Examples"
+    Owner              = "Boldlink"
+    LayerName          = "cExample"
+    LayerId            = "cExample"
   }
 }

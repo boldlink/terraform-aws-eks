@@ -39,5 +39,6 @@ override.tf.json
 *.swp
 .gitleaks.toml
 *vscode/*
-.external_modules/
-.infracost/*
+terraform-docs.*
+tflint_*
+terraform_*

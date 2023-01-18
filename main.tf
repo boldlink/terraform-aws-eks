@@ -22,10 +22,10 @@ resource "aws_eks_cluster" "main" {
     }
   }
   dynamic "encryption_config" {
-    for_each = [var.encryption_config]
+    for_each = var.encryption_config == null ? [] : [var.encryption_config]
     content {
       provider {
-        key_arn = try(encryption_config.value.key_arn, aws_kms_key.secrets_kms_key[0].arn)
+        key_arn = length(encryption_config.value) < 1 ? join("", aws_kms_key.main.*.arn) : encryption_config.value.key_arn
       }
       resources = ["secrets"]
     }
@@ -42,19 +42,19 @@ resource "aws_eks_cluster" "main" {
   ]
 }
 
-resource "aws_kms_key" "secrets_kms_key" {
-  count                   = length(keys(var.encryption_config)) == 0 ? 1 : 0
-  description             = "A kms key for eks cluster secrets"
+resource "aws_kms_key" "main" {
+  count                   = var.create_eks_kms_key ? 1 : 0
+  description             = "A kms key for eks cluster"
   deletion_window_in_days = var.deletion_window_in_days
   policy                  = local.kms_policy
   enable_key_rotation     = var.enable_key_rotation
   tags                    = var.tags
 }
 
-resource "aws_kms_alias" "secrets_kms_key" {
-  count         = length(keys(var.encryption_config)) == 0 ? 1 : 0
-  name          = "alias/${var.cluster_name}-secrets"
-  target_key_id = aws_kms_key.secrets_kms_key[0].key_id
+resource "aws_kms_alias" "main" {
+  count         = var.create_eks_kms_key ? 1 : 0
+  name          = "alias/${var.cluster_name}-key"
+  target_key_id = aws_kms_key.main[0].key_id
 }
 
 resource "aws_iam_role" "ekscluster" {
@@ -76,32 +76,13 @@ resource "aws_iam_role_policy_attachment" "amazoneksvpccontroller" {
   role       = aws_iam_role.ekscluster.name
 }
 
-/*
-Control Plane Logging
-*/
-resource "aws_kms_key" "logging_kms_key" {
-  count                   = var.enable_cp_logging && var.cloudwatch_key_id == null ? 1 : 0
-  description             = "A kms key for eks cluster cloudwatch log group"
-  deletion_window_in_days = var.deletion_window_in_days
-  policy                  = local.kms_policy
-  enable_key_rotation     = var.enable_key_rotation
-  tags                    = var.tags
-}
-
-resource "aws_kms_alias" "logging_kms_key" {
-  count         = var.enable_cp_logging && var.cloudwatch_key_id == null ? 1 : 0
-  name          = "alias/${var.cluster_name}-cloudwatch-key"
-  target_key_id = aws_kms_key.logging_kms_key[0].key_id
-}
-
-
 resource "aws_cloudwatch_log_group" "main" {
   # The log group name format is /aws/eks/<cluster-name>/cluster
   # Reference: https://docs.aws.amazon.com/eks/latest/userguide/control-plane-logs.html
   count             = var.enable_cp_logging ? 1 : 0
   name              = "/aws/eks/${var.cluster_name}/cluster"
   retention_in_days = var.log_group_retention_days
-  kms_key_id        = var.cloudwatch_key_id != null ? var.cloudwatch_key_id : aws_kms_key.logging_kms_key[0].arn
+  kms_key_id        = var.kms_key_id == null ? try(aws_kms_key.main[0].arn, "") : var.kms_key_id
 }
 
 /*
@@ -115,12 +96,6 @@ resource "aws_eks_addon" "main" {
   resolve_conflicts        = lookup(each.value, "resolve_conflicts", null)
   tags                     = lookup(each.value, "tags", null)
   service_account_role_arn = lookup(each.value, "service_account_role_arn", null)
-
-  lifecycle {
-    ignore_changes = [
-      modified_at
-    ]
-  }
 }
 
 /*

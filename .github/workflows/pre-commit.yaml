@@ -1,0 +1,23 @@
+name: pre-commit
+on:
+  push:
+
+    branches:
+      - 'fix/*'
+      - 'fixes/*'
+      - 'feature/*'
+      - 'features/*'
+      - 'hotfix/*'
+      - 'hotfixes/*'
+      - 'release/*'
+      - 'releases/*'
+      - 'chore/*'
+      - 'chores/*'
+      - 'automatic*'
+
+jobs:
+  pre-commit:
+    uses: boldlink/terraform-module-support/.github/workflows/pre-commit.yaml@1.0.0
+    secrets:
+      AUTOMATION_TOKEN: ${{ secrets.AUTOMATION_TOKEN }}
+      SLACK_WEBHOOK : ${{secrets.SLACK_WEBHOOK}}

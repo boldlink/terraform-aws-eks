@@ -48,12 +48,6 @@ variable "log_group_retention_days" {
   default     = 7
 }
 
-variable "cloudwatch_key_id" {
-  description = " (Optional) The ARN of the KMS Key to use when encrypting log data. Please note, after the AWS KMS CMK is disassociated from the log group, AWS CloudWatch Logs stops encrypting newly ingested data for the log group. All previously ingested data remains encrypted, and AWS CloudWatch Logs requires permissions for the CMK whenever the encrypted data is requested."
-  type        = string
-  default     = null
-}
-
 variable "aws_auth_accounts" {
   description = "List of account maps to add to the aws-auth configmap"
   type        = list(any)
@@ -152,6 +146,13 @@ variable "ingress_rules" {
 }
 
 # KMS
+
+variable "create_eks_kms_key" {
+  description = "Whether to create a kms key for eks or not"
+  type        = bool
+  default     = false
+}
+
 variable "deletion_window_in_days" {
   description = "(Optional) The waiting period, specified in number of days. After the waiting period ends, AWS KMS deletes the KMS key. If you specify a value, it must be between 7 and 30, inclusive. If you do not specify a value, it defaults to 30."
   type        = number
@@ -180,6 +181,12 @@ variable "enable_fargate_node_groups" {
   description = "Set this variable to true to create your fargate node groups"
   type        = bool
   default     = false
+}
+
+variable "kms_key_id" {
+  description = "(Optional) Amazon Resource Name (ARN) of the KMS Key to use when encrypting"
+  type        = string
+  default     = null
 }
 
 variable "fargate_node_groups" {

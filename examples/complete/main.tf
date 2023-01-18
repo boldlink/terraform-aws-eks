@@ -18,6 +18,7 @@ module "complete_eks_cluster" {
   cluster_name               = local.cluster_name
   cluster_subnet_ids         = local.public_subnets
   vpc_id                     = local.vpc_id
+  create_eks_kms_key         = false
   enable_irsa                = true
   enable_managed_node_groups = true
   enable_fargate_node_groups = true
@@ -25,7 +26,7 @@ module "complete_eks_cluster" {
   enabled_cluster_log_types  = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
   endpoint_private_access    = false
   endpoint_public_access     = true
-  cloudwatch_key_id          = local.kms_key_arn
+  kms_key_id                 = local.kms_key_arn
   encryption_config = {
     key_arn = local.kms_key_arn
   }

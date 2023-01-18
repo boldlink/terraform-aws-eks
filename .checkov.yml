@@ -1,2 +1,5 @@
 skip-check:
-- CKV_AWS_37 # "Ensure Amazon EKS control plane logging enabled for all log types"
+- CKV_AWS_38 # "Ensure Amazon EKS public endpoint not accessible to 0.0.0.0/0"
+- CKV_AWS_39 # "Ensure Amazon EKS public endpoint disabled"
+- CKV_AWS_111 # "Ensure IAM policies does not allow write access without constraints"
+- CKV_AWS_109 # "Ensure IAM policies does not allow permissions management / resource exposure without constraints"

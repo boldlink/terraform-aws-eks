@@ -6,4 +6,5 @@ module "minimum_eks_cluster" {
   vpc_id                    = local.vpc_id
   cluster_subnet_ids        = local.public_subnets
   tags                      = local.tags
+  create_eks_kms_key        = true
 }
