@@ -5,9 +5,14 @@ on:
       - opened
       - reopened
 
+permissions: read-all
+
 jobs:
   pr-labeler:
-    uses: boldlink/terraform-module-support/.github/workflows/pr-labeler.yaml@1.0.0
+    permissions:
+      contents: write
+      pull-requests: write
+    uses: boldlink/terraform-module-support/.github/workflows/pr-labeler.yaml@main
     with:
       configuration-path: .github/workflows/config/prl-config.yaml
     secrets:

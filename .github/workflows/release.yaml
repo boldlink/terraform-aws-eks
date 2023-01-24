@@ -4,9 +4,15 @@ on:
   push:
     branches:
       - main
+
+permissions: read-all
+
 jobs:
   release:
-    uses: boldlink/terraform-module-support/.github/workflows/release.yaml@1.0.0
+    permissions:
+      contents: write
+      pull-requests: write
+    uses: boldlink/terraform-module-support/.github/workflows/release.yaml@main
     with:
       config-name:  workflows/config/rd-config.yaml
     secrets:
