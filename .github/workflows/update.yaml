@@ -4,8 +4,13 @@ on:
   schedule:
     - cron: "00 17 * * * "
 
+permissions: read-all
+
 jobs:
   update-files:
+    permissions:
+      contents: write
+      pull-requests: write
     uses: boldlink/terraform-module-support/.github/workflows/update.yaml@main
     secrets:
       AUTOMATION_TOKEN: ${{ secrets.AUTOMATION_TOKEN }}

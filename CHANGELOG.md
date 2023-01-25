@@ -6,7 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 - fix: Ensure all dynamic options both on module and submodules are present in the complete example.
+- fix: CKV_AWS_37 "Ensure Amazon EKS control plane logging enabled for all log types"
 - fix: CKV_AWS_39: "Ensure Amazon EKS public endpoint disabled"
+- fix: CKV_AWS_58: "Ensure EKS Cluster has Secrets Encryption Enabled"
 - fix: CKV_AWS_109: "Ensure IAM policies does not allow permissions management / resource exposure without constraints"
 - feat: Add gp3 kms encryption for ebs volumes attached on the managed and self managed node groups (launch template).
 - feat: Add self-managed node-group for fully customizable cluster deployments, [for example windows node groups.](https://github.com/aws/containers-roadmap/issues/584).
@@ -23,7 +25,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [3.1.0] - 2023-01-12
 - fix: Use only one KMS key for secrets, cloudwatch encryption.
-- fix: CKV_AWS_37 "Ensure Amazon EKS control plane logging enabled for all log types"
 - Added new github workflow files & config files
 - feat: create a single kms key for eks module
 

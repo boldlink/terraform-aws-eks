@@ -16,9 +16,13 @@ on:
       - 'chores/*'
       - 'automatic*'
 
+permissions: read-all
+
 jobs:
   auto-badge:
-    uses: boldlink/terraform-module-support/.github/workflows/auto-badge.yaml@1.0.0
+    permissions:
+      contents: write
+    uses: boldlink/terraform-module-support/.github/workflows/auto-badge.yaml@main
     secrets:
       AUTOMATION_TOKEN: ${{ secrets.AUTOMATION_TOKEN }}
       SLACK_WEBHOOK : ${{secrets.SLACK_WEBHOOK}}
