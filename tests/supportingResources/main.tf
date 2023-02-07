@@ -4,7 +4,7 @@ module "kms_key" {
   description      = "kms key for ${local.name} nodule secrets"
   create_kms_alias = true
   alias_name       = "alias/${local.name}"
-  kms_policy       = data.aws_iam_policy_document.kms_policy.json
+  kms_policy       = local.kms_policy
   tags             = local.tags
 }
 

@@ -9,7 +9,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - fix: CKV_AWS_37 "Ensure Amazon EKS control plane logging enabled for all log types"
 - fix: CKV_AWS_39: "Ensure Amazon EKS public endpoint disabled"
 - fix: CKV_AWS_58: "Ensure EKS Cluster has Secrets Encryption Enabled"
-- fix: CKV_AWS_109: "Ensure IAM policies does not allow permissions management / resource exposure without constraints"
 - feat: Add gp3 kms encryption for ebs volumes attached on the managed and self managed node groups (launch template).
 - feat: Add self-managed node-group for fully customizable cluster deployments, [for example windows node groups.](https://github.com/aws/containers-roadmap/issues/584).
 - feat: Add EKS vpc-cni add-on to the module with the iam role and service account IAM permissions (optional with true/false choice).
@@ -21,7 +20,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - feat: Make all values of the tls_key variables not hardcoded values.
 - feat: Add the capacity for additional policies or override default attached policies to both the cluster and node group iam roles.
 - fix: CKV_AWS_38 # "Ensure Amazon EKS public endpoint not accessible to 0.0.0.0/0"
-- fix: CKV_AWS_111 # "Ensure IAM policies does not allow write access without constraints"
+
+## [3.1.1] - 2023-02-07
+- fix: CKV_AWS_109: Ensure IAM policies does not allow permissions management/resource exposure without constraints
+- fix: CKV_AWS_111 Ensure IAM policies does not allow write access without constraints
 
 ## [3.1.0] - 2023-01-12
 - fix: Use only one KMS key for secrets, cloudwatch encryption.
