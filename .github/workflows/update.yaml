@@ -2,7 +2,7 @@ name: update-files
 
 on:
   schedule:
-    - cron: "00 17 * * * "
+    - cron: "00 17 * * *"
 
 permissions: read-all
 
