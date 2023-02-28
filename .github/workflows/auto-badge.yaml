@@ -14,7 +14,7 @@ on:
       - 'releases/*'
       - 'chore/*'
       - 'chores/*'
-      - 'automatic*'
+      - 'automation*'
 
 permissions: read-all
 
