@@ -23,7 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [3.1.2] - 2023-03-09
 - fix: CKV_AWS_38 "Ensure Amazon EKS public endpoint not accessible to 0.0.0.0/0"
 - fix: CKV_AWS_58 "Ensure EKS Cluster has Secrets Encryption Enabled"
-- fix: Ensure all dynamic options both on module and submodules are present in the complete example.
+- fix: Fixed encryption config block since it was flagged by checkov.
 
 ## [3.1.1] - 2023-02-07
 - fix: CKV_AWS_109: Ensure IAM policies does not allow permissions management/resource exposure without constraints
