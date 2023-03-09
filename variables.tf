@@ -95,12 +95,6 @@ variable "enabled_cluster_log_types" {
   default     = []
 }
 
-variable "encryption_config" {
-  type        = map(string)
-  description = "(Optional) Configuration block with encryption configuration for the cluster. Only available on Kubernetes 1.13 and above clusters created after March 6, 2020."
-  default     = {}
-}
-
 variable "kubernetes_network_config" {
   type        = map(string)
   description = "(Optional) Configuration block with kubernetes network configuration for the cluster."
@@ -146,13 +140,6 @@ variable "ingress_rules" {
 }
 
 # KMS
-
-variable "create_eks_kms_key" {
-  description = "Whether to create a kms key for eks or not"
-  type        = bool
-  default     = false
-}
-
 variable "deletion_window_in_days" {
   description = "(Optional) The waiting period, specified in number of days. After the waiting period ends, AWS KMS deletes the KMS key. If you specify a value, it must be between 7 and 30, inclusive. If you do not specify a value, it defaults to 30."
   type        = number
@@ -183,8 +170,8 @@ variable "enable_fargate_node_groups" {
   default     = false
 }
 
-variable "kms_key_id" {
-  description = "(Optional) Amazon Resource Name (ARN) of the KMS Key to use when encrypting"
+variable "kms_key_arn" {
+  description = "Amazon Resource Name (ARN) of the KMS Key to use when encrypting"
   type        = string
   default     = null
 }

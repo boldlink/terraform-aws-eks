@@ -95,7 +95,7 @@ data "aws_subnets" "public" {
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.56.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.57.1 |
 | <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | 2.18.1 |
 | <a name="provider_tls"></a> [tls](#provider\_tls) | 4.0.4 |
 
@@ -141,7 +141,6 @@ data "aws_subnets" "public" {
 | <a name="input_cluster_name"></a> [cluster\_name](#input\_cluster\_name) | Name of the cluster. Must be between 1-100 characters in length. Must begin with an alphanumeric character, and must only contain alphanumeric characters, dashes and underscores (`\^[0-9A-Za-z][A-Za-z0-9-_]+$`). | `string` | `null` | no |
 | <a name="input_cluster_subnet_ids"></a> [cluster\_subnet\_ids](#input\_cluster\_subnet\_ids) | (Required) List of subnet IDs. Must be in at least two different availability zones. Amazon EKS creates cross-account elastic network interfaces in these subnets to allow communication between your worker nodes and the Kubernetes control plane. | `list(string)` | n/a | yes |
 | <a name="input_create_aws_auth"></a> [create\_aws\_auth](#input\_create\_aws\_auth) | Choose whether to create the aws-auth configmap- used when aws-auth configmap doesn't exist | `bool` | `false` | no |
-| <a name="input_create_eks_kms_key"></a> [create\_eks\_kms\_key](#input\_create\_eks\_kms\_key) | Whether to create a kms key for eks or not | `bool` | `false` | no |
 | <a name="input_deletion_window_in_days"></a> [deletion\_window\_in\_days](#input\_deletion\_window\_in\_days) | (Optional) The waiting period, specified in number of days. After the waiting period ends, AWS KMS deletes the KMS key. If you specify a value, it must be between 7 and 30, inclusive. If you do not specify a value, it defaults to 30. | `number` | `30` | no |
 | <a name="input_eks_addons"></a> [eks\_addons](#input\_eks\_addons) | EKS Addons resource block | `any` | `{}` | no |
 | <a name="input_enable_cp_logging"></a> [enable\_cp\_logging](#input\_enable\_cp\_logging) | Determine whether to enable control plane logging | `bool` | `true` | no |
@@ -150,13 +149,12 @@ data "aws_subnets" "public" {
 | <a name="input_enable_key_rotation"></a> [enable\_key\_rotation](#input\_enable\_key\_rotation) | (Optional) Specifies whether key rotation is enabled. Defaults to false. | `bool` | `true` | no |
 | <a name="input_enable_managed_node_groups"></a> [enable\_managed\_node\_groups](#input\_enable\_managed\_node\_groups) | Set this variable to true to create your managed node groups | `bool` | `false` | no |
 | <a name="input_enabled_cluster_log_types"></a> [enabled\_cluster\_log\_types](#input\_enabled\_cluster\_log\_types) | (Optional) List of the desired control plane logging to enable. | `list(string)` | `[]` | no |
-| <a name="input_encryption_config"></a> [encryption\_config](#input\_encryption\_config) | (Optional) Configuration block with encryption configuration for the cluster. Only available on Kubernetes 1.13 and above clusters created after March 6, 2020. | `map(string)` | `{}` | no |
 | <a name="input_endpoint_private_access"></a> [endpoint\_private\_access](#input\_endpoint\_private\_access) | (Optional) Whether the Amazon EKS private API server endpoint is enabled. Default is `false`. | `bool` | `true` | no |
 | <a name="input_endpoint_public_access"></a> [endpoint\_public\_access](#input\_endpoint\_public\_access) | (Optional) Whether the Amazon EKS public API server endpoint is enabled. Default is `true`. | `bool` | `false` | no |
 | <a name="input_fargate_node_groups"></a> [fargate\_node\_groups](#input\_fargate\_node\_groups) | Map of EKS fargate node group definitions to create | `any` | `{}` | no |
 | <a name="input_identity_providers"></a> [identity\_providers](#input\_identity\_providers) | Identity providers resources block | `any` | `{}` | no |
 | <a name="input_ingress_rules"></a> [ingress\_rules](#input\_ingress\_rules) | (Optional) Ingress rules to add to the security group | `any` | `{}` | no |
-| <a name="input_kms_key_id"></a> [kms\_key\_id](#input\_kms\_key\_id) | (Optional) Amazon Resource Name (ARN) of the KMS Key to use when encrypting | `string` | `null` | no |
+| <a name="input_kms_key_arn"></a> [kms\_key\_arn](#input\_kms\_key\_arn) | Amazon Resource Name (ARN) of the KMS Key to use when encrypting | `string` | `null` | no |
 | <a name="input_kubernetes_master_version"></a> [kubernetes\_master\_version](#input\_kubernetes\_master\_version) | (Optional) Desired Kubernetes master version. If you do not specify a value, the latest available version at resource creation is used and no upgrades will occur except those automatically triggered by EKS. The value must be configured and increased to upgrade the version when desired. Downgrades are not supported by EKS. | `string` | `null` | no |
 | <a name="input_kubernetes_network_config"></a> [kubernetes\_network\_config](#input\_kubernetes\_network\_config) | (Optional) Configuration block with kubernetes network configuration for the cluster. | `map(string)` | `{}` | no |
 | <a name="input_log_group_retention_days"></a> [log\_group\_retention\_days](#input\_log\_group\_retention\_days) | Number of days the log group is retained before it is deleted | `number` | `7` | no |
@@ -198,7 +196,7 @@ data "aws_subnets" "public" {
 | <a name="output_vpc_config"></a> [vpc\_config](#output\_vpc\_config) | Configuration block argument that also includes attributes for the VPC associated with your cluster. |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
-## Third party software
+# Third party software
 This repository uses third party software:
 * [pre-commit](https://pre-commit.com/) - Used to help ensure code and documentation consistency
   * Install with `brew install pre-commit`
@@ -220,10 +218,10 @@ first and use data sources on the examples to use the stacks.
 
 Any supporting resources will be available on the `tests/supportingResources` and the lifecycle is managed by the `Makefile` targets.
 
-Resources on the `test/supportingResources` folder are not intended for demo or actual implementation purposes, and can be used for reference.
+Resources on the `tests/supportingResources` folder are not intended for demo or actual implementation purposes, and can be used for reference.
 
 ### Makefile
-The makefile contain in this repo is optimized for linux paths and the main purpose is to execute testing for now.
+The makefile contained in this repo is optimized for linux paths and the main purpose is to execute testing for now.
 * Create all tests stacks including any supporting resources:
 ```console
 make tests
@@ -240,5 +238,4 @@ make cleansupporting
 ```console
 make cleanstatefiles
 ```
-
-#### BOLDLink-SIG 2022
+#### BOLDLink-SIG 2023
