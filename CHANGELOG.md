@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [3.1.2] - 2023-03-09
 - fix: CKV_AWS_38 "Ensure Amazon EKS public endpoint not accessible to 0.0.0.0/0"
 - fix: CKV_AWS_58 "Ensure EKS Cluster has Secrets Encryption Enabled"
+- fix: Ensure all dynamic options both on module and submodules are present in the complete example.
 
 ## [3.1.1] - 2023-02-07
 - fix: CKV_AWS_109: Ensure IAM policies does not allow permissions management/resource exposure without constraints
@@ -93,8 +94,9 @@ fix: reference node iam arns inside the module for aws-auth configmap.
 - Cluster only example
 - Cluster logging
 
-[Unreleased]: https://github.com/boldlink/terraform-aws-eks/compare/3.1.1..HEAD
+[Unreleased]: https://github.com/boldlink/terraform-aws-eks/compare/3.1.2..HEAD
 
+[3.1.2]: https://github.com/boldlink/terraform-aws-eks/releases/tag/3.1.2
 [3.1.1]: https://github.com/boldlink/terraform-aws-eks/releases/tag/3.1.1
 [3.1.0]: https://github.com/boldlink/terraform-aws-eks/releases/tag/3.1.0
 [3.0.2]: https://github.com/boldlink/terraform-aws-eks/releases/tag/3.0.2
