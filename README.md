@@ -20,16 +20,18 @@ This is a detailed terraform module that can be used to create AWS EKS Cluster, 
 - Has elaborate examples that you can use to setup your cluster within a very short time.
 - Contains config map resources that you can easily use to add a new config map or modify an existing one.
 
+Examples available [here](./examples)
 
-Example available [here](https://github.com/boldlink/terraform-aws-eks/tree/main/examples)
+**Note on Using Custom Public Access CIDRS**
+If you restrict access to your public endpoint using CIDR blocks, it is recommended that you also enable private endpoint access so that nodes and Fargate pods (if you use them) can communicate with the cluster. Without the private endpoint enabled, your public access endpoint CIDR sources must include the egress sources from your VPC. For example, if you have a node in a private subnet that communicates to the internet through a NAT Gateway, you will need to add the outbound IP address of the NAT gateway as part of an allowed CIDR block on your public endpoint.
+see more [here](https://docs.aws.amazon.com/eks/latest/userguide/cluster-endpoint.html)
 
 ## Usage
-*NOTE*: These examples use the latest version of this module
+**NOTE**: These examples use the latest version of this module
 
 ```console
 module "minimum_eks_cluster" {
   source                    = "boldlink/eks/aws"
-  version                   = "3.1.0"
   enabled_cluster_log_types = ["api", "authenticator", "audit", "scheduler", "controllerManager"]
   cluster_name              = local.cluster_name
   vpc_id                    = local.vpc_id
@@ -95,7 +97,7 @@ data "aws_subnets" "public" {
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.57.1 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.58.0 |
 | <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | 2.18.1 |
 | <a name="provider_tls"></a> [tls](#provider\_tls) | 4.0.4 |
 

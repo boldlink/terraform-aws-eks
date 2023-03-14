@@ -1,4 +1,3 @@
-
 data "aws_eks_cluster" "default" {
   name = module.complete_eks_cluster.id
 }
@@ -18,17 +17,22 @@ module "complete_eks_cluster" {
   cluster_name               = var.cluster_name
   cluster_subnet_ids         = local.public_subnets
   vpc_id                     = local.vpc_id
-  enable_irsa                = var.enable_irsa
-  enable_managed_node_groups = var.enable_managed_node_groups
-  enable_fargate_node_groups = var.enable_fargate_node_groups
-  modify_aws_auth            = var.modify_aws_auth
-  enabled_cluster_log_types  = var.enabled_cluster_log_types
-  endpoint_private_access    = var.endpoint_private_access
-  endpoint_public_access     = var.endpoint_public_access
-  public_access_cidrs        = [local.vpc_cidr]
+  enable_irsa                = true
+  enable_managed_node_groups = true
+  enable_fargate_node_groups = true
+  modify_aws_auth            = true
+  enabled_cluster_log_types  = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
+  endpoint_public_access     = true
+  public_access_cidrs        = ["52.121.50.13/32"]
   kms_key_arn                = local.kms_key_arn
 
-  aws_auth_roles = [var.aws_auth_roles]
+  aws_auth_roles = [
+    {
+      rolearn  = "arn:aws:iam::12345678901:role/examplerole"
+      username = "examplerole"
+      groups   = ["system:masters"]
+    },
+  ]
   managed_node_groups = {
     managed0 = {
       create       = true
