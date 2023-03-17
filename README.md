@@ -24,7 +24,7 @@ Examples available [here](./examples)
 
 **Note on Using Custom Public Access CIDRS**
 - If you restrict access to your public endpoint using CIDR blocks, it is recommended that you also enable private endpoint access so that nodes and Fargate pods (if you use them) can communicate with the cluster. Without the private endpoint enabled, your public access endpoint CIDR sources must include the egress sources from your VPC. For example, if you have a node in a private subnet that communicates to the internet through a NAT Gateway, you will need to add the outbound IP address of the NAT gateway as part of an allowed CIDR block on your public endpoint.
-- Use valid custom public access CIDR block(s). If the CIDR block does not exist you will encounter an error.
+- Use your own public access CIDR block(s), otherwise you will encounter an error.
 see more [here](https://docs.aws.amazon.com/eks/latest/userguide/cluster-endpoint.html)
 
 ## Usage
