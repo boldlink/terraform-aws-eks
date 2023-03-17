@@ -1,6 +1,4 @@
-/*
-Eks node group
-*/
+### Eks node group
 resource "aws_eks_node_group" "main" {
   cluster_name           = var.cluster_name
   node_role_arn          = aws_iam_role.node_group.arn
@@ -69,9 +67,7 @@ resource "aws_eks_node_group" "main" {
   }
 }
 
-/*
-Key pair
-*/
+### Key pair
 resource "tls_private_key" "this" {
   count     = var.create_key_pair ? 1 : 0
   algorithm = "RSA"
@@ -84,9 +80,7 @@ resource "aws_key_pair" "this" {
   public_key = tls_private_key.this[0].public_key_openssh
 }
 
-/*
-For downloading the keypair to local computer
-*/
+## For downloading the keypair to local computer
 resource "null_resource" "local_save_ec2_keypair" {
   count = var.create_key_pair ? 1 : 0
   provisioner "local-exec" {
@@ -94,9 +88,7 @@ resource "null_resource" "local_save_ec2_keypair" {
   }
 }
 
-/*
-AWS IAM Roles for the Node Groups
-*/
+## AWS IAM Roles for the Node Groups
 resource "aws_iam_role" "node_group" {
   name = substr("${var.cluster_name}-${var.node_group_name}-node-group-role", 0, 64)
   assume_role_policy = jsonencode({

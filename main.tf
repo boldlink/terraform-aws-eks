@@ -1,12 +1,11 @@
-/*
-Eks cluster
-*/
+### Eks cluster
 resource "aws_eks_cluster" "main" {
   name                      = var.cluster_name
   role_arn                  = aws_iam_role.ekscluster.arn
   enabled_cluster_log_types = var.enabled_cluster_log_types
   tags                      = var.tags
   version                   = var.kubernetes_master_version
+
   vpc_config {
     endpoint_private_access = var.endpoint_private_access
     endpoint_public_access  = var.endpoint_public_access
@@ -14,6 +13,7 @@ resource "aws_eks_cluster" "main" {
     security_group_ids      = concat(compact([(join(aws_security_group.eks_cluster.id, var.security_group_ids))]))
     subnet_ids              = var.cluster_subnet_ids
   }
+
   dynamic "kubernetes_network_config" {
     for_each = var.kubernetes_network_config
     content {
@@ -21,20 +21,17 @@ resource "aws_eks_cluster" "main" {
       ip_family         = lookup(kubernetes_network_config.value, "ip_family", null)
     }
   }
-  dynamic "encryption_config" {
-    for_each = var.encryption_config == null ? [] : [var.encryption_config]
-    content {
-      provider {
-        key_arn = length(encryption_config.value) < 1 ? join("", aws_kms_key.main.*.arn) : encryption_config.value.key_arn
-      }
-      resources = ["secrets"]
+
+  encryption_config {
+    provider {
+      key_arn = var.kms_key_arn != null ? var.kms_key_arn : join("", aws_kms_key.main.*.arn)
     }
+    resources = ["secrets"]
   }
 
-  /*
-  Ensure that IAM Role permissions are created before and deleted after EKS Cluster handling.
-  Otherwise, EKS will not be able to properly delete EKS managed EC2 infrastructure such as Security Groups.
-  */
+  ### Ensure that IAM Role permissions are created before and deleted after EKS Cluster handling.
+  ### Otherwise, EKS will not be able to properly delete EKS managed EC2 infrastructure such as Security Groups.
+
   depends_on = [
     aws_iam_role_policy_attachment.amazoneksclusterpolicy,
     aws_iam_role_policy_attachment.amazoneksvpccontroller,
@@ -43,7 +40,7 @@ resource "aws_eks_cluster" "main" {
 }
 
 resource "aws_kms_key" "main" {
-  count                   = var.create_eks_kms_key ? 1 : 0
+  count                   = var.kms_key_arn != null ? 0 : 1
   description             = "A kms key for eks cluster"
   deletion_window_in_days = var.deletion_window_in_days
   policy                  = local.kms_policy
@@ -52,7 +49,7 @@ resource "aws_kms_key" "main" {
 }
 
 resource "aws_kms_alias" "main" {
-  count         = var.create_eks_kms_key ? 1 : 0
+  count         = var.kms_key_arn != null ? 0 : 1
   name          = "alias/${var.cluster_name}-key"
   target_key_id = aws_kms_key.main[0].key_id
 }
@@ -67,10 +64,10 @@ resource "aws_iam_role_policy_attachment" "amazoneksclusterpolicy" {
   role       = aws_iam_role.ekscluster.name
 }
 
-/*
-Optionally, enable Security Groups for Pods
-Reference: https://docs.aws.amazon.com/eks/latest/userguide/security-groups-for-pods.html
-*/
+
+### Optionally, enable Security Groups for Pods
+### Reference: https://docs.aws.amazon.com/eks/latest/userguide/security-groups-for-pods.html
+
 resource "aws_iam_role_policy_attachment" "amazoneksvpccontroller" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSVPCResourceController"
   role       = aws_iam_role.ekscluster.name
@@ -82,12 +79,10 @@ resource "aws_cloudwatch_log_group" "main" {
   count             = var.enable_cp_logging ? 1 : 0
   name              = "/aws/eks/${var.cluster_name}/cluster"
   retention_in_days = var.log_group_retention_days
-  kms_key_id        = var.kms_key_id == null ? try(aws_kms_key.main[0].arn, "") : var.kms_key_id
+  kms_key_id        = var.kms_key_arn == null ? try(aws_kms_key.main[0].arn, "") : var.kms_key_arn
 }
 
-/*
-Eks addon
-*/
+## Eks addon
 resource "aws_eks_addon" "main" {
   for_each                 = var.eks_addons
   cluster_name             = aws_eks_cluster.main.name
@@ -98,9 +93,7 @@ resource "aws_eks_addon" "main" {
   service_account_role_arn = lookup(each.value, "service_account_role_arn", null)
 }
 
-/*
-Enable cluster IRSA
-*/
+## Enable cluster IRSA
 data "tls_certificate" "irsa" {
   count = var.enable_irsa ? 1 : 0
   url   = "https://oidc.eks.${local.region}.${local.dns_suffix}"
