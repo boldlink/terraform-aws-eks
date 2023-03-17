@@ -55,7 +55,9 @@ This stack builds:
 |------|-------------|------|---------|:--------:|
 | <a name="input_cidr_block"></a> [cidr\_block](#input\_cidr\_block) | VPC CIDR block | `string` | `"192.169.0.0/16"` | no |
 | <a name="input_cluster_name"></a> [cluster\_name](#input\_cluster\_name) | Name of the cluster | `string` | `"example-complete-eks"` | no |
+| <a name="input_create_kms_alias"></a> [create\_kms\_alias](#input\_create\_kms\_alias) | Whether to create CMK kms alias | `bool` | `true` | no |
 | <a name="input_create_nat_gateway"></a> [create\_nat\_gateway](#input\_create\_nat\_gateway) | Whether to create any NAT Gateway | `bool` | `true` | no |
+| <a name="input_description"></a> [description](#input\_description) | Description for the CMK kms key | `string` | `"kms key for eks module secrets"` | no |
 | <a name="input_enable_dns_hostnames"></a> [enable\_dns\_hostnames](#input\_enable\_dns\_hostnames) | A boolean flag to enable/disable DNS hostnames in the VPC. Defaults `false`. | `bool` | `true` | no |
 | <a name="input_enable_dns_support"></a> [enable\_dns\_support](#input\_enable\_dns\_support) | A boolean flag to enable/disable DNS support | `bool` | `true` | no |
 | <a name="input_map_public_ip_on_launch"></a> [map\_public\_ip\_on\_launch](#input\_map\_public\_ip\_on\_launch) | Whether to map public IP to instances launched on the public subnets | `bool` | `true` | no |

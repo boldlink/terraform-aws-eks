@@ -1,8 +1,8 @@
 module "kms_key" {
   source           = "boldlink/kms/aws"
   version          = "1.1.0"
-  description      = "kms key for ${var.name} nodule secrets"
-  create_kms_alias = true
+  description      = var.description
+  create_kms_alias = var.create_kms_alias
   alias_name       = "alias/${var.name}"
   kms_policy       = local.kms_policy
   tags             = merge({ "Name" = var.name }, var.tags)

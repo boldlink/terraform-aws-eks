@@ -60,3 +60,15 @@ variable "create_nat_gateway" {
   description = "Whether to create any NAT Gateway"
   default     = true
 }
+
+variable "create_kms_alias" {
+  type        = bool
+  description = "Whether to create CMK kms alias"
+  default     = true
+}
+
+variable "description" {
+  type        = string
+  description = "Description for the CMK kms key"
+  default     = "kms key for eks module secrets"
+}
