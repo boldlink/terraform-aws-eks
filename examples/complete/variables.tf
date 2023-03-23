@@ -49,20 +49,8 @@ variable "modify_aws_auth" {
   default     = true
 }
 
-variable "endpoint_public_access" {
-  type        = bool
-  description = "Whether the Amazon EKS public API server endpoint is enabled."
-  default     = true
-}
-
 variable "enabled_cluster_log_types" {
   type        = list(string)
   description = "List of the desired control plane logging to enable."
   default     = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
-}
-
-variable "public_access_cidrs" {
-  type        = list(string)
-  description = "List of CIDR blocks. Indicates which CIDR blocks can access the Amazon EKS public API server endpoint when enabled."
-  default     = ["41.212.57.13/32"]
 }
