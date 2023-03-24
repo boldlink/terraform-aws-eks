@@ -54,3 +54,15 @@ variable "enabled_cluster_log_types" {
   description = "List of the desired control plane logging to enable."
   default     = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
 }
+
+variable "endpoint_private_access" {
+  type        = bool
+  description = "Whether the Amazon EKS private API server endpoint is enabled. Default is `false`."
+  default     = false
+}
+
+variable "endpoint_public_access" {
+  type        = bool
+  description = "Whether the Amazon EKS public API server endpoint is enabled. Default is `true`."
+  default     = true
+}

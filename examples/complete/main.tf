@@ -25,8 +25,8 @@ module "complete_eks_cluster" {
   modify_aws_auth            = var.modify_aws_auth
   enabled_cluster_log_types  = var.enabled_cluster_log_types
   kms_key_arn                = local.kms_key_arn
-  endpoint_public_access     = true
-  endpoint_private_access    = false
+  endpoint_public_access     = var.endpoint_public_access
+  endpoint_private_access    = var.endpoint_private_access
 
   aws_auth_roles = [
     {
