@@ -5,8 +5,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
-- fix: CKV_AWS_37 "Ensure Amazon EKS control plane logging enabled for all log types"
-- fix: CKV_AWS_39: "Ensure Amazon EKS public endpoint disabled"
 - feat: Add gp3 kms encryption for ebs volumes attached on the managed and self managed node groups (launch template).
 - feat: Add self-managed node-group for fully customizable cluster deployments, [for example windows node groups.](https://github.com/aws/containers-roadmap/issues/584).
 - feat: Add EKS vpc-cni add-on to the module with the iam role and service account IAM permissions (optional with true/false choice).
@@ -19,6 +17,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - feat: Add the capacity for additional policies or override default attached policies to both the cluster and node group iam roles.
 - feat: show selector and timeouts usage in complete example for fargate profile resource
 - feat: show `taint, remote_access, launch_template` and `update_config` usage in complete example for `eks_node_group` resource
+
+## [3.1.3] - 2023-03-23
+- fix: CKV_AWS_37 "Ensure Amazon EKS control plane logging enabled for all log types"
+- fix: CKV_AWS_39: "Ensure Amazon EKS public endpoint disabled"
 
 ## [3.1.2] - 2023-03-09
 - fix: CKV_AWS_38 "Ensure Amazon EKS public endpoint not accessible to 0.0.0.0/0"
@@ -94,8 +96,9 @@ fix: reference node iam arns inside the module for aws-auth configmap.
 - Cluster only example
 - Cluster logging
 
-[Unreleased]: https://github.com/boldlink/terraform-aws-eks/compare/3.1.2..HEAD
+[Unreleased]: https://github.com/boldlink/terraform-aws-eks/compare/3.1.3..HEAD
 
+[3.1.3]: https://github.com/boldlink/terraform-aws-eks/releases/tag/3.1.3
 [3.1.2]: https://github.com/boldlink/terraform-aws-eks/releases/tag/3.1.2
 [3.1.1]: https://github.com/boldlink/terraform-aws-eks/releases/tag/3.1.1
 [3.1.0]: https://github.com/boldlink/terraform-aws-eks/releases/tag/3.1.0

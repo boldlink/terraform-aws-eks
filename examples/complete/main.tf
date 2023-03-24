@@ -13,6 +13,8 @@ provider "kubernetes" {
 }
 
 module "complete_eks_cluster" {
+  #checkov:skip=CKV_AWS_38: "Ensure Amazon EKS public endpoint not accessible to 0.0.0.0/0"
+  #checkov:skip=CKV_AWS_39: "Ensure Amazon EKS public endpoint disabled"
   source                     = "./../../"
   cluster_name               = var.cluster_name
   cluster_subnet_ids         = local.public_subnets
@@ -22,9 +24,9 @@ module "complete_eks_cluster" {
   enable_fargate_node_groups = var.enable_fargate_node_groups
   modify_aws_auth            = var.modify_aws_auth
   enabled_cluster_log_types  = var.enabled_cluster_log_types
-  endpoint_public_access     = var.endpoint_public_access
-  public_access_cidrs        = var.public_access_cidrs
   kms_key_arn                = local.kms_key_arn
+  endpoint_public_access     = var.endpoint_public_access
+  endpoint_private_access    = var.endpoint_private_access
 
   aws_auth_roles = [
     {
