@@ -42,3 +42,4 @@ override.tf.json
 terraform-docs.*
 tflint_*
 terraform_*
+*.log
