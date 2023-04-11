@@ -145,6 +145,8 @@ cleanstatefiles:
 		rm -rf terraform.tfstate* ;\
 	done
 
+plan: tfinit tfplan
+
 tests: tfinit tfapply
 
 clean: tfdestroy tfexampleclean tfmoduleclean
