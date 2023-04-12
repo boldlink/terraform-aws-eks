@@ -45,7 +45,7 @@ module "fargate_profile" {
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.60.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.62.0 |
 
 ## Modules
 
