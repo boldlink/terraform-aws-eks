@@ -1,0 +1,27 @@
+name: test-examples
+
+on:
+
+  pull_request_review:
+    types: [submitted]
+    paths:
+      - '**.tf'
+
+  pull_request:
+    types:
+      - "opened"
+      - "synchronize"
+    paths:
+      - '**.tf'
+
+permissions: read-all
+
+jobs:
+  test-examples:
+    permissions:
+      contents: write
+      pull-requests: write
+    uses: boldlink/terraform-module-support/.github/workflows/module-examples-tests.yaml@main
+    secrets:
+      AUTOMATION_TOKEN: ${{ secrets.AUTOMATION_TOKEN }}
+      SLACK_WEBHOOK : ${{secrets.SLACK_WEBHOOK}}
