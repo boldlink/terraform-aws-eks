@@ -10,7 +10,7 @@ module "kms_key" {
 
 module "eks_vpc" {
   source                  = "boldlink/vpc/aws"
-  version                 = "2.0.3"
+  version                 = "3.0.4"
   name                    = var.name
   account                 = local.account_id
   region                  = local.region
