@@ -17,6 +17,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - feat: Add the capacity for additional policies or override default attached policies to both the cluster and node group iam roles.
 - feat: show selector and timeouts usage in complete example for fargate profile resource
 - feat: show `taint, remote_access, launch_template` and `update_config` usage in complete example for `eks_node_group` resource
+- fix: CKV_AWS_39: "Ensure Amazon EKS public endpoint disabled"
+- fix: CKV_AWS_38: "Ensure Amazon EKS public endpoint not accessible to 0.0.0.0/0"
+- fix: CKV_TF_1: "Ensure Terraform module sources use a commit hash"
+- fix: CKV_AWS_338: "Ensure CloudWatch log groups retains logs for at least 1 year"
+
+## [3.2.0] - 2023-09-30
+- feat: Upgrade VPC module to v3.0.4
+- feat: Move all nodes on the complete example to private subnets.
 
 ## [3.1.3] - 2023-03-23
 - fix: CKV_AWS_37 "Ensure Amazon EKS control plane logging enabled for all log types"

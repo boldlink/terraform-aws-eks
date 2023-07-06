@@ -6,7 +6,7 @@ on:
     branches:
       - 'fix/*'
       - 'fixes/*'
-      - 'feat*'
+      - 'feat*/*'
       - 'hotfix/*'
       - 'hotfixes/*'
       - 'release/*'

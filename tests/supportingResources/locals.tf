@@ -7,7 +7,6 @@ locals {
   account_id          = data.aws_caller_identity.current.id
   dns_suffix          = data.aws_partition.current.dns_suffix
   partition           = data.aws_partition.current.partition
-  azs                 = flatten(data.aws_availability_zones.available.names)
 
   kms_policy = jsonencode(
     {

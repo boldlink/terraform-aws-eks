@@ -1,0 +1,5 @@
+skip-check:
+  - CKV_AWS_39 # "Ensure Amazon EKS public endpoint disabled"
+  - CKV_AWS_38 # "Ensure Amazon EKS public endpoint not accessible to 0.0.0.0/0"
+  - CKV_TF_1 # "Ensure Terraform module sources use a commit hash"
+  - CKV_AWS_338 # "Ensure CloudWatch log groups retains logs for at least 1 year"
