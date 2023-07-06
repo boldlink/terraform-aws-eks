@@ -9,22 +9,41 @@ module "kms_key" {
 }
 
 module "eks_vpc" {
-  source                  = "boldlink/vpc/aws"
-  version                 = "2.0.3"
-  name                    = var.name
-  account                 = local.account_id
-  region                  = local.region
-  cidr_block              = var.cidr_block
-  enable_dns_hostnames    = var.enable_dns_hostnames
-  enable_dns_support      = var.enable_dns_support
-  create_nat_gateway      = var.create_nat_gateway
-  nat_single_az           = var.nat_single_az
-  public_subnets          = local.public_subnets
-  private_subnets         = local.private_subnets
-  eks_public_subnets      = local.eks_public_subnets
-  eks_private_subnets     = local.eks_private_subnets
-  cluster_name            = var.cluster_name
-  availability_zones      = local.azs
-  map_public_ip_on_launch = var.map_public_ip_on_launch
-  other_tags              = var.tags
+  source                 = "boldlink/vpc/aws"
+  version                = "3.0.4"
+  name                   = var.name
+  cidr_block             = var.cidr_block
+  enable_dns_hostnames   = true
+  enable_public_subnets  = true
+  enable_private_subnets = true
+  tags                   = var.tags
+  public_subnets = {
+    public = {
+      cidrs                   = local.public_subnets
+      map_public_ip_on_launch = true
+      nat                     = "single"
+    },
+    eks = {
+      cidrs = local.eks_public_subnets
+      tags = {
+        "kubernetes.io/cluster/example-complete-eks" = "shared"
+        "kubernetes.io/cluster/example-minimum-eks"  = "shared"
+        "kubernetes.io/role/elb"                     = true
+      }
+    }
+  }
+
+  private_subnets = {
+    private = {
+      cidrs = local.private_subnets
+    },
+    eks = {
+      cidrs = local.eks_private_subnets
+      tags = {
+        "kubernetes.io/cluster/example-complete-eks" = "shared"
+        "kubernetes.io/cluster/example-minimum-eks"  = "shared"
+        "kubernetes.io/role/internal-elb"            = true
+      }
+    }
+  }
 }
