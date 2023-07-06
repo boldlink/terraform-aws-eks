@@ -23,8 +23,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - fix: CKV_AWS_338: "Ensure CloudWatch log groups retains logs for at least 1 year"
 
 ## [3.2.0] - 2023-09-30
-- feat: Upgrade VPC module to v3.0.4 
-- feat: Move all nodes on the complete example to private subnets. 
+- feat: Upgrade VPC module to v3.0.4
+- feat: Move all nodes on the complete example to private subnets.
 
 ## [3.1.3] - 2023-03-23
 - fix: CKV_AWS_37 "Ensure Amazon EKS control plane logging enabled for all log types"
