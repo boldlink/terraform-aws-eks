@@ -151,5 +151,3 @@ output "oicd_arn" {
   description = "The name of the node group IAM role"
   value       = aws_iam_openid_connect_provider.irsa[0].arn
 }
-  
-}
