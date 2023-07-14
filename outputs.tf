@@ -146,3 +146,8 @@ output "fargate_role_name" {
     for node in module.fargate_profile : node.role_name
   ]
 }
+
+output "oicd_arn" {
+  description = "The name of the node group IAM role"
+  value       = aws_iam_openid_connect_provider.irsa[0].arn
+}

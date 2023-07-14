@@ -22,7 +22,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - fix: CKV_TF_1: "Ensure Terraform module sources use a commit hash"
 - fix: CKV_AWS_338: "Ensure CloudWatch log groups retains logs for at least 1 year"
 
-## [3.2.0] - 2023-09-30
+## [3.2.1] - 2023-7-14
+- fix: add missing output for oicd.
+
+## [3.2.0] - 2023-07
 - feat: Upgrade VPC module to v3.0.4
 - feat: Move all nodes on the complete example to private subnets.
 
