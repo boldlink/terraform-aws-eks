@@ -3,7 +3,7 @@ resource "aws_eks_cluster" "main" {
   name                      = var.cluster_name
   role_arn                  = aws_iam_role.ekscluster.arn
   enabled_cluster_log_types = var.enabled_cluster_log_types
-  tags                      = var.tags
+  tags                      = merge({Name = var.cluster_name}, var.tags)
   version                   = var.kubernetes_master_version
 
   vpc_config {
@@ -45,7 +45,7 @@ resource "aws_kms_key" "main" {
   deletion_window_in_days = var.deletion_window_in_days
   policy                  = local.kms_policy
   enable_key_rotation     = var.enable_key_rotation
-  tags                    = var.tags
+  tags                    = merge({ Name = "${var.cluster_name}-kms-key" },var.tags)
 }
 
 resource "aws_kms_alias" "main" {
@@ -57,6 +57,7 @@ resource "aws_kms_alias" "main" {
 resource "aws_iam_role" "ekscluster" {
   name               = "${var.cluster_name}-main"
   assume_role_policy = data.aws_iam_policy_document.eks_cluster_assume_role.json
+  tags = merge({ Name = "${var.cluster_name}-iam-role" },var.tags)
 }
 
 resource "aws_iam_role_policy_attachment" "amazoneksclusterpolicy" {
@@ -80,6 +81,7 @@ resource "aws_cloudwatch_log_group" "main" {
   name              = "/aws/eks/${var.cluster_name}/cluster"
   retention_in_days = var.log_group_retention_days
   kms_key_id        = var.kms_key_arn == null ? try(aws_kms_key.main[0].arn, "") : var.kms_key_arn
+  tags = merge({ Name = "${var.cluster_name}-log-group" },var.tags)
 }
 
 ## Eks addon
@@ -104,10 +106,7 @@ resource "aws_iam_openid_connect_provider" "irsa" {
   client_id_list  = ["sts.${local.dns_suffix}"]
   thumbprint_list = [data.tls_certificate.irsa[0].certificates[0].sha1_fingerprint]
   url             = aws_eks_cluster.main.identity[0].oidc[0].issuer
-  tags = merge(
-    { Name = "${var.cluster_name}-eks-irsa" },
-    var.tags
-  )
+  tags = merge({ Name = "${var.cluster_name}-eks-irsa" },var.tags)
   depends_on = [
     aws_eks_cluster.main
   ]
@@ -128,7 +127,7 @@ resource "aws_eks_identity_provider_config" "main" {
     username_claim                = lookup(each.value, "username_claim", null)
     username_prefix               = lookup(each.value, "username_prefix", null)
   }
-  tags = var.tags
+  tags = merge({Name = "${var.cluster_name}-identity-provider"}, var.tags)
   timeouts {
     create = lookup(var.timeouts, "create", "40m")
     delete = lookup(var.timeouts, "delete", "40m")
@@ -168,7 +167,7 @@ resource "aws_security_group" "eks_cluster" {
   name        = "${var.cluster_name}-security-group"
   vpc_id      = var.vpc_id
   description = "EKS cluster Security Group"
-  tags        = var.tags
+  tags        = merge({Name = "${var.cluster_name}-security-group"}, var.tags)
 }
 
 resource "aws_security_group_rule" "ingress" {

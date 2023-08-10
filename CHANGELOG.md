@@ -22,8 +22,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - fix: CKV_TF_1: "Ensure Terraform module sources use a commit hash"
 - fix: CKV_AWS_338: "Ensure CloudWatch log groups retains logs for at least 1 year"
 
+## [3.2.2] - 2023-8-14
+- fix: tags missing in most module resources
+- fix: oidc output error in minimum example.
+
 ## [3.2.1] - 2023-7-14
-- fix: add missing output for oicd.
+- fix: add missing output for oidc.
 
 ## [3.2.0] - 2023-07
 - feat: Upgrade VPC module to v3.0.4
@@ -107,8 +111,11 @@ fix: reference node iam arns inside the module for aws-auth configmap.
 - Cluster only example
 - Cluster logging
 
-[Unreleased]: https://github.com/boldlink/terraform-aws-eks/compare/3.1.3..HEAD
+[Unreleased]: https://github.com/boldlink/terraform-aws-eks/compare/3.2.2..HEAD
 
+[3.2.2]: https://github.com/boldlink/terraform-aws-eks/releases/tag/3.2.2
+[3.2.1]: https://github.com/boldlink/terraform-aws-eks/releases/tag/3.2.1
+[3.2.0]: https://github.com/boldlink/terraform-aws-eks/releases/tag/3.2.0
 [3.1.3]: https://github.com/boldlink/terraform-aws-eks/releases/tag/3.1.3
 [3.1.2]: https://github.com/boldlink/terraform-aws-eks/releases/tag/3.1.2
 [3.1.1]: https://github.com/boldlink/terraform-aws-eks/releases/tag/3.1.1
