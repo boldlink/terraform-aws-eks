@@ -12,7 +12,7 @@ resource "aws_eks_node_group" "main" {
   node_group_name        = var.node_group_name_prefix != null ? null : coalesce(var.node_group_name, var.cluster_name)
   node_group_name_prefix = var.node_group_name != null ? null : var.node_group_name_prefix
   release_version        = var.release_version
-  tags                   = var.tags
+  tags                   = merge({ Name = "${var.cluster_name}-node-group" }, var.tags)
   version                = var.kubernetes_version
 
   scaling_config {
@@ -78,6 +78,7 @@ resource "aws_key_pair" "this" {
   count      = var.create_key_pair ? 1 : 0
   key_name   = "${var.cluster_name}-keypair"
   public_key = tls_private_key.this[0].public_key_openssh
+  tags       = merge({ Name = "${var.cluster_name}-keypair" }, var.tags)
 }
 
 ## For downloading the keypair to local computer
@@ -101,6 +102,7 @@ resource "aws_iam_role" "node_group" {
     }]
     Version = "2012-10-17"
   })
+  tags = merge({ Name = "${var.cluster_name}-node-group-role" }, var.tags)
 }
 
 resource "aws_iam_role_policy_attachment" "amazon_eks_worker_node_policy" {
