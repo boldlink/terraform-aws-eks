@@ -98,7 +98,7 @@ data "aws_subnets" "public" {
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.8.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.11.0 |
 | <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | 2.22.0 |
 | <a name="provider_tls"></a> [tls](#provider\_tls) | 4.0.4 |
 
@@ -193,7 +193,7 @@ data "aws_subnets" "public" {
 | <a name="output_identity"></a> [identity](#output\_identity) | Attribute block containing identity provider information for your cluster. Only available on Kubernetes version 1.13 and 1.14 clusters created or upgraded on or after September 3, 2019. |
 | <a name="output_managed_role_arn"></a> [managed\_role\_arn](#output\_managed\_role\_arn) | The name of the node group IAM role |
 | <a name="output_managed_role_name"></a> [managed\_role\_name](#output\_managed\_role\_name) | ARN of the node group IAM role |
-| <a name="output_oicd_arn"></a> [oicd\_arn](#output\_oicd\_arn) | The name of the node group IAM role |
+| <a name="output_oidc_arn"></a> [oidc\_arn](#output\_oidc\_arn) | The name of the node group IAM role |
 | <a name="output_platform_version"></a> [platform\_version](#output\_platform\_version) | Platform version for the cluster. |
 | <a name="output_status"></a> [status](#output\_status) | Status of the EKS cluster. One of `CREATING`, `ACTIVE`, `DELETING`, `FAILED`. |
 | <a name="output_tags_all"></a> [tags\_all](#output\_tags\_all) | Map of tags assigned to the resource, including those inherited from the provider [`default_tags` configuration block](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/docs#default_tags-configuration-block). |

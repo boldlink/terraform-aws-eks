@@ -149,5 +149,5 @@ output "fargate_role_name" {
 
 output "oidc_arn" {
   description = "The name of the node group IAM role"
-  value       = [for provider in aws_iam_openid_connect_provider.irsa: provider.arn]
+  value       = [for provider in aws_iam_openid_connect_provider.irsa : provider.arn]
 }

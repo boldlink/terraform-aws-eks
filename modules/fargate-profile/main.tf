@@ -4,7 +4,7 @@ resource "aws_eks_fargate_profile" "main" {
   fargate_profile_name   = var.fargate_profile_name
   pod_execution_role_arn = aws_iam_role.fargate_profile.arn
   subnet_ids             = var.fargate_profile_subnet_ids
-  tags                   = merge({Name = "${var.cluster_name}-fargate-profile"}, var.tags)
+  tags                   = merge({ Name = "${var.cluster_name}-fargate-profile" }, var.tags)
   dynamic "selector" {
     for_each = var.selector
     content {
@@ -33,7 +33,7 @@ resource "aws_iam_role" "fargate_profile" {
     }]
     Version = "2012-10-17"
   })
-  tags = merge({Name = "${var.cluster_name}-fargate-profile-role"}, var.tags)
+  tags = merge({ Name = "${var.cluster_name}-fargate-profile-role" }, var.tags)
 }
 
 resource "aws_iam_role_policy_attachment" "pod_execution_role_policy" {
