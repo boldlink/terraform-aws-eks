@@ -112,7 +112,7 @@ tfmoduleclean:
 		cd $(SUPPORTING_PATH) ;\
 		rm -rf .terraform* ;\
 	fi
-	@for folder in $(MODULEDIRS) ; do \
+	@for folder in $(SUBDIRS) ; do \
 		echo "=====================================================================================================" ;\
 		echo "[info]: Cleaning $$folder terraform files" ;\
 		echo "=====================================================================================================" ;\
