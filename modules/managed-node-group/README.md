@@ -6,6 +6,7 @@
 [![Build Status](https://github.com/boldlink/terraform-aws-eks/actions/workflows/pr-labeler.yaml/badge.svg)](https://github.com/boldlink/terraform-aws-eks/actions)
 [![Build Status](https://github.com/boldlink/terraform-aws-eks/actions/workflows/module-examples-tests.yaml/badge.svg)](https://github.com/boldlink/terraform-aws-eks/actions)
 [![Build Status](https://github.com/boldlink/terraform-aws-eks/actions/workflows/checkov.yaml/badge.svg)](https://github.com/boldlink/terraform-aws-eks/actions)
+[![Build Status](https://github.com/boldlink/terraform-aws-eks/actions/workflows/auto-merge.yaml/badge.svg)](https://github.com/boldlink/terraform-aws-eks/actions)
 [![Build Status](https://github.com/boldlink/terraform-aws-eks/actions/workflows/auto-badge.yaml/badge.svg)](https://github.com/boldlink/terraform-aws-eks/actions)
 
 [<img src="https://avatars.githubusercontent.com/u/25388280?s=200&v=4" width="96"/>](https://boldlink.io)
@@ -64,7 +65,7 @@ module "node_group" {
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.11.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.12.0 |
 | <a name="provider_null"></a> [null](#provider\_null) | 3.2.1 |
 | <a name="provider_tls"></a> [tls](#provider\_tls) | 4.0.4 |
 
