@@ -13,7 +13,6 @@ on:
       - 'releases/*'
       - 'chore/*'
       - 'chores/*'
-      - 'automation*'
 
 permissions: read-all
 
