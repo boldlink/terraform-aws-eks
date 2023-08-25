@@ -12,7 +12,6 @@ on:
       - 'releases/*'
       - 'chore/*'
       - 'chores/*'
-      - 'automation*'
   schedule:
     - cron: "00 18 * * *"
 
