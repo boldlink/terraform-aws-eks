@@ -47,3 +47,14 @@ module "eks_vpc" {
     }
   }
 }
+
+module "complete_managed_policy" {
+  source                = "boldlink/iam-role/aws"
+  version               = "1.1.0"
+  name                  = "complete-eks-example-role"
+  assume_role_policy    = local.trust_policy
+  description           = "Example role for example and testing purposes permissions"
+  managed_policy_arns   = ["arn:aws:iam::aws:policy/ReadOnlyAccess"]
+  force_detach_policies = true
+  tags                  = var.tags
+}
