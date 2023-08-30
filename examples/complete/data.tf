@@ -1,3 +1,5 @@
+data "aws_caller_identity" "current" {}
+
 data "aws_kms_alias" "supporting" {
   name = "alias/${var.supporting_resources_name}"
 }

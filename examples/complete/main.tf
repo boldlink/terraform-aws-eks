@@ -30,7 +30,7 @@ module "complete_eks_cluster" {
 
   aws_auth_roles = [
     {
-      rolearn  = "arn:aws:iam::12345678901:role/examplerole"
+      rolearn  = "arn:aws:iam::${local.account_id}:role/complete-eks-example-role"
       username = "examplerole"
       groups   = ["system:masters"]
     },
@@ -40,7 +40,7 @@ module "complete_eks_cluster" {
       create       = true
       subnet_ids   = local.private_subnets
       disk_size    = 30
-      desired_size = 2
+      desired_size = 3
       max_size     = 3
       min_size     = 1
       tags         = local.tags

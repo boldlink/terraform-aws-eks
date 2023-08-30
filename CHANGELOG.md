@@ -22,6 +22,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - fix: CKV_TF_1: "Ensure Terraform module sources use a commit hash"
 - fix: CKV_AWS_338: "Ensure CloudWatch log groups retains logs for at least 1 year"
 
+## [3.2.3] - 2023-8-30
+- fix: remove the lifecycle block from the managed node group sub-module to allow scaling values change to trigger changes.
+- fix: add role to the supporting resources for aws-auth configmap in the complete example.
+- chore: set the desired size of the node group to 3 in the complete example.
+
 ## [3.2.2] - 2023-8-14
 - fix: tags missing in most module resources
 - fix: oidc output error in minimum example.
