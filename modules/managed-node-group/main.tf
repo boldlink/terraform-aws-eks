@@ -61,10 +61,6 @@ resource "aws_eks_node_group" "main" {
     update = lookup(var.timeouts, "update", "60m")
     delete = lookup(var.timeouts, "delete", "60m")
   }
-
-  lifecycle {
-    ignore_changes = [scaling_config[0].desired_size]
-  }
 }
 
 ### Key pair
