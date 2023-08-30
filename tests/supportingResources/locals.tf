@@ -7,22 +7,22 @@ locals {
   account_id          = data.aws_caller_identity.current.id
   dns_suffix          = data.aws_partition.current.dns_suffix
   partition           = data.aws_partition.current.partition
-  trust_policy        = jsonencode({
+  trust_policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
-        {
-            Sid = "example"
-            Effect = "Allow"
-            Principal = {
-                "AWS" = ["arn:aws:iam::${local.account_id}:root"]
-            }
-            Action = "sts:AssumeRole"
-            Condition = {
-                BoolIfExists = {
-                    "aws:MultiFactorAuthPresent" = "true"
-                }
-            }
+      {
+        Sid    = "example"
+        Effect = "Allow"
+        Principal = {
+          "AWS" = ["arn:aws:iam::${local.account_id}:root"]
         }
+        Action = "sts:AssumeRole"
+        Condition = {
+          BoolIfExists = {
+            "aws:MultiFactorAuthPresent" = "true"
+          }
+        }
+      }
     ]
   })
   kms_policy = jsonencode(

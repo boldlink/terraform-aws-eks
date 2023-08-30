@@ -39,6 +39,7 @@ This stack builds:
 
 | Name | Source | Version |
 |------|--------|---------|
+| <a name="module_complete_managed_policy"></a> [complete\_managed\_policy](#module\_complete\_managed\_policy) | boldlink/iam-role/aws | 1.1.0 |
 | <a name="module_eks_vpc"></a> [eks\_vpc](#module\_eks\_vpc) | boldlink/vpc/aws | 3.0.4 |
 | <a name="module_kms_key"></a> [kms\_key](#module\_kms\_key) | boldlink/kms/aws | 1.1.0 |
 
