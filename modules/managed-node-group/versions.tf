@@ -3,11 +3,15 @@ terraform {
     null = ">= 2.0.0"
     aws = {
       source  = "hashicorp/aws"
-      version = ">=4.15.1"
+      version = ">=5.0.0"
     }
     tls = {
       source  = "hashicorp/tls"
       version = ">= 3.0"
+    }
+    template = {
+      source  = "hashicorp/template"
+      version = ">= 2.0.0"
     }
   }
 

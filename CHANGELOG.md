@@ -22,6 +22,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - fix: CKV_TF_1: "Ensure Terraform module sources use a commit hash"
 - fix: CKV_AWS_338: "Ensure CloudWatch log groups retains logs for at least 1 year"
 
+## [3.3.0] - 2023-09-06
+- feat: Added ssm support to the managed nodes
+- feat: Removed `remote_access` feature and removed key_pair support for the module. Use AWS Systems Manager to connect to the nodes
+- feat: Added `launch_template` with fully customizable configurations
+- feat: Added ssm installation script which will be executed by default when `create_custom_launch_template` is enabled. To prevent the script from executing disable it using `install_ssm_agent = false`
+- feat: Added support for additional script apart from the main userdata when launch template is created. To run additional script provide a value for `extra_script`
+
 ## [3.2.3] - 2023-8-30
 - fix: remove the lifecycle block from the managed node group sub-module to allow scaling values change to trigger changes.
 - fix: add role to the supporting resources for aws-auth configmap in the complete example.
@@ -116,8 +123,9 @@ fix: reference node iam arns inside the module for aws-auth configmap.
 - Cluster only example
 - Cluster logging
 
-[Unreleased]: https://github.com/boldlink/terraform-aws-eks/compare/3.2.2..HEAD
+[Unreleased]: https://github.com/boldlink/terraform-aws-eks/compare/3.3.0..HEAD
 
+[3.3.0]: https://github.com/boldlink/terraform-aws-eks/releases/tag/3.3.0
 [3.2.2]: https://github.com/boldlink/terraform-aws-eks/releases/tag/3.2.2
 [3.2.1]: https://github.com/boldlink/terraform-aws-eks/releases/tag/3.2.1
 [3.2.0]: https://github.com/boldlink/terraform-aws-eks/releases/tag/3.2.0

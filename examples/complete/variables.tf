@@ -1,7 +1,7 @@
 variable "cluster_name" {
   type        = string
   description = "Name of the cluster"
-  default     = "example-complete-eks"
+  default     = "complete-eks-example"
 }
 
 variable "supporting_resources_name" {
