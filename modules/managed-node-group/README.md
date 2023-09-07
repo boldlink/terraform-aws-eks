@@ -138,6 +138,7 @@ No modules.
 | <a name="input_taint"></a> [taint](#input\_taint) | (Optional) The Kubernetes taints to be applied to the nodes in the node group. Maximum of 50 taints per node group. | `map(string)` | `{}` | no |
 | <a name="input_timeouts"></a> [timeouts](#input\_timeouts) | Configuration specifying how long to wait for the EKS Node Group to be created, updated and deleted | `map(string)` | `{}` | no |
 | <a name="input_update_config"></a> [update\_config](#input\_update\_config) | (Optional) Desired max number/max percentage of unavailable worker nodes during node group update. | `map(string)` | `{}` | no |
+| <a name="input_user_data"></a> [user\_data](#input\_user\_data) | The base64-encoded user data to provide when launching the instance. | `string` | `null` | no |
 
 ## Outputs
 

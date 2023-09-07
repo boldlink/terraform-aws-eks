@@ -121,6 +121,12 @@ variable "install_ssm_agent" {
   default     = false
 }
 
+variable "user_data" {
+  type        = string
+  description = "The base64-encoded user data to provide when launching the instance."
+  default     = null
+}
+
 variable "launch_template_id" {
   type        = string
   description = "The ID of external launch template to use"

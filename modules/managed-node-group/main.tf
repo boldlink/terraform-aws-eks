@@ -101,7 +101,7 @@ resource "aws_launch_template" "main" {
   ebs_optimized           = var.ebs_optimized
   image_id                = var.image_id
   instance_type           = var.instance_type
-  user_data               = data.template_cloudinit_config.config.rendered #use var.extra_script to run additional scripts
+  user_data               = var.install_ssm_agent ? data.template_cloudinit_config.config.rendered : var.user_data #use var.extra_script to run additional scripts
   vpc_security_group_ids  = length(var.network_interfaces) > 0 ? [] : var.security_group_ids
   default_version         = var.default_version
   disable_api_termination = var.disable_api_termination

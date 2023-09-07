@@ -32,6 +32,7 @@ module "node_group" {
   ebs_optimized                      = lookup(each.value, "ebs_optimized", false)
   image_id                           = lookup(each.value, "image_id", null)
   instance_type                      = lookup(each.value, "instance_type", null)
+  user_data                          = lookup(each.value, "user_data", null)
   default_version                    = lookup(each.value, "default_version", null)
   disable_api_termination            = lookup(each.value, "disable_api_termination", false)
   kernel_id                          = lookup(each.value, "kernel_id", null)
