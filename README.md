@@ -31,6 +31,7 @@ Examples available [here](./examples)
 see more [here](https://docs.aws.amazon.com/eks/latest/userguide/cluster-endpoint.html)
 
 ## Connecting to Nodes Using SSM
+- By default this module does not enable ssm agent installation on the nodes when the option `create_custom_launch_template` is enabled. To install ssm agent specify `install_ssm_agent = true`
 - As of [3.3.0] we no longer support or enable SSH keys on the nodes, this is aligned with AWS best practices. As an alternative you should use Session Mananger which providers support to login to the nodes (read below for instructions)
 
 ### Using AWS CLI to start Systems Manager Session

@@ -42,12 +42,13 @@ module "complete_eks_cluster" {
       desired_size = 3
       max_size     = 3
       min_size     = 1
-      tags         = local.tags
+      tags         = var.tags
 
       # launch template
       create_custom_launch_template = true
       launch_template_description   = "EKS managed node group launch template"
       ebs_optimized                 = true
+      install_ssm_agent             = true
       block_device_mappings = [
         {
           # Root volume
@@ -93,7 +94,7 @@ module "complete_eks_cluster" {
       create        = true
       subnet_ids    = local.private_subnets
       capacity_type = "SPOT"
-      tags          = local.tags
+      tags          = var.tags
     }
   }
 
@@ -108,7 +109,7 @@ module "complete_eks_cluster" {
         }
       ]
       subnet_ids = local.private_subnets
-      tags       = local.tags
+      tags       = var.tags
     }
     fargate1 = {
       selector = [
@@ -120,8 +121,8 @@ module "complete_eks_cluster" {
         }
       ]
       subnet_ids = local.private_subnets
-      tags       = local.tags
+      tags       = var.tags
     }
   }
-  tags = local.tags
+  tags = var.tags
 }

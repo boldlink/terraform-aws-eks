@@ -118,7 +118,7 @@ variable "create_custom_launch_template" {
 variable "install_ssm_agent" {
   type        = bool
   description = "Whether to install ssm agent"
-  default     = true
+  default     = false
 }
 
 variable "launch_template_id" {
