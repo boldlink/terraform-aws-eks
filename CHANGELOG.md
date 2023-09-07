@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+- feat: showcase additional launch template configurations, for example, `instance_market_options` in the complete example
 - feat: Add gp3 kms encryption for ebs volumes attached on the managed and self managed node groups (launch template).
 - feat: Add self-managed node-group for fully customizable cluster deployments, [for example windows node groups.](https://github.com/aws/containers-roadmap/issues/584).
 - feat: Add EKS vpc-cni add-on to the module with the iam role and service account IAM permissions (optional with true/false choice).
