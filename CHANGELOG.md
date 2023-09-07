@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+- fix: CKV_AWS_79:Ensure Instance Metadata Service Version 1 is not enabled"
+- fix: CKV_AWS_341:Ensure Launch template should not have a metadata response hop limit greater than 1
 - feat: showcase additional launch template configurations, for example, `instance_market_options` in the complete example
 - feat: Add gp3 kms encryption for ebs volumes attached on the managed and self managed node groups (launch template).
 - feat: Add self-managed node-group for fully customizable cluster deployments, [for example windows node groups.](https://github.com/aws/containers-roadmap/issues/584).
