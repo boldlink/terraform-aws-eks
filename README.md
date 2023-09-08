@@ -21,6 +21,7 @@ This is a detailed terraform module that can be used to create AWS EKS Cluster, 
 - Follows aws security best practices and uses checkov to ensure compliance.
 - Has elaborate examples that you can use to setup your cluster within a very short time.
 - Contains config map resources that you can easily use to add a new config map or modify an existing one.
+- It includes a fully customizable launch template
 
 Examples available [here](./examples)
 
@@ -28,6 +29,28 @@ Examples available [here](./examples)
 - If you restrict access to your public endpoint using CIDR blocks, it is recommended that you also enable private endpoint access so that nodes and Fargate pods (if you use them) can communicate with the cluster. Without the private endpoint enabled, your public access endpoint CIDR sources must include the egress sources from your VPC. For example, if you have a node in a private subnet that communicates to the internet through a NAT Gateway, you will need to add the outbound IP address of the NAT gateway as part of an allowed CIDR block on your public endpoint.
 - Use your own public access CIDR block(s), otherwise you will encounter an error.
 see more [here](https://docs.aws.amazon.com/eks/latest/userguide/cluster-endpoint.html)
+
+## Connecting to Nodes Using SSM
+- By default this module does not enable ssm agent installation on the nodes when the option `create_custom_launch_template` is enabled. To install ssm agent specify `install_ssm_agent = true`
+- As of [3.3.0] we no longer support or enable SSH keys on the nodes, this is aligned with AWS best practices. As an alternative you should use Session Mananger which providers support to login to the nodes (read below for instructions)
+
+### Using AWS CLI to start Systems Manager Session
+- Make sure you have the Session Manager plugin installed on your system. For installation instructions, refer to the guide [here](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-working-with-install-plugin.html)
+- Run the following command to start session from your terminal
+```console
+aws ssm start-session \
+    --target "<instance_id>"
+```
+Replace `<instance_id>` with the ID of the instance you want to connect to
+
+## Launching in Private Subnets without NAT Gateways or internet connection
+To manage instances in isolated subnets without internet connectivity, it is necessary to enable VPC endpoints for specific services, including:
+- `com.amazonaws.[region].ssm`
+- `com.amazonaws.[region].ec2messages`
+- `com.amazonaws.[region].ssmmessages`
+- `(optional) com.amazonaws.[region].kms for KMS encryption in Session Manager`
+
+You can use Boldlink VPC Endpoints Terraform module [here](https://github.com/boldlink/terraform-aws-vpc-endpoints/tree/main/examples)
 
 ## Usage
 **NOTE**: These examples use the latest version of this module
@@ -91,7 +114,7 @@ data "aws_subnets" "public" {
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.14.11 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >=4.15.1 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >=5.0.0 |
 | <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | >= 2.10 |
 | <a name="requirement_tls"></a> [tls](#requirement\_tls) | >= 3.4.0 |
 
@@ -99,7 +122,7 @@ data "aws_subnets" "public" {
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.14.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.15.0 |
 | <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | 2.23.0 |
 | <a name="provider_tls"></a> [tls](#provider\_tls) | 4.0.4 |
 

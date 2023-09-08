@@ -66,12 +66,6 @@ variable "labels" {
   default     = {}
 }
 
-variable "launch_template" {
-  type        = map(string)
-  description = "(Optional) Configuration block with Launch Template settings."
-  default     = {}
-}
-
 variable "node_group_name" {
   type        = string
   description = "(Optional) Name of the EKS Node Group. If omitted, Terraform will assign a random, unique name. Conflicts with `node_group_name_prefix`."
@@ -88,12 +82,6 @@ variable "release_version" {
   type        = string
   description = "(Optional) AMI version of the EKS Node Group. Defaults to latest version for Kubernetes version."
   default     = null
-}
-
-variable "remote_access" {
-  type        = map(string)
-  description = "(Optional) Configuration block with remote access settings."
-  default     = {}
 }
 
 variable "taint" {
@@ -120,11 +108,183 @@ variable "tags" {
   default     = {}
 }
 
-/*
-Key Pair
-*/
-variable "create_key_pair" {
-  description = "Whether or not to create a key pair"
+## Launch template
+variable "create_custom_launch_template" {
   type        = bool
+  description = "Specify whether to create custom launch template"
   default     = false
+}
+
+variable "install_ssm_agent" {
+  type        = bool
+  description = "Whether to install ssm agent"
+  default     = false
+}
+
+variable "user_data" {
+  type        = string
+  description = "The base64-encoded user data to provide when launching the instance."
+  default     = null
+}
+
+variable "launch_template_id" {
+  type        = string
+  description = "The ID of external launch template to use"
+  default     = null
+}
+
+variable "launch_template_version" {
+  type        = string
+  description = "The version of the launch template"
+  default     = null
+}
+
+variable "enable_monitoring" {
+  type        = bool
+  description = "Choose whether to enable monotoring"
+  default     = false
+}
+
+variable "launch_template_description" {
+  type        = string
+  description = "(Optional) Description of the launch template."
+  default     = null
+}
+
+variable "security_group_ids" {
+  type        = list(string)
+  description = "A list of security group IDs to associate."
+  default     = []
+}
+
+variable "ebs_optimized" {
+  type        = bool
+  description = "(Optional) If true, the launched EC2 instance will be EBS-optimized."
+  default     = false
+}
+
+variable "image_id" {
+  type        = string
+  description = "(Optional) The AMI from which to launch the instance."
+  default     = null
+}
+
+variable "instance_type" {
+  type        = string
+  description = "(Optional) The type of the instance."
+  default     = null
+}
+
+variable "default_version" {
+  type        = number
+  description = "(Optional) Default Version of the launch template."
+  default     = null
+}
+
+variable "disable_api_termination" {
+  type        = bool
+  description = "(Optional) If true, enables EC2 Instance Termination Protection"
+  default     = false
+}
+
+variable "kernel_id" {
+  type        = string
+  description = "(Optional) The kernel ID."
+  default     = null
+}
+
+variable "ram_disk_id" {
+  type        = string
+  description = "(Optional) The ID of the RAM disk."
+  default     = null
+}
+
+variable "block_device_mappings" {
+  type        = list(any)
+  description = "The storage device mapping block"
+  default     = []
+}
+
+variable "capacity_reservation_specification" {
+  type        = map(string)
+  description = "(Optional) Targeting for EC2 capacity reservations."
+  default     = {}
+}
+
+variable "cpu_options" {
+  type        = map(string)
+  description = "(Optional) The CPU options for the instance."
+  default     = {}
+}
+
+variable "credit_specification" {
+  type        = map(string)
+  description = "(Optional) Customize the credit specification of the instance."
+  default     = {}
+}
+
+variable "elastic_gpu_specifications" {
+  type        = map(string)
+  description = "(Optional) The elastic GPU to attach to the instance."
+  default     = {}
+}
+
+variable "elastic_inference_accelerator" {
+  type        = map(string)
+  description = "(Optional) Configuration block containing an Elastic Inference Accelerator to attach to the instance."
+  default     = {}
+}
+
+variable "enclave_options" {
+  type        = map(string)
+  description = "(Optional) Enable Nitro Enclaves on launched instances."
+  default     = {}
+}
+
+variable "instance_market_options" {
+  type        = map(string)
+  description = "(Optional) The market (purchasing) option for the instance."
+  default     = {}
+}
+
+variable "license_specifications" {
+  type        = map(string)
+  description = "(Optional) A list of license specifications to associate with."
+  default     = {}
+}
+
+variable "metadata_options" {
+  type        = map(string)
+  description = "(Optional) Customize the metadata options for the instance."
+  default     = {}
+}
+
+variable "network_interfaces" {
+  type        = any
+  description = "(Optional) Customize network interfaces to be attached at instance boot time."
+  default     = []
+}
+
+variable "placement" {
+  type        = map(string)
+  description = "(Optional) The placement of the instance."
+  default     = {}
+}
+
+variable "private_dns_name_options" {
+  type        = map(string)
+  description = "(Optional) The options for the instance hostname. The default values are inherited from the subnet."
+  default     = {}
+}
+
+variable "tag_specifications" {
+  type        = list(any)
+  description = "The tags to apply to the resources during launch."
+  default     = ["instance", "volume"]
+}
+
+variable "extra_script" {
+  type        = string
+  description = "The name of the extra script"
+  default     = ""
 }

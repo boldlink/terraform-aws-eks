@@ -39,17 +39,62 @@ module "complete_eks_cluster" {
     managed0 = {
       create       = true
       subnet_ids   = local.private_subnets
-      disk_size    = 30
       desired_size = 3
       max_size     = 3
       min_size     = 1
-      tags         = local.tags
+      tags         = var.tags
+
+      # launch template
+      create_custom_launch_template = true
+      launch_template_description   = "EKS managed node group launch template"
+      ebs_optimized                 = true
+      install_ssm_agent             = true
+      block_device_mappings = [
+        {
+          # Root volume
+          device_name = "/dev/xvda"
+          no_device   = 0
+          ebs = {
+            delete_on_termination = true
+            volume_size           = 30
+            volume_type           = "gp3"
+          }
+        },
+        {
+          device_name = "/dev/sda1"
+          no_device   = 1
+          ebs = {
+            delete_on_termination = true
+            volume_size           = 30
+            volume_type           = "gp2"
+          }
+        }
+      ]
+
+      metadata_options = {
+        http_endpoint               = "enabled"
+        http_tokens                 = "required"
+        http_put_response_hop_limit = 2
+        instance_metadata_tags      = "disabled"
+      }
+
+      tag_specifications = [
+        {
+          resource_type = "volume"
+          tags          = local.tags
+        },
+        {
+          resource_type = "instance"
+          tags          = local.tags
+        }
+      ]
+
     }
     managed1 = {
       create        = true
       subnet_ids    = local.private_subnets
       capacity_type = "SPOT"
-      tags          = local.tags
+      tags          = var.tags
     }
   }
 
@@ -64,7 +109,7 @@ module "complete_eks_cluster" {
         }
       ]
       subnet_ids = local.private_subnets
-      tags       = local.tags
+      tags       = var.tags
     }
     fargate1 = {
       selector = [
@@ -76,8 +121,8 @@ module "complete_eks_cluster" {
         }
       ]
       subnet_ids = local.private_subnets
-      tags       = local.tags
+      tags       = var.tags
     }
   }
-  tags = local.tags
+  tags = var.tags
 }
