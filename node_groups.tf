@@ -17,7 +17,7 @@ module "node_group" {
   node_group_name_prefix = lookup(each.value, "node_group_name_prefix", null)
   release_version        = lookup(each.value, "release_version", null)
   tags                   = lookup(each.value, "tags", {})
-  taint                  = lookup(each.value, "taint", {})
+  taints                  = try(each.value.taints, {})
   kubernetes_version     = lookup(each.value, "kubernetes_version", null)
   timeouts               = lookup(each.value, "timeouts", {})
 
