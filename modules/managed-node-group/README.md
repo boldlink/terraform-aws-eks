@@ -135,7 +135,7 @@ No modules.
 | <a name="input_security_group_ids"></a> [security\_group\_ids](#input\_security\_group\_ids) | A list of security group IDs to associate. | `list(string)` | `[]` | no |
 | <a name="input_tag_specifications"></a> [tag\_specifications](#input\_tag\_specifications) | The tags to apply to the resources during launch. | `list(any)` | <pre>[<br>  "instance",<br>  "volume"<br>]</pre> | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | (Optional) Key-value map of resource tags. If configured with a provider [`default_tags` configuration block](https://www.terraform.io../docs?_ga=2.83681619.418379771.1647510647-1464713173.1641542419#default_tags-configuration-block) present, tags with matching keys will overwrite those defined at the provider-level. | `map(string)` | `{}` | no |
-| <a name="input_taint"></a> [taint](#input\_taint) | (Optional) The Kubernetes taints to be applied to the nodes in the node group. Maximum of 50 taints per node group. | `map(string)` | `{}` | no |
+| <a name="input_taints"></a> [taints](#input\_taints) | (Optional) The Kubernetes taints to be applied to the nodes in the node group. Maximum of 50 taints per node group. | `any` | `{}` | no |
 | <a name="input_timeouts"></a> [timeouts](#input\_timeouts) | Configuration specifying how long to wait for the EKS Node Group to be created, updated and deleted | `map(string)` | `{}` | no |
 | <a name="input_update_config"></a> [update\_config](#input\_update\_config) | (Optional) Desired max number/max percentage of unavailable worker nodes during node group update. | `map(string)` | `{}` | no |
 | <a name="input_user_data"></a> [user\_data](#input\_user\_data) | The base64-encoded user data to provide when launching the instance. | `string` | `null` | no |

@@ -111,7 +111,7 @@ module "complete_eks_cluster" {
           "effect" = "PREFER_NO_SCHEDULE"
         }
       }
-      tags          = local.tags
+      tags = local.tags
     }
   }
 
