@@ -42,7 +42,7 @@ module "complete_eks_cluster" {
     #   desired_size = 3
     #   max_size     = 3
     #   min_size     = 1
-    #   tags         = var.tags
+    #   tags         = local.tags
 
     #   # launch template
     #   create_custom_launch_template = true
@@ -111,7 +111,7 @@ module "complete_eks_cluster" {
           "effect" = "PREFER_NO_SCHEDULE"
         }
       }
-      tags          = var.tags
+      tags          = local.tags
     }
   }
 
@@ -126,7 +126,7 @@ module "complete_eks_cluster" {
         }
       ]
       subnet_ids = local.private_subnets
-      tags       = var.tags
+      tags       = local.tags
     }
     fargate1 = {
       selector = [
@@ -138,8 +138,8 @@ module "complete_eks_cluster" {
         }
       ]
       subnet_ids = local.private_subnets
-      tags       = var.tags
+      tags       = local.tags
     }
   }
-  tags = var.tags
+  tags = local.tags
 }
