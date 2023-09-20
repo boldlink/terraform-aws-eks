@@ -84,8 +84,8 @@ variable "release_version" {
   default     = null
 }
 
-variable "taint" {
-  type        = map(string)
+variable "taints" {
+  type        = any
   description = "(Optional) The Kubernetes taints to be applied to the nodes in the node group. Maximum of 50 taints per node group."
   default     = {}
 }

@@ -25,6 +25,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - fix: CKV_TF_1: "Ensure Terraform module sources use a commit hash"
 - fix: CKV_AWS_338: "Ensure CloudWatch log groups retains logs for at least 1 year"
 
+## [3.3.1] - 2023-09-20
+- fix: Taints not properly set on the managed node group
+- feat: Add taints to the complete example.
+
 ## [3.3.0] - 2023-09-06
 - feat: Added ssm support to the managed nodes
 - feat: Removed `remote_access` feature and removed key_pair support for the module. Use AWS Systems Manager to connect to the nodes
@@ -75,6 +79,7 @@ fix: reference node iam arns inside the module for aws-auth configmap.
 
 ## [3.0.0] - 2022-07-27
 ### Description
+ - Fix security group error when using the custom launch template for eks managed nodes.
  - fix: Error when creating a cluster in a region without default vpc by specifying var.vpc_id - this applies to the example/minimum and recommend usage on README.md.
  - fix: When you specify an external kms key for the cloudwatch log group you get an error.
  - fix: Change the name of EKS iam roles to prevent name length limitation errors for managed and fargate sub-modules.
@@ -126,8 +131,9 @@ fix: reference node iam arns inside the module for aws-auth configmap.
 - Cluster only example
 - Cluster logging
 
-[Unreleased]: https://github.com/boldlink/terraform-aws-eks/compare/3.3.0..HEAD
+[Unreleased]: https://github.com/boldlink/terraform-aws-eks/compare/3.3.1..HEAD
 
+[3.3.0]: https://github.com/boldlink/terraform-aws-eks/releases/tag/3.3.1
 [3.3.0]: https://github.com/boldlink/terraform-aws-eks/releases/tag/3.3.0
 [3.2.3]: https://github.com/boldlink/terraform-aws-eks/releases/tag/3.2.3
 [3.2.2]: https://github.com/boldlink/terraform-aws-eks/releases/tag/3.2.2

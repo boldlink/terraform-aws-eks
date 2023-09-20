@@ -38,10 +38,10 @@ resource "aws_eks_node_group" "main" {
   }
 
   dynamic "taint" {
-    for_each = var.taint
+    for_each = var.taints
     content {
       key    = taint.value.key
-      value  = lookup(taint.value, "value", null)
+      value  = try(taint.value.value, null)
       effect = taint.value.effect
     }
   }
