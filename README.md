@@ -17,11 +17,11 @@
 This is a detailed terraform module that can be used to create AWS EKS Cluster, Node Group and Associated resources
 
 ### Why choose this module over the standard resources
-- You get to create an eks cluster, fargate profile and node groups with minimum configuration changes.
-- Follows aws security best practices and uses checkov to ensure compliance.
-- Has elaborate examples that you can use to setup your cluster within a very short time.
-- Contains config map resources that you can easily use to add a new config map or modify an existing one.
-- It includes a fully customizable launch template
+- By using the least possible minimal configuration, you can create an EKS cluster, establish a Fargate profile, and configure node groups. The aim is to streamline the setup process, making it more accessible and efficient.
+- It has incorporated AWS security best practices to ensure that the infrastructure you build complies with AWS security guidelines. We use Checkov to validate compliance and enhance security.
+- The module detailed examples that walk you through the setup procedure. Whether you're new to EKS or an experienced user, you'll find these examples helpful for quick and effective cluster configuration.
+- You can easily modify or create new ConfigMaps to tailor your cluster's configurations to your application's requirements.
+- This module features a fully customizable launch template. This allows you to fine-tune the template according to your specific needs, ensuring that it aligns perfectly with your infrastructure requirements.
 
 Examples available [here](./examples)
 
@@ -32,7 +32,6 @@ see more [here](https://docs.aws.amazon.com/eks/latest/userguide/cluster-endpoin
 
 ## Connecting to Nodes Using SSM
 - By default this module does not enable ssm agent installation on the nodes when the option `create_custom_launch_template` is enabled. To install ssm agent specify `install_ssm_agent = true`
-- As of [3.3.0] we no longer support or enable SSH keys on the nodes, this is aligned with AWS best practices. As an alternative you should use Session Mananger which providers support to login to the nodes (read below for instructions)
 
 ### Using AWS CLI to start Systems Manager Session
 - Make sure you have the Session Manager plugin installed on your system. For installation instructions, refer to the guide [here](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-working-with-install-plugin.html)
