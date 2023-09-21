@@ -29,9 +29,9 @@ output "identity" {
   description = "Attribute block containing identity provider information for your cluster. Only available on Kubernetes version 1.13 and 1.14 clusters created or upgraded on or after September 3, 2019."
 }
 
-output "version" {
+output "cluster_version" {
   value       = aws_eks_cluster.main.version
-  description = "Kubernetes master version"
+  description = "The cluster version of the eks cluster"
 }
 
 output "platform_version" {

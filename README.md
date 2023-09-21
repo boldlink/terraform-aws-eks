@@ -198,6 +198,7 @@ data "aws_subnets" "public" {
 |------|-------------|
 | <a name="output_arn"></a> [arn](#output\_arn) | ARN of the cluster. |
 | <a name="output_certificate_authority"></a> [certificate\_authority](#output\_certificate\_authority) | Attribute block containing `certificate-authority-data` for your cluster |
+| <a name="output_cluster_version"></a> [cluster\_version](#output\_cluster\_version) | The cluster version of the eks cluster |
 | <a name="output_created_at"></a> [created\_at](#output\_created\_at) | Unix epoch timestamp in seconds for when the cluster was created. |
 | <a name="output_eks_addon_arn"></a> [eks\_addon\_arn](#output\_eks\_addon\_arn) | Amazon Resource Name (ARN) of the EKS add-on. |
 | <a name="output_eks_addon_created_at"></a> [eks\_addon\_created\_at](#output\_eks\_addon\_created\_at) | Date and time in [RFC3339 format](https://tools.ietf.org/html/rfc3339#section-5.8) that the EKS add-on was created. |
