@@ -1,3 +1,31 @@
+resource "aws_security_group" "external" {
+  name                   = "${var.cluster_name}-managed-node-sg"
+  description            = "Allow eks cluster-lc inbound traffic"
+  vpc_id                 = local.vpc_id
+  tags                   = merge({ Name = "${var.cluster_name}-managed-node-sg" }, var.tags)
+  revoke_rules_on_delete = true
+
+  ingress {
+    description = "Allow cluster traffic"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    self        = true
+  }
+
+  egress {
+    description = "Allow all outbound"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  timeouts {
+    delete = "3m"
+  }
+}
+
 module "ebs_kms" {
   source           = "boldlink/kms/aws"
   version          = "1.1.0"
@@ -51,6 +79,7 @@ module "complete_eks_cluster" {
       launch_template_description   = "EKS managed node group launch template"
       ebs_optimized                 = true
       install_ssm_agent             = true
+      security_group_ids            = [aws_security_group.external.id]
       block_device_mappings = [
         {
           # Root volume

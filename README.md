@@ -33,6 +33,41 @@ see more [here](https://docs.aws.amazon.com/eks/latest/userguide/cluster-endpoin
 ## Connecting to Nodes Using SSM
 - By default this module does not enable ssm agent installation on the nodes when the option `create_custom_launch_template` is enabled. To install ssm agent specify `install_ssm_agent = true`
 
+## Permissions when Using encrypted ebs for launch template and custom security groups
+### KMS
+Allow the following kms actions in the kms policy document for Autoscaling service-linked role
+```
+"kms:Encrypt",
+"kms:Decrypt",
+"kms:ReEncrypt*",
+"kms:GenerateDataKey*",
+"kms:DescribeKey"
+```
+
+for example:
+```json
+ {
+        "Sid" : "Allow Autoscaling service-linked role use of the customer managed key",
+        "Effect" : "Allow",
+        "Principal" : {
+          "AWS" : "arn:${local.partition}:iam::${local.account_id}:role/aws-service-role/autoscaling.${local.dns_suffix}/AWSServiceRoleForAutoScaling"
+        },
+        "Action" : [
+          "kms:Encrypt",
+          "kms:Decrypt",
+          "kms:ReEncrypt*",
+          "kms:GenerateDataKey*",
+          "kms:DescribeKey"
+        ],
+        "Resource" : "*"
+      }
+```
+
+See complete example for more.
+
+### Custom Security groups
+See AWS documentation [here](https://docs.aws.amazon.com/eks/latest/userguide/sec-group-reqs.html) and [here](https://docs.aws.amazon.com/eks/latest/userguide/launch-templates.html#launch-template-security-groups) for requirements of using a custom security group for the launch template
+
 ### Using AWS CLI to start Systems Manager Session
 - Make sure you have the Session Manager plugin installed on your system. For installation instructions, refer to the guide [here](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-working-with-install-plugin.html)
 - Run the following command to start session from your terminal
