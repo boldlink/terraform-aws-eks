@@ -2,7 +2,6 @@ locals {
   account_id      = data.aws_caller_identity.current.account_id
   partition       = data.aws_partition.current.partition
   dns_suffix      = data.aws_partition.current.dns_suffix
-  vpc_cidr        = data.aws_vpc.supporting.cidr_block
   vpc_id          = data.aws_vpc.supporting.id
   kms_key_arn     = data.aws_kms_alias.supporting.target_key_arn
   public_subnets  = flatten(data.aws_subnets.public.ids)

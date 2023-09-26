@@ -1,4 +1,5 @@
 resource "aws_security_group" "external" {
+  #checkov:skip=CKV2_AWS_5: "Ensure that Security Groups are attached to another resource"
   name                   = "${var.cluster_name}-managed-node-sg"
   description            = "Allow eks cluster-lc inbound traffic"
   vpc_id                 = local.vpc_id
