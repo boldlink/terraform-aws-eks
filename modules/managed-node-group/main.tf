@@ -102,7 +102,7 @@ resource "aws_launch_template" "main" {
   image_id                = var.image_id
   instance_type           = var.instance_type
   user_data               = var.install_ssm_agent ? data.template_cloudinit_config.config.rendered : var.user_data #use var.extra_script to run additional scripts
-  vpc_security_group_ids  = lookup(var.network_interfaces, "security_groups") != [] ? [] : var.security_group_ids
+  vpc_security_group_ids  = length(var.network_interfaces) > 0 ? [] : var.security_group_ids
   default_version         = var.default_version
   disable_api_termination = var.disable_api_termination
   kernel_id               = var.kernel_id
@@ -120,7 +120,7 @@ resource "aws_launch_template" "main" {
         content {
           delete_on_termination = try(ebs.value.delete_on_termination, null)
           encrypted             = try(ebs.value.encrypted, null)
-          kms_key_id            = try(ebs.value.kms_key_id, null)
+          kms_key_id            = try(ebs.value.kms_key_id, ebs.value.kms_key_arn, null)
           iops                  = try(ebs.value.iops, null)
           throughput            = try(ebs.value.throughput, null)
           snapshot_id           = try(ebs.value.snapshot_id, null)

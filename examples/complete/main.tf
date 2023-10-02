@@ -1,9 +1,40 @@
-data "aws_eks_cluster" "default" {
-  name = module.complete_eks_cluster.id
+resource "aws_security_group" "external" {
+  #checkov:skip=CKV2_AWS_5: "Ensure that Security Groups are attached to another resource"
+  name                   = "${var.cluster_name}-managed-node-sg"
+  description            = "Allow eks cluster-lc inbound traffic"
+  vpc_id                 = local.vpc_id
+  tags                   = merge({ Name = "${var.cluster_name}-managed-node-sg" }, var.tags)
+  revoke_rules_on_delete = true
+
+  ingress {
+    description = "Allow cluster traffic"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    self        = true
+  }
+
+  egress {
+    description = "Allow all outbound"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  timeouts {
+    delete = "3m"
+  }
 }
 
-data "aws_eks_cluster_auth" "default" {
-  name = module.complete_eks_cluster.id
+module "ebs_kms" {
+  source           = "boldlink/kms/aws"
+  version          = "1.1.0"
+  description      = "AWS CMK for encrypting eks ebs volumes"
+  create_kms_alias = true
+  kms_policy       = local.kms_policy
+  alias_name       = "alias/${var.cluster_name}-key-alias"
+  tags             = var.tags
 }
 
 provider "kubernetes" {
@@ -36,60 +67,65 @@ module "complete_eks_cluster" {
     },
   ]
   managed_node_groups = {
-    # managed0 = {
-    #   create       = true
-    #   subnet_ids   = local.private_subnets
-    #   desired_size = 3
-    #   max_size     = 3
-    #   min_size     = 1
-    #   tags         = local.tags
+    managed0 = {
+      create       = true
+      subnet_ids   = local.private_subnets
+      desired_size = 3
+      max_size     = 3
+      min_size     = 1
+      tags         = local.tags
 
-    #   # launch template
-    #   create_custom_launch_template = true
-    #   launch_template_description   = "EKS managed node group launch template"
-    #   ebs_optimized                 = true
-    #   install_ssm_agent             = true
-    #   block_device_mappings = [
-    #     {
-    #       # Root volume
-    #       device_name = "/dev/xvda"
-    #       no_device   = 0
-    #       ebs = {
-    #         delete_on_termination = true
-    #         volume_size           = 30
-    #         volume_type           = "gp3"
-    #       }
-    #     },
-    #     {
-    #       device_name = "/dev/sda1"
-    #       no_device   = 1
-    #       ebs = {
-    #         delete_on_termination = true
-    #         volume_size           = 30
-    #         volume_type           = "gp2"
-    #       }
-    #     }
-    #   ]
+      # launch template
+      create_custom_launch_template = true
+      launch_template_description   = "EKS managed node group launch template"
+      ebs_optimized                 = true
+      install_ssm_agent             = true
+      security_group_ids            = [aws_security_group.external.id]
+      block_device_mappings = [
+        {
+          # Root volume
+          device_name = "/dev/xvda"
+          no_device   = 0
+          ebs = {
+            delete_on_termination = true
+            volume_size           = 30
+            volume_type           = "gp3"
+            encrypted             = true
+            kms_key_arn           = module.ebs_kms.arn
+          }
+        },
+        {
+          device_name = "/dev/sda1"
+          no_device   = 1
+          ebs = {
+            delete_on_termination = true
+            volume_size           = 30
+            volume_type           = "gp2"
+            encrypted             = true
+            kms_key_arn           = module.ebs_kms.arn
+          }
+        }
+      ]
 
-    #   metadata_options = {
-    #     http_endpoint               = "enabled"
-    #     http_tokens                 = "required"
-    #     http_put_response_hop_limit = 2
-    #     instance_metadata_tags      = "disabled"
-    #   }
+      metadata_options = {
+        http_endpoint               = "enabled"
+        http_tokens                 = "required"
+        http_put_response_hop_limit = 2
+        instance_metadata_tags      = "disabled"
+      }
 
-    #   tag_specifications = [
-    #     {
-    #       resource_type = "volume"
-    #       tags          = local.tags
-    #     },
-    #     {
-    #       resource_type = "instance"
-    #       tags          = local.tags
-    #     }
-    #   ]
+      tag_specifications = [
+        {
+          resource_type = "volume"
+          tags          = local.tags
+        },
+        {
+          resource_type = "instance"
+          tags          = local.tags
+        }
+      ]
 
-    # }
+    }
     managed1 = {
       create        = true
       subnet_ids    = local.private_subnets
