@@ -12,12 +12,9 @@ resource "aws_eks_fargate_profile" "main" {
       labels    = lookup(selector.value, "labels", {})
     }
   }
-  dynamic "timeouts" {
-    for_each = [var.timeouts]
-    content {
-      create = lookup(var.timeouts, "create", "10m")
-      delete = lookup(var.timeouts, "delete", "10m")
-    }
+  timeouts {
+    create = lookup(var.timeouts, "create", "10m")
+    delete = lookup(var.timeouts, "delete", "10m")
   }
 }
 
