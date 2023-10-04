@@ -73,7 +73,10 @@ module "complete_eks_cluster" {
       desired_size = 3
       max_size     = 3
       min_size     = 1
-      tags         = local.tags
+      update_config = {
+        max_unavailable = 2
+      }
+      tags = local.tags
 
       # launch template
       create_custom_launch_template = true
@@ -130,6 +133,7 @@ module "complete_eks_cluster" {
       create        = true
       subnet_ids    = local.private_subnets
       capacity_type = "SPOT"
+      disk_size     = 30
       taints = {
         dedicated = {
           "key"    = "dedicated"
@@ -161,6 +165,10 @@ module "complete_eks_cluster" {
           }
         }
       ]
+      timeouts = {
+        create = "20m"
+        delete = "20m"
+      }
       subnet_ids = local.private_subnets
       tags       = local.tags
     }
