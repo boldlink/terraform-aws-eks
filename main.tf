@@ -15,10 +15,10 @@ resource "aws_eks_cluster" "main" {
   }
 
   dynamic "kubernetes_network_config" {
-    for_each = var.kubernetes_network_config
+    for_each = length([var.kubernetes_network_config]) > 0 ? [var.kubernetes_network_config] : []
     content {
-      service_ipv4_cidr = lookup(kubernetes_network_config.value, "service_ipv4_cidr", null)
-      ip_family         = lookup(kubernetes_network_config.value, "ip_family", null)
+      service_ipv4_cidr = try(kubernetes_network_config.value.service_ipv4_cidr, null)
+      ip_family         = try(kubernetes_network_config.value.ip_family, null)
     }
   }
 
@@ -86,13 +86,17 @@ resource "aws_cloudwatch_log_group" "main" {
 
 ## Eks addon
 resource "aws_eks_addon" "main" {
-  for_each                 = var.eks_addons
-  cluster_name             = aws_eks_cluster.main.name
-  addon_name               = lookup(each.value, "addon_name", null)
-  addon_version            = lookup(each.value, "addon_version", null)
-  resolve_conflicts        = lookup(each.value, "resolve_conflicts", null)
-  tags                     = lookup(each.value, "tags", null)
-  service_account_role_arn = lookup(each.value, "service_account_role_arn", null)
+  for_each                    = var.eks_addons
+  cluster_name                = aws_eks_cluster.main.name
+  addon_name                  = try(each.value.name, each.key)
+  addon_version               = try(each.value.addon_version, null)
+  resolve_conflicts_on_create = try(each.value.resolve_conflicts, null)
+  configuration_values        = try(each.value.resolve_conflicts, null)
+  tags                        = try(each.value.tags, null)
+  preserve                    = try(each.value.preserve, null)
+  service_account_role_arn    = try(each.value.service_account_role_arn, null)
+
+  depends_on = [aws_eks_cluster.main, module.node_group]
 }
 
 ## Enable cluster IRSA
@@ -112,7 +116,6 @@ resource "aws_iam_openid_connect_provider" "irsa" {
   ]
 }
 
-
 ### aws_eks_identity_provider_config: Manages an EKS Identity Provider Configuration.
 resource "aws_eks_identity_provider_config" "main" {
   for_each     = var.identity_providers
@@ -122,7 +125,7 @@ resource "aws_eks_identity_provider_config" "main" {
     groups_claim                  = lookup(each.value, "groups_claim", null)
     groups_prefix                 = lookup(each.value, "groups_prefix", null)
     identity_provider_config_name = try(each.value.identity_provider_config_name, each.key)
-    issuer_url                    = each.value.issuer_url
+    issuer_url                    = try(each.value.issuer_url, aws_eks_cluster.main.identity[0].oidc[0].issuer)
     required_claims               = lookup(each.value, "required_claims", null)
     username_claim                = lookup(each.value, "username_claim", null)
     username_prefix               = lookup(each.value, "username_prefix", null)
@@ -132,6 +135,7 @@ resource "aws_eks_identity_provider_config" "main" {
     create = lookup(var.timeouts, "create", "40m")
     delete = lookup(var.timeouts, "delete", "40m")
   }
+  depends_on = [aws_eks_cluster.main]
 }
 
 

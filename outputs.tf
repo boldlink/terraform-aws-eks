@@ -57,44 +57,32 @@ output "vpc_config" {
 
 #eks addon
 output "eks_addon_arn" {
-  value = [
-    for addon in aws_eks_addon.main : addon.arn
-  ]
+  value       = [for addon in aws_eks_addon.main : addon.arn]
   description = "Amazon Resource Name (ARN) of the EKS add-on."
 }
 
 output "eks_addon_id" {
-  value = [
-    for addon in aws_eks_addon.main : addon.id
-  ]
+  value       = [for addon in aws_eks_addon.main : addon.id]
   description = "EKS Cluster name and EKS Addon name separated by a colon (`:`)."
 }
 
 output "eks_addon_status" {
-  value = [
-    for addon in aws_eks_addon.main : addon.status
-  ]
+  value       = try([for addon in aws_eks_addon.main : addon.status], null)
   description = "Status of the EKS add-on(s)."
 }
 
 output "eks_addon_created_at" {
-  value = [
-    for addon in aws_eks_addon.main : addon.created_at
-  ]
+  value       = [for addon in aws_eks_addon.main : addon.created_at]
   description = "Date and time in [RFC3339 format](https://tools.ietf.org/html/rfc3339#section-5.8) that the EKS add-on was created."
 }
 
 output "eks_addon_modified_at" {
-  value = [
-    for addon in aws_eks_addon.main : addon.modified_at
-  ]
+  value       = [for addon in aws_eks_addon.main : addon.modified_at]
   description = "Date and time in [RFC3339 format](https://tools.ietf.org/html/rfc3339#section-5.8) that the EKS add-on was updated."
 }
 
 output "eks_addon_tags_all" {
-  value = [
-    for addon in aws_eks_addon.main : addon.tags_all
-  ]
+  value       = [for addon in aws_eks_addon.main : addon.tags_all]
   description = "(Optional) Key-value map of resource tags, including those inherited from the provider [default_tags configuration block](https://registry.terraform.io/docs/providers/aws/index#default_tags-configuration-block)."
 }
 
