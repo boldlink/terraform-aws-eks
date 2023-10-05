@@ -155,24 +155,14 @@ resource "aws_launch_template" "main" {
     }
   }
 
-  dynamic "credit_specification" {
-    for_each = length(var.credit_specification) > 0 ? [var.credit_specification] : []
-    content {
-      cpu_credits = credit_specification.value.cpu_credits
-    }
+  credit_specification {
+    cpu_credits = var.cpu_credits
   }
 
   dynamic "elastic_gpu_specifications" {
     for_each = length(var.elastic_gpu_specifications) > 0 ? [var.elastic_gpu_specifications] : []
     content {
       type = elastic_gpu_specifications.value.type
-    }
-  }
-
-  dynamic "elastic_inference_accelerator" {
-    for_each = length(var.elastic_inference_accelerator) > 0 ? [var.elastic_inference_accelerator] : []
-    content {
-      type = elastic_inference_accelerator.value.type
     }
   }
 
