@@ -72,8 +72,8 @@ module "complete_eks_cluster" {
   ]
   managed_node_groups = {
     managed0 = {
-      create     = true
-      subnet_ids = local.private_subnets
+      create       = true
+      subnet_ids   = local.private_subnets
       desired_size = 1
       max_size     = 3
       min_size     = 1
@@ -90,7 +90,7 @@ module "complete_eks_cluster" {
       install_ssm_agent             = true
       security_group_ids            = [aws_security_group.external.id]
       cpu_credits                   = var.cpu_credits
-      enable_monitoring = true
+      enable_monitoring             = true
       block_device_mappings = [
         {
           # Root volume
@@ -123,7 +123,7 @@ module "complete_eks_cluster" {
         http_put_response_hop_limit = 2
         instance_metadata_tags      = "disabled"
       }
-      
+
       capacity_reservation_specification = {
         capacity_reservation_preference = var.capacity_reservation_preference
       }
@@ -223,4 +223,3 @@ module "complete_eks_cluster" {
   }*/
   tags = local.tags
 }
-
