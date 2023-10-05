@@ -59,6 +59,10 @@ module "complete_eks_cluster" {
   endpoint_public_access     = var.endpoint_public_access
   endpoint_private_access    = var.endpoint_private_access
 
+  /*kubernetes_network_config = {
+    ip_family         = "ipv4"
+    service_ipv4_cidr = "172.20.0.0/16"
+  }*/
   aws_auth_roles = [
     {
       rolearn  = "arn:aws:iam::${local.account_id}:role/complete-eks-example-role"
@@ -68,9 +72,9 @@ module "complete_eks_cluster" {
   ]
   managed_node_groups = {
     managed0 = {
-      create       = true
-      subnet_ids   = local.private_subnets
-      desired_size = 3
+      create     = true
+      subnet_ids = local.private_subnets
+      desired_size = 1
       max_size     = 3
       min_size     = 1
       update_config = {
@@ -80,10 +84,13 @@ module "complete_eks_cluster" {
 
       # launch template
       create_custom_launch_template = true
+      launch_template_version       = "$Latest"
       launch_template_description   = "EKS managed node group launch template"
       ebs_optimized                 = true
       install_ssm_agent             = true
       security_group_ids            = [aws_security_group.external.id]
+      cpu_credits                   = var.cpu_credits
+      enable_monitoring = true
       block_device_mappings = [
         {
           # Root volume
@@ -116,6 +123,23 @@ module "complete_eks_cluster" {
         http_put_response_hop_limit = 2
         instance_metadata_tags      = "disabled"
       }
+      
+      capacity_reservation_specification = {
+        capacity_reservation_preference = var.capacity_reservation_preference
+      }
+
+      enclave_options = {
+        enabled = false
+      }
+
+      network_interfaces = [
+        {
+          interface_type              = "interface"
+          description                 = "managed0 Network interface"
+          delete_on_termination       = true
+          associate_public_ip_address = false
+        }
+      ]
 
       tag_specifications = [
         {
@@ -127,14 +151,13 @@ module "complete_eks_cluster" {
           tags          = local.tags
         }
       ]
-
     }
     managed1 = {
       create        = true
       subnet_ids    = local.private_subnets
       capacity_type = "SPOT"
       disk_size     = 30
-      taints = {
+      /*taints = {
         dedicated = {
           "key"    = "dedicated"
           "value"  = "true"
@@ -150,7 +173,7 @@ module "complete_eks_cluster" {
           "value"  = "true"
           "effect" = "PREFER_NO_SCHEDULE"
         }
-      }
+      }*/
       tags = local.tags
     }
   }
@@ -185,5 +208,19 @@ module "complete_eks_cluster" {
       tags       = local.tags
     }
   }
+
+  eks_addons = {
+    aws-ebs-csi-driver = {
+      addon_version               = "v1.22.0-eksbuild.2"
+      resolve_conflicts_on_create = "OVERWRITE"
+    }
+  }
+
+  /*identity_providers = {
+    example_config = {
+      client_id = "sts.amazonaws.com"
+    }
+  }*/
   tags = local.tags
 }
+

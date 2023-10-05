@@ -55,7 +55,9 @@ This example is for demo and testing purposes and doesn't represent a production
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_capacity_reservation_preference"></a> [capacity\_reservation\_preference](#input\_capacity\_reservation\_preference) | Indicates the instance's Capacity Reservation preferences. Can be 'open' or 'none'. (Default: 'open') | `string` | `"open"` | no |
 | <a name="input_cluster_name"></a> [cluster\_name](#input\_cluster\_name) | Name of the cluster | `string` | `"complete-eks-example"` | no |
+| <a name="input_cpu_credits"></a> [cpu\_credits](#input\_cpu\_credits) | The credit option for CPU usage (unlimited or standard) | `string` | `"unlimited"` | no |
 | <a name="input_enable_fargate_node_groups"></a> [enable\_fargate\_node\_groups](#input\_enable\_fargate\_node\_groups) | Set this variable to true to create your fargate node groups | `bool` | `true` | no |
 | <a name="input_enable_irsa"></a> [enable\_irsa](#input\_enable\_irsa) | Enable Open Identity connect support for AWS IAM Roles | `bool` | `true` | no |
 | <a name="input_enable_managed_node_groups"></a> [enable\_managed\_node\_groups](#input\_enable\_managed\_node\_groups) | Set this variable to true to create your managed node groups | `bool` | `true` | no |
