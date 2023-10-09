@@ -18,12 +18,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - feat: Add container insights support for metrics and log groups.
 - feat: Make all values of the tls_key variables not hardcoded values.
 - feat: Add the capacity for additional policies or override default attached policies to both the cluster and node group iam roles.
-- feat: show selector and timeouts usage in complete example for fargate profile resource
-- feat: show `update_config` usage in complete example for `eks_node_group` resource
 - fix: CKV_AWS_39: "Ensure Amazon EKS public endpoint disabled"
 - fix: CKV_AWS_38: "Ensure Amazon EKS public endpoint not accessible to 0.0.0.0/0"
 - fix: CKV_TF_1: "Ensure Terraform module sources use a commit hash"
 - fix: CKV_AWS_338: "Ensure CloudWatch log groups retains logs for at least 1 year"
+- feat: create a fargate profile only example that has coredns addon enabled
+- fix: remove CKV_AWS_37 from `.checkov.yml` file which is being flagged even though logging for all log types has been enabled.
+
+
+## [3.3.3] - 2023-10-08
+- fixed fargate_profile timeouts block
+- fixed managed nodegroup update_config block
+- fixed eks addons block
+- added an eks addon in complete example
+- showed how to customize the following launch template blocks: capacity_reservation_specification, cpu_credits,enable_monitoring, enclave options and network_interfaces in the complete example
+- showed how to configure identity_providers in the complete example
+- added a custom kubernetes_network_config block
 
 ## [3.3.2] - 2023-09-21
 - fix: fixed `vpc_security_group_ids` condition which was bringing an error as a result of not providing a suitable default value using lookup function
