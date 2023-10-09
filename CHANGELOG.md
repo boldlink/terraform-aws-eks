@@ -26,7 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - fix: remove CKV_AWS_37 from `.checkov.yml` file which is being flagged even though logging for all log types has been enabled.
 
 
-## [3.3.3] - 2023-10-08
+## [3.3.3] - 2023-10-09
 - fix: fargate_profile timeouts block
 - fix: managed nodegroup update_config block
 - fix: eks addons block
