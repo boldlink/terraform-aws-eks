@@ -156,7 +156,7 @@ data "aws_subnets" "public" {
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.19.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.20.0 |
 | <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | 2.23.0 |
 | <a name="provider_tls"></a> [tls](#provider\_tls) | 4.0.4 |
 
