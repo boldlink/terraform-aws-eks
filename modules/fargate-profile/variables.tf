@@ -24,7 +24,7 @@ variable "tags" {
 variable "selector" {
   description = "(Required) Configuration block(s) for selecting Kubernetes Pods to execute with this EKS Fargate Profile."
   type        = any
-  default     = {}
+  default     = []
 }
 
 variable "timeouts" {
