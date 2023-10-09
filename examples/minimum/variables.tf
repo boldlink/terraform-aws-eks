@@ -1,7 +1,7 @@
 variable "cluster_name" {
   type        = string
   description = "Name of the cluster"
-  default     = "example-minimum-eks"
+  default     = "minimum-eks-example"
 }
 
 variable "supporting_resources_name" {
@@ -28,5 +28,5 @@ variable "tags" {
 variable "enabled_cluster_log_types" {
   type        = list(string)
   description = "List of the desired control plane logging to enable."
-  default     = ["api", "authenticator", "audit", "scheduler", "controllerManager"]
+  default     = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
 }
