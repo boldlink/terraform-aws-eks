@@ -59,10 +59,11 @@ module "complete_eks_cluster" {
   endpoint_public_access     = var.endpoint_public_access
   endpoint_private_access    = var.endpoint_private_access
 
-  /*kubernetes_network_config = {
+  kubernetes_network_config = {
     ip_family         = "ipv4"
-    service_ipv4_cidr = "172.20.0.0/16"
-  }*/
+    service_ipv4_cidr = "172.16.0.0/16"
+  }
+
   aws_auth_roles = [
     {
       rolearn  = "arn:aws:iam::${local.account_id}:role/complete-eks-example-role"
@@ -84,11 +85,9 @@ module "complete_eks_cluster" {
 
       # launch template
       create_custom_launch_template = true
-      launch_template_version       = "$Latest"
       launch_template_description   = "EKS managed node group launch template"
       ebs_optimized                 = true
       install_ssm_agent             = true
-      security_group_ids            = [aws_security_group.external.id]
       cpu_credits                   = var.cpu_credits
       enable_monitoring             = true
       block_device_mappings = [
@@ -138,6 +137,7 @@ module "complete_eks_cluster" {
           description                 = "managed0 Network interface"
           delete_on_termination       = true
           associate_public_ip_address = false
+          security_groups             = [aws_security_group.external.id]
         }
       ]
 
@@ -157,7 +157,7 @@ module "complete_eks_cluster" {
       subnet_ids    = local.private_subnets
       capacity_type = "SPOT"
       disk_size     = 30
-      /*taints = {
+      taints = {
         dedicated = {
           "key"    = "dedicated"
           "value"  = "true"
@@ -173,11 +173,10 @@ module "complete_eks_cluster" {
           "value"  = "true"
           "effect" = "PREFER_NO_SCHEDULE"
         }
-      }*/
+      }
       tags = local.tags
     }
   }
-
   fargate_node_groups = {
     fargate0 = {
       selector = [
@@ -216,10 +215,11 @@ module "complete_eks_cluster" {
     }
   }
 
-  /*identity_providers = {
+  identity_providers = {
     example_config = {
       client_id = "sts.amazonaws.com"
     }
-  }*/
+  }
+
   tags = local.tags
 }
