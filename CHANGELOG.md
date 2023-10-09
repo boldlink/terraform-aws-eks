@@ -35,6 +35,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - showed how to configure identity_providers in the complete example
 - added a custom kubernetes_network_config block in complete example
 - removed elastic_inference_accelerator and instance_market_options blocks in launch template resource
+- removed security group example in complete example to show network interface configuration
 
 ## [3.3.2] - 2023-09-21
 - fix: fixed `vpc_security_group_ids` condition which was bringing an error as a result of not providing a suitable default value using lookup function

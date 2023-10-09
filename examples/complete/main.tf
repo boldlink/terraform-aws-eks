@@ -1,32 +1,3 @@
-resource "aws_security_group" "external" {
-  #checkov:skip=CKV2_AWS_5: "Ensure that Security Groups are attached to another resource"
-  name                   = "${var.cluster_name}-managed-node-sg"
-  description            = "Allow eks cluster-lc inbound traffic"
-  vpc_id                 = local.vpc_id
-  tags                   = merge({ Name = "${var.cluster_name}-managed-node-sg" }, var.tags)
-  revoke_rules_on_delete = true
-
-  ingress {
-    description = "Allow cluster traffic"
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    self        = true
-  }
-
-  egress {
-    description = "Allow all outbound"
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  timeouts {
-    delete = "3m"
-  }
-}
-
 module "ebs_kms" {
   source           = "boldlink/kms/aws"
   version          = "1.1.0"
@@ -137,7 +108,6 @@ module "complete_eks_cluster" {
           description                 = "managed0 Network interface"
           delete_on_termination       = true
           associate_public_ip_address = false
-          security_groups             = [aws_security_group.external.id]
         }
       ]
 

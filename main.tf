@@ -91,7 +91,7 @@ resource "aws_eks_addon" "main" {
   addon_name                  = try(each.value.name, each.key)
   addon_version               = try(each.value.addon_version, null)
   resolve_conflicts_on_create = try(each.value.resolve_conflicts_on_create, "OVERWRITE")
-  resolve_conflicts_on_update = try(each.value.resolve_conflicts_on_update, "PRESERVE")
+  resolve_conflicts_on_update = try(each.value.resolve_conflicts_on_update, null)
   configuration_values        = try(each.value.configuration_values, null)
   tags                        = try(each.value.tags, null)
   preserve                    = try(each.value.preserve, null)
