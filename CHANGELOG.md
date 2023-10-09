@@ -27,13 +27,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [3.3.3] - 2023-10-08
-- fixed fargate_profile timeouts block
-- fixed managed nodegroup update_config block
-- fixed eks addons block
+- fix: fargate_profile timeouts block
+- fix: managed nodegroup update_config block
+- fix: eks addons block
 - added an eks addon in complete example
 - showed how to customize the following launch template blocks: capacity_reservation_specification, cpu_credits,enable_monitoring, enclave options and network_interfaces in the complete example
 - showed how to configure identity_providers in the complete example
-- added a custom kubernetes_network_config block
+- added a custom kubernetes_network_config block in complete example
+- removed elastic_inference_accelerator and instance_market_options blocks in launch template resource
 
 ## [3.3.2] - 2023-09-21
 - fix: fixed `vpc_security_group_ids` condition which was bringing an error as a result of not providing a suitable default value using lookup function
