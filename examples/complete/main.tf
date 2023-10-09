@@ -182,9 +182,9 @@ module "complete_eks_cluster" {
     aws-ebs-csi-driver = {
       addon_version               = "v1.22.0-eksbuild.2"
       resolve_conflicts_on_create = "OVERWRITE"
-      # Ensure you attach an add-on ARN that has ebs csi permissions using service_account_role_arn. 
-      # The Amazon EBS CSI plugin requires IAM permissions to manage the lifecycle of Amazon EBS volumes that enable persistent storage. 
-      # These permissions are available through the Amazon_EBS_CSI_Driver_Policy managed policy. 
+      # Ensure you attach an add-on ARN that has ebs csi permissions using service_account_role_arn.
+      # The Amazon EBS CSI plugin requires IAM permissions to manage the lifecycle of Amazon EBS volumes that enable persistent storage.
+      # These permissions are available through the Amazon_EBS_CSI_Driver_Policy managed policy.
       # As a best practice, it is recommended to use IAM roles for service accounts to give the EBS CSI plugin only the permissions it requires, without providing extended permissions to the node IAM role.
     }
   }
