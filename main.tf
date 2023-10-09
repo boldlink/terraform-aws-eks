@@ -90,13 +90,14 @@ resource "aws_eks_addon" "main" {
   cluster_name                = aws_eks_cluster.main.name
   addon_name                  = try(each.value.name, each.key)
   addon_version               = try(each.value.addon_version, null)
-  resolve_conflicts_on_create = try(each.value.resolve_conflicts, null)
-  configuration_values        = try(each.value.resolve_conflicts, null)
+  resolve_conflicts_on_create = try(each.value.resolve_conflicts_on_create, "OVERWRITE")
+  resolve_conflicts_on_update = try(each.value.resolve_conflicts_on_update, "PRESERVE")
+  configuration_values        = try(each.value.configuration_values, null)
   tags                        = try(each.value.tags, null)
   preserve                    = try(each.value.preserve, null)
   service_account_role_arn    = try(each.value.service_account_role_arn, null)
 
-  depends_on = [aws_eks_cluster.main, module.node_group]
+  depends_on = [module.node_group, module.fargate_profile]
 }
 
 ## Enable cluster IRSA
@@ -135,7 +136,7 @@ resource "aws_eks_identity_provider_config" "main" {
     create = lookup(var.timeouts, "create", "40m")
     delete = lookup(var.timeouts, "delete", "40m")
   }
-  depends_on = [aws_eks_cluster.main]
+  depends_on = [aws_eks_cluster.main, module.fargate_profile, module.node_group]
 }
 
 

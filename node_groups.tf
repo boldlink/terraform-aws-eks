@@ -43,7 +43,6 @@ module "node_group" {
   cpu_credits                        = lookup(each.value, "cpu_credits", null)
   elastic_gpu_specifications         = lookup(each.value, "elastic_gpu_specifications", {})
   enclave_options                    = lookup(each.value, "enclave_options", {})
-  instance_market_options            = lookup(each.value, "instance_market_options", {})
   license_specifications             = lookup(each.value, "license_specifications", {})
   metadata_options                   = lookup(each.value, "metadata_options", {})
   network_interfaces                 = lookup(each.value, "network_interfaces", [])
