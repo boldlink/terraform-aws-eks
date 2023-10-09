@@ -235,12 +235,6 @@ variable "enclave_options" {
   default     = {}
 }
 
-variable "instance_market_options" {
-  type        = map(string)
-  description = "(Optional) The market (purchasing) option for the instance."
-  default     = {}
-}
-
 variable "license_specifications" {
   type        = map(string)
   description = "(Optional) A list of license specifications to associate with."

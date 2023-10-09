@@ -173,24 +173,6 @@ resource "aws_launch_template" "main" {
     }
   }
 
-  dynamic "instance_market_options" {
-    for_each = length(var.instance_market_options) > 0 ? [var.instance_market_options] : []
-    content {
-      market_type = instance_market_options.value.market_type
-
-      dynamic "spot_options" {
-        for_each = try([instance_market_options.value.spot_options], [])
-        content {
-          block_duration_minutes         = try(spot_options.value.block_duration_minutes, null)
-          instance_interruption_behavior = try(spot_options.value.instance_interruption_behavior, null)
-          max_price                      = try(spot_options.value.max_price, null)
-          spot_instance_type             = try(spot_options.value.spot_instance_type, null)
-          valid_until                    = try(spot_options.value.valid_until, null)
-        }
-      }
-    }
-  }
-
   dynamic "license_specification" {
     for_each = length(var.license_specifications) > 0 ? [var.license_specifications] : []
     content {
