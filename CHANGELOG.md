@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - feat: create a fargate profile only example that has coredns addon enabled
 - fix: remove CKV_AWS_37 from `.checkov.yml` file which is being flagged even though logging for all log types has been enabled.
 - showcase - license_specification, elastic_gpu_specifications, placements, private_dns_name_options launch_template options in module examples.
+- add a nodegroup example that uses external vpc security group(s)
 
 
 ## [3.3.3] - 2023-10-09
