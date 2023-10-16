@@ -62,8 +62,8 @@ module "complete_eks_cluster" {
       cpu_credits                   = var.cpu_credits
       enable_monitoring             = true
       cpu_options = {
-          core_count       = 4
-          threads_per_core = 2
+        core_count       = 4
+        threads_per_core = 2
       }
       block_device_mappings = [
         {
