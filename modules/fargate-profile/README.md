@@ -47,7 +47,7 @@ module "fargate_profile" {
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.17.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.21.0 |
 
 ## Modules
 
@@ -69,7 +69,7 @@ No modules.
 | <a name="input_cluster_name"></a> [cluster\_name](#input\_cluster\_name) | Name of the cluster. Must be between 1-100 characters in length. Must begin with an alphanumeric character, and must only contain alphanumeric characters, dashes and underscores (`\^[0-9A-Za-z][A-Za-z0-9-_]+$`). | `string` | `null` | no |
 | <a name="input_fargate_profile_name"></a> [fargate\_profile\_name](#input\_fargate\_profile\_name) | (Required) Name of the EKS Fargate Profile. | `string` | n/a | yes |
 | <a name="input_fargate_profile_subnet_ids"></a> [fargate\_profile\_subnet\_ids](#input\_fargate\_profile\_subnet\_ids) | (Required) Identifiers of private EC2 Subnets to associate with the EKS Fargate Profile. These subnets must have the following resource tag: kubernetes.io/cluster/CLUSTER\_NAME (where CLUSTER\_NAME is replaced with the name of the EKS Cluster). | `list(string)` | `[]` | no |
-| <a name="input_selector"></a> [selector](#input\_selector) | (Required) Configuration block(s) for selecting Kubernetes Pods to execute with this EKS Fargate Profile. | `any` | `{}` | no |
+| <a name="input_selector"></a> [selector](#input\_selector) | (Required) Configuration block(s) for selecting Kubernetes Pods to execute with this EKS Fargate Profile. | `any` | `[]` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | (Optional) Key-value map of resource tags. If configured with a provider default\_tags configuration block present, tags with matching keys will overwrite those defined at the provider-level. | `map(string)` | `{}` | no |
 | <a name="input_timeouts"></a> [timeouts](#input\_timeouts) | Fargate profile timeout configuration | `map(string)` | `{}` | no |
 

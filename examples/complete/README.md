@@ -28,7 +28,7 @@ This example is for demo and testing purposes and doesn't represent a production
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.17.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.21.0 |
 
 ## Modules
 
@@ -41,7 +41,6 @@ This example is for demo and testing purposes and doesn't represent a production
 
 | Name | Type |
 |------|------|
-| [aws_security_group.external](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
 | [aws_eks_cluster.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/eks_cluster) | data source |
 | [aws_eks_cluster_auth.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/eks_cluster_auth) | data source |
@@ -55,7 +54,9 @@ This example is for demo and testing purposes and doesn't represent a production
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_capacity_reservation_preference"></a> [capacity\_reservation\_preference](#input\_capacity\_reservation\_preference) | Indicates the instance's Capacity Reservation preferences. Can be 'open' or 'none'. (Default: 'open') | `string` | `"open"` | no |
 | <a name="input_cluster_name"></a> [cluster\_name](#input\_cluster\_name) | Name of the cluster | `string` | `"complete-eks-example"` | no |
+| <a name="input_cpu_credits"></a> [cpu\_credits](#input\_cpu\_credits) | The credit option for CPU usage (unlimited or standard) | `string` | `"unlimited"` | no |
 | <a name="input_enable_fargate_node_groups"></a> [enable\_fargate\_node\_groups](#input\_enable\_fargate\_node\_groups) | Set this variable to true to create your fargate node groups | `bool` | `true` | no |
 | <a name="input_enable_irsa"></a> [enable\_irsa](#input\_enable\_irsa) | Enable Open Identity connect support for AWS IAM Roles | `bool` | `true` | no |
 | <a name="input_enable_managed_node_groups"></a> [enable\_managed\_node\_groups](#input\_enable\_managed\_node\_groups) | Set this variable to true to create your managed node groups | `bool` | `true` | no |

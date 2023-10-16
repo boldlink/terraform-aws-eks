@@ -22,10 +22,11 @@ resource "aws_eks_node_group" "main" {
   }
 
   dynamic "update_config" {
-    for_each = var.update_config
+    for_each = length(var.update_config) > 0 ? [var.update_config] : []
+
     content {
-      max_unavailable            = lookup(update_config.value, "max_unavailable", null)
-      max_unavailable_percentage = lookup(update_config.value, "max_unavailable_percentage", null)
+      max_unavailable            = try(update_config.value.max_unavailable, null)
+      max_unavailable_percentage = try(update_config.value.max_unavailable_percentage, null)
     }
   }
 
@@ -154,11 +155,8 @@ resource "aws_launch_template" "main" {
     }
   }
 
-  dynamic "credit_specification" {
-    for_each = length(var.credit_specification) > 0 ? [var.credit_specification] : []
-    content {
-      cpu_credits = credit_specification.value.cpu_credits
-    }
+  credit_specification {
+    cpu_credits = var.cpu_credits
   }
 
   dynamic "elastic_gpu_specifications" {
@@ -168,35 +166,10 @@ resource "aws_launch_template" "main" {
     }
   }
 
-  dynamic "elastic_inference_accelerator" {
-    for_each = length(var.elastic_inference_accelerator) > 0 ? [var.elastic_inference_accelerator] : []
-    content {
-      type = elastic_inference_accelerator.value.type
-    }
-  }
-
   dynamic "enclave_options" {
     for_each = length(var.enclave_options) > 0 ? [var.enclave_options] : []
     content {
       enabled = enclave_options.value.enabled
-    }
-  }
-
-  dynamic "instance_market_options" {
-    for_each = length(var.instance_market_options) > 0 ? [var.instance_market_options] : []
-    content {
-      market_type = instance_market_options.value.market_type
-
-      dynamic "spot_options" {
-        for_each = try([instance_market_options.value.spot_options], [])
-        content {
-          block_duration_minutes         = try(spot_options.value.block_duration_minutes, null)
-          instance_interruption_behavior = try(spot_options.value.instance_interruption_behavior, null)
-          max_price                      = try(spot_options.value.max_price, null)
-          spot_instance_type             = try(spot_options.value.spot_instance_type, null)
-          valid_until                    = try(spot_options.value.valid_until, null)
-        }
-      }
     }
   }
 

@@ -141,7 +141,7 @@ variable "launch_template_version" {
 
 variable "enable_monitoring" {
   type        = bool
-  description = "Choose whether to enable monotoring"
+  description = "Choose whether to enable monitoring"
   default     = false
 }
 
@@ -217,10 +217,10 @@ variable "cpu_options" {
   default     = {}
 }
 
-variable "credit_specification" {
-  type        = map(string)
-  description = "(Optional) Customize the credit specification of the instance."
-  default     = {}
+variable "cpu_credits" {
+  description = "The credit option for CPU usage (unlimited or standard)"
+  type        = string
+  default     = null
 }
 
 variable "elastic_gpu_specifications" {
@@ -229,21 +229,9 @@ variable "elastic_gpu_specifications" {
   default     = {}
 }
 
-variable "elastic_inference_accelerator" {
-  type        = map(string)
-  description = "(Optional) Configuration block containing an Elastic Inference Accelerator to attach to the instance."
-  default     = {}
-}
-
 variable "enclave_options" {
   type        = map(string)
   description = "(Optional) Enable Nitro Enclaves on launched instances."
-  default     = {}
-}
-
-variable "instance_market_options" {
-  type        = map(string)
-  description = "(Optional) The market (purchasing) option for the instance."
   default     = {}
 }
 

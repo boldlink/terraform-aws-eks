@@ -66,3 +66,15 @@ variable "endpoint_public_access" {
   description = "Whether the Amazon EKS public API server endpoint is enabled. Default is `true`."
   default     = true
 }
+
+variable "capacity_reservation_preference" {
+  description = "Indicates the instance's Capacity Reservation preferences. Can be 'open' or 'none'. (Default: 'open')"
+  type        = string
+  default     = "open"
+}
+
+variable "cpu_credits" {
+  description = "The credit option for CPU usage (unlimited or standard)"
+  type        = string
+  default     = "unlimited"
+}

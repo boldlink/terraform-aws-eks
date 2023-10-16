@@ -26,9 +26,9 @@ module "eks_vpc" {
     eks = {
       cidrs = local.eks_public_subnets
       tags = {
-        "kubernetes.io/cluster/example-complete-eks" = "shared"
-        "kubernetes.io/cluster/example-minimum-eks"  = "shared"
-        "kubernetes.io/role/elb"                     = true
+        "kubernetes.io/cluster/complete-eks-example" = "shared"
+        "kubernetes.io/cluster/minimum-eks-example"  = "shared"
+        "kubernetes.io/role/elb"                     = 1
       }
     }
   }
@@ -40,9 +40,9 @@ module "eks_vpc" {
     eks = {
       cidrs = local.eks_private_subnets
       tags = {
-        "kubernetes.io/cluster/example-complete-eks" = "shared"
-        "kubernetes.io/cluster/example-minimum-eks"  = "shared"
-        "kubernetes.io/role/internal-elb"            = true
+        "kubernetes.io/cluster/complete-eks-example" = "shared"
+        "kubernetes.io/cluster/minimum-eks-example"  = "shared"
+        "kubernetes.io/role/internal-elb"            = 1
       }
     }
   }

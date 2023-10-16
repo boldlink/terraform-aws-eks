@@ -66,7 +66,7 @@ module "node_group" {
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.17.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.21.0 |
 | <a name="provider_template"></a> [template](#provider\_template) | 2.2.0 |
 
 ## Modules
@@ -95,23 +95,21 @@ No modules.
 | <a name="input_capacity_reservation_specification"></a> [capacity\_reservation\_specification](#input\_capacity\_reservation\_specification) | (Optional) Targeting for EC2 capacity reservations. | `map(string)` | `{}` | no |
 | <a name="input_capacity_type"></a> [capacity\_type](#input\_capacity\_type) | (Optional) Type of capacity associated with the EKS Node Group. Valid values: `ON_DEMAND`, `SPOT`. | `string` | `"ON_DEMAND"` | no |
 | <a name="input_cluster_name"></a> [cluster\_name](#input\_cluster\_name) | Name of the cluster. Must be between 1-100 characters in length. Must begin with an alphanumeric character, and must only contain alphanumeric characters, dashes and underscores (`\^[0-9A-Za-z][A-Za-z0-9-_]+$`). | `string` | n/a | yes |
+| <a name="input_cpu_credits"></a> [cpu\_credits](#input\_cpu\_credits) | The credit option for CPU usage (unlimited or standard) | `string` | `null` | no |
 | <a name="input_cpu_options"></a> [cpu\_options](#input\_cpu\_options) | (Optional) The CPU options for the instance. | `map(string)` | `{}` | no |
 | <a name="input_create_custom_launch_template"></a> [create\_custom\_launch\_template](#input\_create\_custom\_launch\_template) | Specify whether to create custom launch template | `bool` | `false` | no |
-| <a name="input_credit_specification"></a> [credit\_specification](#input\_credit\_specification) | (Optional) Customize the credit specification of the instance. | `map(string)` | `{}` | no |
 | <a name="input_default_version"></a> [default\_version](#input\_default\_version) | (Optional) Default Version of the launch template. | `number` | `null` | no |
 | <a name="input_desired_size"></a> [desired\_size](#input\_desired\_size) | (Required) Desired number of worker nodes. | `number` | `1` | no |
 | <a name="input_disable_api_termination"></a> [disable\_api\_termination](#input\_disable\_api\_termination) | (Optional) If true, enables EC2 Instance Termination Protection | `bool` | `false` | no |
 | <a name="input_disk_size"></a> [disk\_size](#input\_disk\_size) | (Optional) Disk size in GiB for worker nodes. Defaults to 20. | `number` | `null` | no |
 | <a name="input_ebs_optimized"></a> [ebs\_optimized](#input\_ebs\_optimized) | (Optional) If true, the launched EC2 instance will be EBS-optimized. | `bool` | `false` | no |
 | <a name="input_elastic_gpu_specifications"></a> [elastic\_gpu\_specifications](#input\_elastic\_gpu\_specifications) | (Optional) The elastic GPU to attach to the instance. | `map(string)` | `{}` | no |
-| <a name="input_elastic_inference_accelerator"></a> [elastic\_inference\_accelerator](#input\_elastic\_inference\_accelerator) | (Optional) Configuration block containing an Elastic Inference Accelerator to attach to the instance. | `map(string)` | `{}` | no |
-| <a name="input_enable_monitoring"></a> [enable\_monitoring](#input\_enable\_monitoring) | Choose whether to enable monotoring | `bool` | `false` | no |
+| <a name="input_enable_monitoring"></a> [enable\_monitoring](#input\_enable\_monitoring) | Choose whether to enable monitoring | `bool` | `false` | no |
 | <a name="input_enclave_options"></a> [enclave\_options](#input\_enclave\_options) | (Optional) Enable Nitro Enclaves on launched instances. | `map(string)` | `{}` | no |
 | <a name="input_extra_script"></a> [extra\_script](#input\_extra\_script) | The name of the extra script | `string` | `""` | no |
 | <a name="input_force_update_version"></a> [force\_update\_version](#input\_force\_update\_version) | (Optional) Force version update if existing pods are unable to be drained due to a pod disruption budget issue. | `bool` | `false` | no |
 | <a name="input_image_id"></a> [image\_id](#input\_image\_id) | (Optional) The AMI from which to launch the instance. | `string` | `null` | no |
 | <a name="input_install_ssm_agent"></a> [install\_ssm\_agent](#input\_install\_ssm\_agent) | Whether to install ssm agent | `bool` | `false` | no |
-| <a name="input_instance_market_options"></a> [instance\_market\_options](#input\_instance\_market\_options) | (Optional) The market (purchasing) option for the instance. | `map(string)` | `{}` | no |
 | <a name="input_instance_type"></a> [instance\_type](#input\_instance\_type) | (Optional) The type of the instance. | `string` | `null` | no |
 | <a name="input_instance_types"></a> [instance\_types](#input\_instance\_types) | (Optional) List of instance types associated with the EKS Node Group. Defaults to `[t3.medium]`. | `list(string)` | <pre>[<br>  "t3.medium"<br>]</pre> | no |
 | <a name="input_kernel_id"></a> [kernel\_id](#input\_kernel\_id) | (Optional) The kernel ID. | `string` | `null` | no |
