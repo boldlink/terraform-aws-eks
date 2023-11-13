@@ -25,8 +25,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - feat: create a fargate profile only example that has coredns addon enabled
 - fix: remove CKV_AWS_37 from `.checkov.yml` file which is being flagged even though logging for all log types has been enabled.
 - showcase - license_specification, elastic_gpu_specifications, placements, private_dns_name_options launch_template options in module examples.
-- add a nodegroup example that uses external vpc security group(s)
 
+## [3.3.4] - 20213-11-19
+- added an example external security group to node instances and cluster
 
 ## [3.3.3] - 2023-10-09
 - fix: fargate_profile timeouts block
@@ -151,8 +152,9 @@ fix: reference node iam arns inside the module for aws-auth configmap.
 - Cluster only example
 - Cluster logging
 
-[Unreleased]: https://github.com/boldlink/terraform-aws-eks/compare/3.3.3..HEAD
+[Unreleased]: https://github.com/boldlink/terraform-aws-eks/compare/3.3.4..HEAD
 
+[3.3.4]: https://github.com/boldlink/terraform-aws-eks/releases/tag/3.3.4
 [3.3.3]: https://github.com/boldlink/terraform-aws-eks/releases/tag/3.3.3
 [3.3.2]: https://github.com/boldlink/terraform-aws-eks/releases/tag/3.3.2
 [3.3.1]: https://github.com/boldlink/terraform-aws-eks/releases/tag/3.3.1

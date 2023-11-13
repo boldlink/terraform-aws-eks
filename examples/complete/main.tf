@@ -1,3 +1,33 @@
+## External Security Group
+resource "aws_security_group" "external" {
+  #checkov:skip=CKV2_AWS_5: "Ensure that Security Groups are attached to another resource"
+  name                   = "${var.cluster_name}-managed-node-sg"
+  description            = "eks cluster traffic"
+  vpc_id                 = local.vpc_id
+  tags                   = merge({ Name = "${var.cluster_name}-managed-node-sg" }, var.tags)
+  revoke_rules_on_delete = true
+
+  ingress {
+    description = "Allow ingress traffic"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    self        = true
+  }
+
+  egress {
+    description = "Allow all outbound"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  timeouts {
+    delete = "3m"
+  }
+}
+
 module "ebs_kms" {
   source           = "boldlink/kms/aws"
   version          = "1.1.0"
@@ -29,7 +59,7 @@ module "complete_eks_cluster" {
   kms_key_arn                = local.kms_key_arn
   endpoint_public_access     = var.endpoint_public_access
   endpoint_private_access    = var.endpoint_private_access
-
+  security_group_ids         = [aws_security_group.external.id]
   kubernetes_network_config = {
     ip_family         = "ipv4"
     service_ipv4_cidr = "172.16.0.0/16"
@@ -59,6 +89,7 @@ module "complete_eks_cluster" {
       launch_template_description   = "EKS managed node group launch template"
       ebs_optimized                 = true
       install_ssm_agent             = true
+      security_group_ids            = [aws_security_group.external.id]
       cpu_credits                   = var.cpu_credits
       enable_monitoring             = true
       cpu_options = {
@@ -125,6 +156,11 @@ module "complete_eks_cluster" {
           tags          = local.tags
         }
       ]
+      timeouts = {
+        create = "20m"
+        update = "20m"
+        delete = "20m"
+      }
     }
     managed1 = {
       create        = true
