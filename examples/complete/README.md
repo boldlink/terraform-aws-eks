@@ -28,7 +28,7 @@ This example is for demo and testing purposes and doesn't represent a production
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.21.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.25.0 |
 
 ## Modules
 
@@ -41,6 +41,7 @@ This example is for demo and testing purposes and doesn't represent a production
 
 | Name | Type |
 |------|------|
+| [aws_security_group.external](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
 | [aws_eks_cluster.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/eks_cluster) | data source |
 | [aws_eks_cluster_auth.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/eks_cluster_auth) | data source |
