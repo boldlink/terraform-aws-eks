@@ -28,13 +28,14 @@ This example is for demo and testing purposes and doesn't represent a production
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.25.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.15.0 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_complete_eks_cluster"></a> [complete\_eks\_cluster](#module\_complete\_eks\_cluster) | ./../../ | n/a |
+| <a name="module_ebs_csi_driver_role"></a> [ebs\_csi\_driver\_role](#module\_ebs\_csi\_driver\_role) | boldlink/iam-role/aws | 1.1.1 |
 | <a name="module_ebs_kms"></a> [ebs\_kms](#module\_ebs\_kms) | boldlink/kms/aws | 1.1.0 |
 
 ## Resources
