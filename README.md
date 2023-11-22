@@ -92,6 +92,7 @@ You can use Boldlink VPC Endpoints Terraform module [here](https://github.com/bo
 ```hcl
 module "minimum_eks_cluster" {
   source                    = "boldlink/eks/aws"
+  version                   = "<add_latest_version_here>"
   enabled_cluster_log_types = ["api", "authenticator", "audit", "scheduler", "controllerManager"]
   cluster_name              = local.cluster_name
   vpc_id                    = local.vpc_id
@@ -156,7 +157,7 @@ data "aws_subnets" "public" {
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.25.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.26.0 |
 | <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | 2.23.0 |
 | <a name="provider_tls"></a> [tls](#provider\_tls) | 4.0.4 |
 

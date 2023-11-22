@@ -48,4 +48,24 @@ locals {
     ]
     }
   )
+
+  assume_role_policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Action" : "sts:AssumeRoleWithWebIdentity"
+        "Condition" : {
+          "StringEquals" : {
+            "${replace(module.complete_eks_cluster.identity[0].oidc[0].issuer, "https://", "")}:aud" : "sts.amazonaws.com",
+            "${replace(module.complete_eks_cluster.identity[0].oidc[0].issuer, "https://", "")}:sub" : "system:serviceaccount:kube-system:ebs-csi-controller-sa"
+          }
+        }
+        "Effect" : "Allow"
+        "Sid" : "EBSDriverRole"
+        "Principal" : {
+          "Federated" : module.complete_eks_cluster.oidc_arn[0]
+        }
+      },
+    ]
+  })
 }
