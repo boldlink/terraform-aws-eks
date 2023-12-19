@@ -159,8 +159,9 @@ fix: reference node iam arns inside the module for aws-auth configmap.
 - Cluster only example
 - Cluster logging
 
-[Unreleased]: https://github.com/boldlink/terraform-aws-eks/compare/3.3.5..HEAD
+[Unreleased]: https://github.com/boldlink/terraform-aws-eks/compare/3.3.6..HEAD
 
+[3.3.6]: https://github.com/boldlink/terraform-aws-eks/releases/tag/3.3.6
 [3.3.5]: https://github.com/boldlink/terraform-aws-eks/releases/tag/3.3.5
 [3.3.4]: https://github.com/boldlink/terraform-aws-eks/releases/tag/3.3.4
 [3.3.3]: https://github.com/boldlink/terraform-aws-eks/releases/tag/3.3.3
