@@ -74,7 +74,6 @@ module "complete_eks_cluster" {
   ]
   managed_node_groups = {
     managed0 = {
-      create       = true
       subnet_ids   = local.private_subnets
       desired_size = 3
       max_size     = 3
@@ -163,7 +162,6 @@ module "complete_eks_cluster" {
       }
     }
     managed1 = {
-      create        = true
       subnet_ids    = local.private_subnets
       capacity_type = "SPOT"
       disk_size     = 30

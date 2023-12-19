@@ -26,6 +26,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - fix: remove CKV_AWS_37 from `.checkov.yml` file which is being flagged even though logging for all log types has been enabled.
 - showcase - license_specification, elastic_gpu_specifications, placements, private_dns_name_options launch_template options in module examples.
 
+## [3.3.6] - 2023-12-19
+- fix: cluster security group variable
+- removed unused create switch in complete example
+
 ## [3.3.5] - 2023-11-17
 - added ebs csi and coredns addons to the complete example
 
