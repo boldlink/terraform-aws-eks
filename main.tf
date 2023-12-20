@@ -10,7 +10,7 @@ resource "aws_eks_cluster" "main" {
     endpoint_private_access = var.endpoint_private_access
     endpoint_public_access  = var.endpoint_public_access
     public_access_cidrs     = var.public_access_cidrs
-    security_group_ids      = concat(compact([(join(aws_security_group.eks_cluster.id, var.security_group_ids))]))
+    security_group_ids      = compact(distinct(concat([aws_security_group.eks_cluster.id], var.security_group_ids)))
     subnet_ids              = var.cluster_subnet_ids
   }
 
