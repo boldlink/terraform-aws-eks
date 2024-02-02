@@ -1,0 +1,18 @@
+blank_issues_enabled: false
+
+contact_links:
+  - name: Organisation
+    url: https://github.com/boldlink
+    about: See all our public repositories.
+
+  - name: Cloud and Devops Acceleration
+    url: https://boldlink.io
+    about: Our central location for more resources
+
+  - name: Articles
+    url: https://boldlink.io/articles/
+    about: Follow this link for our articles about Cloud and DevOps
+
+  - name: Discussions
+    url: https://github.com/orgs/boldlink/discussions
+    about: Our community discussions.
