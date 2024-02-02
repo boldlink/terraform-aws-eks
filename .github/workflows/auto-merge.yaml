@@ -6,8 +6,12 @@ on:
     - opened
     - reopened
 
+permissions: read-all
+
 jobs:
   auto-merge:
+    permissions:
+      pull-requests: write
     uses: boldlink/terraform-module-support/.github/workflows/auto-merge.yaml@main
     secrets:
       AUTOMATION_TOKEN: ${{ secrets.AUTOMATION_TOKEN }}

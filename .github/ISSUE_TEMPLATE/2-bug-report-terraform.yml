@@ -1,0 +1,98 @@
+name: Terraform Module Bug Report
+description: File a bug report
+title: "🐛 [Bug]: <title>"
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        # Thank you for raising a bug report! 🐛
+
+        Before submitting a bug report, we ask that you first search existing issues to see if someone else may have experienced the same issue. This helps to keep all relevant information in one place, including any potential workarounds.
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Anything that will help us triage the bug.
+      placeholder: |
+        - OS: [e.g. Linux, OSX, WSL, etc]
+        - Version [e.g. 10.15]
+        - Module version
+        - Terraform version
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        # Description
+
+        In the next few fields, please provide any useful information you can around what resources are affected, what you expected to happen, and what actually happened. There is also a field to optionally provide a small snippet of any relevant error or panic output.
+
+        Note that there is a section later in the form to provide more complete Terraform configuration and logging information. These fields should instead be thought of as the place to briefly describe the bug.
+
+  - type: input
+    id: contact
+    attributes:
+      label: Contact Details
+      description: How can we get in touch with you if we need more info?
+      placeholder: ex. example@example.com
+    validations:
+      required: false
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: What should have happened?
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual Behavior
+      description: What actually happened?
+    validations:
+      required: true
+
+  - type: textarea
+    id: log_snippet
+    attributes:
+      label: Relevant Error/Panic Output Snippet
+      description: |
+        If applicable, provide a relevant snippet from the error or panic output. This will be rendered as `shell`, so there is no need to add a [code fence](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/creating-and-highlighting-code-blocks).
+      render: shell
+    validations:
+      required: false
+
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to Reproduce
+      description: Please list the steps required to reproduce the issue.
+    validations:
+      required: true
+
+  - type: textarea
+    id: debug_logs
+    attributes:
+      label: Debug Output
+      description: |
+        If possible, please paste, upload, or link to a file or Gist containing debug logs. See note above for additional information on file size restrictions and encrypting.
+
+        To obtain the debug output, see the [Terraform documentation on debugging](https://www.terraform.io/docs/internals/debugging.html).
+    validations:
+      required: false
+
+  - type: textarea
+    id: references
+    attributes:
+      label: References
+      description: |
+        Where possible, please supply links to vendor documentation, other GitHub issues (open or closed) or pull requests that give additional context.
+
+        [Information about referencing Github Issues](https://help.github.com/articles/basic-writing-and-formatting-syntax/#referencing-issues-and-pull-requests)
+    validations:
+      required: false
