@@ -1,3 +1,4 @@
 major: ['release/*', 'releases/*']
 minor: ['feat*/*', 'feature/*', 'features/*' ]
 patch: ['fix/*', 'fixes/*', 'hotfix/*', 'hotfixes/*', chore/*, 'chores/*']
+documentation: ['doc*/*']
